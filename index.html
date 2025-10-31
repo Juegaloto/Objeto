@@ -10,7 +10,7 @@
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
     <style>
-        /* Variables CSS - Nueva paleta de colores */
+        /* Variables CSS optimizadas */
         :root {
             --primary: #8B5CF6;
             --primary-dark: #7C3AED;
@@ -28,7 +28,7 @@
             --glass-border: rgba(255, 255, 255, 0.2);
         }
 
-        /* Estilos base */
+        /* Estilos base optimizados */
         * {
             margin: 0;
             padding: 0;
@@ -41,6 +41,7 @@
             color: var(--light);
             min-height: 100vh;
             padding: 20px;
+            overflow-x: hidden;
         }
 
         .container {
@@ -48,7 +49,7 @@
             margin: 0 auto;
         }
 
-        /* Header */
+        /* Header optimizado */
         header {
             display: flex;
             justify-content: space-between;
@@ -76,7 +77,7 @@
             gap: 15px;
         }
 
-        /* Botones */
+        /* Botones optimizados */
         .btn {
             background: var(--primary);
             color: white;
@@ -127,7 +128,7 @@
             background: #dc2626;
         }
 
-        /* Información de usuario */
+        /* Información de usuario optimizada */
         .user-info {
             display: flex;
             align-items: center;
@@ -147,7 +148,7 @@
             color: white;
         }
 
-        /* Estadísticas */
+        /* Estadísticas optimizadas */
         .stats-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
@@ -183,7 +184,7 @@
             opacity: 0.8;
         }
 
-        /* Contenido principal */
+        /* Contenido principal optimizado */
         .main-content {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -216,7 +217,7 @@
             gap: 10px;
         }
 
-        /* Formularios */
+        /* Formularios optimizados */
         .form-group {
             margin-bottom: 20px;
         }
@@ -248,7 +249,7 @@
             color: rgba(255, 255, 255, 0.6);
         }
 
-        /* Badges */
+        /* Badges optimizados */
         .profit-badge {
             background: rgba(6, 214, 160, 0.2);
             color: var(--secondary);
@@ -261,7 +262,7 @@
             gap: 5px;
         }
 
-        /* Grid de objetos */
+        /* Grid de objetos optimizado */
         .objects-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -329,7 +330,7 @@
             font-size: 16px;
         }
 
-        /* Barras de progreso */
+        /* Barras de progreso optimizadas */
         .progress-container {
             margin: 15px 0;
         }
@@ -355,7 +356,7 @@
             transition: width 0.5s ease;
         }
 
-        /* Indicadores de ganancia */
+        /* Indicadores de ganancia optimizados */
         .profit-indicator {
             display: flex;
             align-items: center;
@@ -377,7 +378,7 @@
             opacity: 0.8;
         }
 
-        /* Títulos de sección */
+        /* Títulos de sección optimizados */
         .section-title {
             color: white;
             margin: 30px 0 20px;
@@ -385,7 +386,7 @@
             font-weight: 700;
         }
 
-        /* Estados vacíos */
+        /* Estados vacíos optimizados */
         .empty-state {
             text-align: center;
             padding: 40px 20px;
@@ -398,7 +399,7 @@
             color: rgba(255, 255, 255, 0.3);
         }
 
-        /* Historial de transacciones */
+        /* Historial de transacciones optimizado */
         .transaction-history {
             margin-top: 30px;
         }
@@ -449,7 +450,7 @@
             color: #991b1b;
         }
 
-        /* Sistema de Toast */
+        /* Sistema de Toast optimizado */
         .toast {
             position: fixed;
             top: 20px;
@@ -483,7 +484,7 @@
             background: var(--primary);
         }
 
-        /* Modal de autenticación minimalista */
+        /* Modal de autenticación optimizado */
         .modal {
             display: none;
             position: fixed;
@@ -618,7 +619,7 @@
             gap: 10px;
         }
 
-        /* Referidos */
+        /* Referidos optimizados */
         .referral-section {
             margin-top: 30px;
         }
@@ -704,7 +705,61 @@
             background: var(--primary-dark);
         }
 
-        /* Responsive */
+        /* Botón de información optimizado */
+        .info-button {
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            border-radius: 50%;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary);
+            cursor: pointer;
+            transition: var(--transition);
+            margin-left: 10px;
+        }
+
+        .info-button:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        /* Modal de información optimizado */
+        .info-modal {
+            max-width: 600px;
+        }
+
+        .info-content {
+            line-height: 1.6;
+        }
+
+        .info-step {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 15px;
+            gap: 15px;
+        }
+
+        .step-number {
+            background: var(--primary);
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+
+        .step-content {
+            flex: 1;
+        }
+
+        /* Responsive optimizado */
         @media (max-width: 768px) {
             .main-content {
                 grid-template-columns: 1fr;
@@ -752,6 +807,16 @@
             .card-title {
                 font-size: 18px;
             }
+        }
+
+        /* Optimizaciones de rendimiento */
+        .lazy-load {
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .lazy-load.loaded {
+            opacity: 1;
         }
     </style>
 </head>
@@ -847,9 +912,14 @@
             </div>
         </div>
 
-        <!-- Sección de Referidos -->
+        <!-- Sección de Referidos optimizada -->
         <div class="referral-section">
-            <h2 class="section-title">Sistema de Referidos</h2>
+            <h2 class="section-title">
+                Sistema de Referidos
+                <button class="info-button" id="referralInfoBtn" title="Cómo funciona el sistema de referidos">
+                    <i class="fas fa-info"></i>
+                </button>
+            </h2>
             <div class="card">
                 <h3 class="card-title">
                     <i class="fas fa-users"></i>
@@ -908,10 +978,10 @@
         </div>
     </div>
 
-    <!-- Sistema de Toast -->
+    <!-- Sistema de Toast optimizado -->
     <div id="toastContainer"></div>
 
-    <!-- Modal de Autenticación Minimalista -->
+    <!-- Modal de Autenticación optimizado -->
     <div id="authModal" class="modal">
         <div class="modal-content">
             <button class="modal-close" id="closeAuthModal">&times;</button>
@@ -978,7 +1048,7 @@
         </div>
     </div>
 
-    <!-- Modal de Depósito -->
+    <!-- Modal de Depósito optimizado -->
     <div id="depositModal" class="modal">
         <div class="modal-content">
             <button class="modal-close" id="closeDepositModal">&times;</button>
@@ -1006,7 +1076,7 @@
         </div>
     </div>
 
-    <!-- Modal de Retiro -->
+    <!-- Modal de Retiro optimizado -->
     <div id="withdrawModal" class="modal">
         <div class="modal-content">
             <button class="modal-close" id="closeWithdrawModal">&times;</button>
@@ -1052,6 +1122,53 @@
         </div>
     </div>
 
+    <!-- Modal de Información de Referidos -->
+    <div id="referralInfoModal" class="modal">
+        <div class="modal-content info-modal">
+            <button class="modal-close" id="closeReferralInfoModal">&times;</button>
+            <h2 class="modal-title">Cómo funciona el Sistema de Referidos</h2>
+            
+            <div class="info-content">
+                <div class="info-step">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <h3>Comparte tu enlace</h3>
+                        <p>Comparte tu enlace único de referido con amigos y conocidos. Cuando alguien se registre usando tu enlace, se convertirá en tu referido de nivel 1.</p>
+                    </div>
+                </div>
+                
+                <div class="info-step">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <h3>Gana comisiones</h3>
+                        <p>Recibirás el 15% de los depósitos de tus referidos de nivel 1, el 5% de los depósitos de tus referidos de nivel 2, y el 1% de los depósitos de tus referidos de nivel 3.</p>
+                    </div>
+                </div>
+                
+                <div class="info-step">
+                    <div class="step-number">3</div>
+                    <div class="step-content">
+                        <h3>Multiplica tus ganancias</h3>
+                        <p>Cada persona que invites puede invitar a más personas, creando una red de referidos de hasta 3 niveles de profundidad.</p>
+                    </div>
+                </div>
+                
+                <div class="info-step">
+                    <div class="step-number">4</div>
+                    <div class="step-content">
+                        <h3>Retira tus ganancias</h3>
+                        <p>Todas las comisiones de referidos se acreditan automáticamente a tu balance y puedes retirarlas en cualquier momento.</p>
+                    </div>
+                </div>
+                
+                <div class="warning-alert">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <div>Recuerda que las comisiones se calculan únicamente sobre los depósitos realizados por tus referidos, no sobre sus ganancias.</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script>
         // Configuración de Firebase
         const firebaseConfig = {
@@ -1070,7 +1187,7 @@
         const auth = firebase.auth();
         const db = firebase.firestore();
 
-        // Estado de la aplicación
+        // Estado de la aplicación optimizado
         const state = {
             currentUser: null,
             userData: null,
@@ -1081,10 +1198,16 @@
                 level1: { count: 0, earnings: 0 },
                 level2: { count: 0, earnings: 0 },
                 level3: { count: 0, earnings: 0 }
+            },
+            // Nuevo: Cache para optimizar consultas
+            cache: {
+                objects: null,
+                transactions: null,
+                referralData: null
             }
         };
 
-        // Elementos DOM
+        // Elementos DOM optimizados
         const authButtons = document.getElementById('authButtons');
         const userInfo = document.getElementById('userInfo');
         const userName = document.getElementById('userName');
@@ -1119,12 +1242,15 @@
         const level2Earnings = document.getElementById('level2Earnings');
         const level3Count = document.getElementById('level3Count');
         const level3Earnings = document.getElementById('level3Earnings');
+        const referralInfoBtn = document.getElementById('referralInfoBtn');
+        const referralInfoModal = document.getElementById('referralInfoModal');
+        const closeReferralInfoModal = document.getElementById('closeReferralInfoModal');
 
         // Tabs del modal de autenticación
         const tabs = document.querySelectorAll('.tab');
         const tabContents = document.querySelectorAll('.tab-content');
 
-        // Funciones de utilidad
+        // Funciones de utilidad optimizadas
         function formatCurrency(amount) {
             return `${parseFloat(amount).toFixed(2)} USDT`;
         }
@@ -1145,7 +1271,7 @@
             return 'REF' + Date.now() + Math.random().toString(36).substr(2, 5).toUpperCase();
         }
 
-        // Sistema de Toast
+        // Sistema de Toast optimizado
         function showToast(message, type = 'info') {
             const toast = document.createElement('div');
             toast.className = `toast toast-${type}`;
@@ -1172,7 +1298,7 @@
             }, 3000);
         }
 
-        // Manejo de errores de Firebase
+        // Manejo de errores de Firebase optimizado
         function handleFirebaseError(error, userFriendlyMessage = 'Ocurrió un error') {
             console.error('Firebase Error:', error);
             
@@ -1196,7 +1322,7 @@
             return message;
         }
 
-        // Sistema de Referidos
+        // Sistema de Referidos optimizado
         function setupReferralSystem() {
             // Generar código de referido si no existe
             if (state.currentUser && state.userData && !state.userData.referralCode) {
@@ -1219,22 +1345,49 @@
             // Copiar enlace de referido
             copyReferralLinkBtn.addEventListener('click', () => {
                 const link = referralLink.textContent;
+                if (link === "Cargando..." || link === "Inicia sesión para ver tu enlace") {
+                    showToast('No hay enlace disponible para copiar', 'error');
+                    return;
+                }
+                
                 navigator.clipboard.writeText(link)
                     .then(() => {
                         showToast('Enlace copiado al portapapeles', 'success');
                     })
                     .catch((err) => {
                         console.error('Error al copiar: ', err);
-                        showToast('Error al copiar el enlace', 'error');
+                        // Fallback para navegadores antiguos
+                        const textArea = document.createElement('textarea');
+                        textArea.value = link;
+                        document.body.appendChild(textArea);
+                        textArea.select();
+                        document.execCommand('copy');
+                        document.body.removeChild(textArea);
+                        showToast('Enlace copiado al portapapeles', 'success');
                     });
+            });
+            
+            // Botón de información de referidos
+            referralInfoBtn.addEventListener('click', () => {
+                referralInfoModal.style.display = 'flex';
+            });
+            
+            closeReferralInfoModal.addEventListener('click', () => {
+                referralInfoModal.style.display = 'none';
+            });
+            
+            window.addEventListener('click', (event) => {
+                if (event.target === referralInfoModal) {
+                    referralInfoModal.style.display = 'none';
+                }
             });
         }
 
         function updateReferralUI() {
             if (state.userData && state.userData.referralCode) {
-                const baseUrl = window.location.origin + window.location.pathname;
-                const referralUrl = `${baseUrl}?ref=${state.userData.referralCode}`;
-                referralLink.textContent = referralUrl;
+                // Enlace directo al bot de Telegram con el código de referido
+                const telegramBotLink = `https://t.me/DigitalObjects_bot?start=${state.userData.referralCode}`;
+                referralLink.textContent = telegramBotLink;
             } else {
                 referralLink.textContent = "Inicia sesión para ver tu enlace";
             }
@@ -1250,6 +1403,13 @@
 
         function loadReferralData() {
             if (!state.currentUser) return;
+            
+            // Usar cache si está disponible
+            if (state.cache.referralData && Date.now() - state.cache.referralData.timestamp < 30000) {
+                state.referralData = state.cache.referralData.data;
+                updateReferralUI();
+                return;
+            }
             
             // Cargar datos de referidos
             db.collection('referrals')
@@ -1270,6 +1430,12 @@
                             state.referralData[`level${level}`].earnings += referral.commission || 0;
                         }
                     });
+                    
+                    // Actualizar cache
+                    state.cache.referralData = {
+                        data: {...state.referralData},
+                        timestamp: Date.now()
+                    };
                     
                     updateReferralUI();
                 })
@@ -1344,6 +1510,9 @@
                                                         });
                                                     })
                                                     .then(() => {
+                                                        // Invalidar cache de referidos
+                                                        state.cache.referralData = null;
+                                                        
                                                         // Continuar con el siguiente nivel
                                                         currentUserId = user.referredBy;
                                                         currentLevel++;
@@ -1370,7 +1539,7 @@
                 });
         }
 
-        // Sistema de Autenticación Minimalista
+        // Sistema de Autenticación optimizado
         function setupAuthListeners() {
             // Tabs
             tabs.forEach(tab => {
@@ -1429,7 +1598,7 @@
                     });
             });
 
-            // Registro minimalista
+            // Registro optimizado
             document.getElementById('doRegister').addEventListener('click', () => {
                 const email = document.getElementById('registerEmail').value;
                 const password = document.getElementById('registerPassword').value;
@@ -1518,7 +1687,7 @@
             });
         }
 
-        // Cargar datos del usuario
+        // Cargar datos del usuario optimizado
         function loadUserData() {
             if (!state.currentUser) return;
 
@@ -1542,7 +1711,7 @@
                 });
         }
 
-        // Actualizar UI
+        // Actualizar UI optimizado
         function updateUI() {
             if (state.currentUser && state.userData) {
                 authButtons.style.display = 'none';
@@ -1562,9 +1731,17 @@
             }
         }
 
-        // Cargar objetos del usuario - FUNCIÓN MEJORADA
+        // Cargar objetos del usuario optimizado
         function loadUserObjects() {
             if (!state.currentUser) return;
+
+            // Usar cache si está disponible
+            if (state.cache.objects && Date.now() - state.cache.objects.timestamp < 30000) {
+                state.objects = state.cache.objects.data;
+                renderObjects();
+                updateUI();
+                return;
+            }
 
             db.collection('objects')
                 .where('userId', '==', state.currentUser.uid)
@@ -1579,6 +1756,13 @@
                             ...objectData
                         });
                     });
+                    
+                    // Actualizar cache
+                    state.cache.objects = {
+                        data: [...state.objects],
+                        timestamp: Date.now()
+                    };
+                    
                     renderObjects();
                     updateUI();
                 })
@@ -1604,6 +1788,13 @@
                                     const dateB = b.createdAt ? b.createdAt.toDate() : new Date(0);
                                     return dateB - dateA;
                                 });
+                                
+                                // Actualizar cache
+                                state.cache.objects = {
+                                    data: [...state.objects],
+                                    timestamp: Date.now()
+                                };
+                                
                                 renderObjects();
                                 updateUI();
                             })
@@ -1616,10 +1807,17 @@
                 });
         }
 
-        // Cargar transacciones del usuario - FUNCIÓN MEJORADA
+        // Cargar transacciones del usuario optimizado
         function loadUserTransactions() {
             if (!state.currentUser) {
                 console.log('No hay usuario autenticado');
+                return;
+            }
+
+            // Usar cache si está disponible
+            if (state.cache.transactions && Date.now() - state.cache.transactions.timestamp < 30000) {
+                state.transactions = state.cache.transactions.data;
+                renderTransactions();
                 return;
             }
 
@@ -1644,6 +1842,12 @@
                             ...transactionData
                         });
                     });
+                    
+                    // Actualizar cache
+                    state.cache.transactions = {
+                        data: [...state.transactions],
+                        timestamp: Date.now()
+                    };
                     
                     renderTransactions();
                 })
@@ -1671,6 +1875,13 @@
                                     const dateB = b.createdAt ? b.createdAt.toDate() : new Date(0);
                                     return dateB - dateA;
                                 });
+                                
+                                // Actualizar cache
+                                state.cache.transactions = {
+                                    data: [...state.transactions],
+                                    timestamp: Date.now()
+                                };
+                                
                                 renderTransactions();
                             })
                             .catch((error2) => {
@@ -1682,7 +1893,7 @@
                 });
         }
 
-        // Renderizar objetos - FUNCIÓN MEJORADA
+        // Renderizar objetos optimizado
         function renderObjects() {
             if (state.objects.length === 0) {
                 objectsContainer.innerHTML = `
@@ -1707,7 +1918,7 @@
                 const progressPercentage = Math.min(100, (daysActive / 15) * 100);
                 
                 const objectCard = document.createElement('div');
-                objectCard.className = 'object-card';
+                objectCard.className = 'object-card lazy-load';
                 objectCard.innerHTML = `
                     <div class="object-header">
                         <div class="object-id">Objeto #${obj.id.substr(0, 8)}</div>
@@ -1752,10 +1963,15 @@
                 `;
                 
                 objectsContainer.appendChild(objectCard);
+                
+                // Carga diferida para mejor rendimiento
+                setTimeout(() => {
+                    objectCard.classList.add('loaded');
+                }, 100);
             });
         }
 
-        // Renderizar transacciones - FUNCIÓN MEJORADA
+        // Renderizar transacciones optimizado
         function renderTransactions() {
             console.log('Renderizando transacciones:', state.transactions);
             
@@ -1776,7 +1992,7 @@
                 console.log('Procesando transacción:', transaction);
                 
                 const transactionItem = document.createElement('div');
-                transactionItem.className = 'transaction-item';
+                transactionItem.className = 'transaction-item lazy-load';
                 
                 const typeIcon = transaction.type === 'deposit' ? 'fa-arrow-down' : 
                                transaction.type === 'withdrawal' ? 'fa-arrow-up' : 
@@ -1814,6 +2030,11 @@
                 `;
                 
                 transactionsList.appendChild(transactionItem);
+                
+                // Carga diferida para mejor rendimiento
+                setTimeout(() => {
+                    transactionItem.classList.add('loaded');
+                }, 100);
             });
         }
 
@@ -1837,7 +2058,7 @@
             return statuses[status] || status;
         }
 
-        // Crear objeto
+        // Crear objeto optimizado
         function createObject() {
             if (!state.currentUser) {
                 showToast('Por favor, inicia sesión primero.', 'error');
@@ -1874,6 +2095,9 @@
                     });
                 })
                 .then(() => {
+                    // Invalidar cache
+                    state.cache.objects = null;
+                    
                     // Crear transacción de inversión
                     return db.collection('transactions').add({
                         userId: state.currentUser.uid,
@@ -1885,6 +2109,9 @@
                     });
                 })
                 .then(() => {
+                    // Invalidar cache de transacciones
+                    state.cache.transactions = null;
+                    
                     loadUserData();
                     loadUserObjects();
                     investmentAmountInput.value = '10';
@@ -1895,7 +2122,7 @@
                 });
         }
 
-        // Sistema de depósitos
+        // Sistema de depósitos optimizado
         function setupDepositSystem() {
             depositBtn.addEventListener('click', () => {
                 if (!state.currentUser) {
@@ -1925,6 +2152,9 @@
                     network: 'TRC20'
                 })
                 .then(() => {
+                    // Invalidar cache de transacciones
+                    state.cache.transactions = null;
+                    
                     // Procesar comisiones de referidos
                     processReferralCommission(amount, state.currentUser.uid);
                     
@@ -1938,7 +2168,7 @@
             });
         }
 
-        // Sistema de retiros
+        // Sistema de retiros optimizado
         function setupWithdrawSystem() {
             withdrawBtn.addEventListener('click', () => {
                 if (!state.currentUser) {
@@ -1993,6 +2223,9 @@
                     network: 'TRC20'
                 })
                 .then(() => {
+                    // Invalidar cache de transacciones
+                    state.cache.transactions = null;
+                    
                     // Actualizar balance del usuario
                     return db.collection('users').doc(state.currentUser.uid).update({
                         balance: state.userData.balance - amount
@@ -2018,7 +2251,7 @@
             document.getElementById('withdrawSummaryTotal').textContent = formatCurrency(netAmount);
         }
 
-        // Verificar código de referido en la URL
+        // Verificar código de referido en la URL optimizado
         function checkReferralCode() {
             const urlParams = new URLSearchParams(window.location.search);
             const refCode = urlParams.get('ref');
@@ -2032,7 +2265,7 @@
             }
         }
 
-        // Event Listeners
+        // Event Listeners optimizados
         function setupEventListeners() {
             loginBtn.addEventListener('click', () => {
                 authModal.style.display = 'flex';
@@ -2050,6 +2283,11 @@
                     state.userData = null;
                     state.objects = [];
                     state.transactions = [];
+                    state.cache = {
+                        objects: null,
+                        transactions: null,
+                        referralData: null
+                    };
                     updateUI();
                     renderObjects();
                     renderTransactions();
@@ -2079,7 +2317,7 @@
             });
         }
 
-        // Observador de autenticación
+        // Observador de autenticación optimizado
         auth.onAuthStateChanged((user) => {
             state.currentUser = user;
             if (user) {
@@ -2091,13 +2329,18 @@
                 state.objects = [];
                 state.transactions = [];
                 state.isAdmin = false;
+                state.cache = {
+                    objects: null,
+                    transactions: null,
+                    referralData: null
+                };
                 updateUI();
                 renderObjects();
                 renderTransactions();
             }
         });
 
-        // Inicialización
+        // Inicialización optimizada
         function init() {
             setupAuthListeners();
             setupEventListeners();
@@ -2105,10 +2348,22 @@
             setupWithdrawSystem();
             checkReferralCode();
             updateUI();
+            
+            // Precarga de elementos críticos
+            const preloadElements = document.querySelectorAll('.lazy-load');
+            preloadElements.forEach(el => {
+                setTimeout(() => {
+                    el.classList.add('loaded');
+                }, 100);
+            });
         }
 
         // Ejecutar inicialización cuando el DOM esté listo
-        document.addEventListener('DOMContentLoaded', init);
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', init);
+        } else {
+            init();
+        }
     </script>
 </body>
 </html>
