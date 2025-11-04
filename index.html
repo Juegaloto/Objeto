@@ -11,16 +11,19 @@
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-storage.js"></script>
     <style>
-        /* Variables CSS optimizadas con paleta de colores profesional */
+        /* Variables CSS optimizadas con nueva paleta de colores */
         :root {
-            --primary: #1e3a8a;
-            --primary-dark: #1e40af;
-            --secondary: #d97706;
-            --accent: #059669;
-            --dark: #0f172a;
-            --darker: #0a0f1d;
+            --primary: #ff096c;
+            --primary-dark: #e0085f;
+            --primary-light: #ff3a85;
+            --secondary: #4f6172;
+            --accent: #2a3843;
+            --dark: #192731;
+            --darker: #0f1a21;
             --light: #f8fafc;
+            --light-gray: #e5e7eb;
             --gray: #64748b;
             --gray-light: #cbd5e1;
             --gray-dark: #475569;
@@ -31,7 +34,7 @@
             --border-radius-lg: 20px;
             --shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
             --shadow-light: 0 4px 16px rgba(0, 0, 0, 0.1);
-            --glow: 0 0 15px rgba(30, 58, 138, 0.2);
+            --glow: 0 0 15px rgba(255, 9, 108, 0.3);
             --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
             --glass-bg: rgba(255, 255, 255, 0.08);
             --glass-border: rgba(255, 255, 255, 0.12);
@@ -48,7 +51,7 @@
         }
 
         body {
-            background: linear-gradient(135deg, var(--darker) 0%, var(--dark) 50%, #1e293b 100%);
+            background: linear-gradient(135deg, var(--darker) 0%, var(--dark) 50%, var(--accent) 100%);
             color: var(--light);
             min-height: 100vh;
             padding: 20px;
@@ -66,9 +69,9 @@
             width: 100%;
             height: 100%;
             background: 
-                radial-gradient(circle at 20% 80%, rgba(30, 58, 138, 0.1) 0%, transparent 50%),
-                radial-gradient(circle at 80% 20%, rgba(217, 119, 6, 0.1) 0%, transparent 50%),
-                radial-gradient(circle at 40% 40%, rgba(5, 150, 105, 0.05) 0%, transparent 50%);
+                radial-gradient(circle at 20% 80%, rgba(255, 9, 108, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(42, 56, 67, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 40% 40%, rgba(25, 39, 49, 0.05) 0%, transparent 50%);
             pointer-events: none;
             z-index: -1;
         }
@@ -76,6 +79,21 @@
         .container {
             max-width: 1200px;
             margin: 0 auto;
+        }
+
+        /* Sistema de páginas */
+        .page {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         /* Header optimizado con elementos de seguridad */
@@ -106,18 +124,18 @@
             font-size: 24px;
             font-weight: 700;
             font-family: var(--font-heading);
-            text-shadow: 0 0 10px rgba(30, 58, 138, 0.5);
+            text-shadow: 0 0 10px rgba(255, 9, 108, 0.5);
         }
 
         .logo i {
             font-size: 28px;
             color: var(--primary);
-            filter: drop-shadow(0 0 8px rgba(30, 58, 138, 0.5));
+            filter: drop-shadow(0 0 8px rgba(255, 9, 108, 0.5));
         }
 
         /* Botón del menú slider - SIEMPRE VISIBLE */
         .menu-toggle {
-            background: var(--primary);
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
             color: white;
             border: none;
             border-radius: var(--border-radius);
@@ -129,11 +147,13 @@
             align-items: center;
             gap: 8px;
             z-index: 1000;
-            position: relative; /* Asegurar que siempre esté visible */
+            position: relative;
+            backdrop-filter: blur(10px);
+            box-shadow: var(--shadow);
         }
 
         .menu-toggle:hover {
-            background: var(--primary-dark);
+            background: linear-gradient(135deg, var(--primary-light) 0%, var(--primary) 100%);
             transform: translateY(-2px);
             box-shadow: var(--glow);
         }
@@ -241,18 +261,18 @@
             display: flex;
             align-items: center;
             gap: 8px;
-            background: rgba(5, 150, 105, 0.1);
-            border: 1px solid rgba(5, 150, 105, 0.3);
+            background: rgba(255, 9, 108, 0.1);
+            border: 1px solid rgba(255, 9, 108, 0.3);
             border-radius: 20px;
             padding: 8px 16px;
             font-size: 14px;
-            color: var(--accent);
+            color: var(--primary);
             font-weight: 500;
             transition: var(--transition);
         }
 
         .security-badge:hover {
-            background: rgba(5, 150, 105, 0.2);
+            background: rgba(255, 9, 108, 0.2);
             transform: translateY(-2px);
         }
 
@@ -261,7 +281,7 @@
             gap: 15px;
         }
 
-        /* Botones optimizados con animaciones mejoradas */
+        /* Botones optimizados con animaciones mejoradas y efectos blur/gradientes */
         .btn {
             background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
             color: white;
@@ -280,6 +300,7 @@
             overflow: hidden;
             box-shadow: var(--shadow);
             font-family: var(--font-primary);
+            backdrop-filter: blur(10px);
         }
 
         .btn::before {
@@ -404,7 +425,7 @@
         .stat-card:hover {
             transform: translateY(-5px);
             box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4), var(--glow);
-            border-color: rgba(30, 58, 138, 0.3);
+            border-color: rgba(255, 9, 108, 0.3);
         }
 
         .stat-value {
@@ -412,7 +433,7 @@
             font-weight: 700;
             margin-bottom: 5px;
             font-family: var(--font-heading);
-            text-shadow: 0 0 10px rgba(30, 58, 138, 0.5);
+            text-shadow: 0 0 10px rgba(255, 9, 108, 0.5);
             background: linear-gradient(90deg, var(--primary), var(--accent));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
@@ -458,7 +479,7 @@
         .metric-card:hover {
             transform: translateY(-3px);
             box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3), var(--glow);
-            border-color: rgba(30, 58, 138, 0.3);
+            border-color: rgba(255, 9, 108, 0.3);
         }
 
         .metric-icon {
@@ -508,14 +529,14 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: radial-gradient(circle at top right, rgba(30, 58, 138, 0.1), transparent 70%);
+            background: radial-gradient(circle at top right, rgba(255, 9, 108, 0.1), transparent 70%);
             pointer-events: none;
         }
 
         .card:hover {
             transform: translateY(-5px);
             box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4), var(--glow);
-            border-color: rgba(30, 58, 138, 0.3);
+            border-color: rgba(255, 9, 108, 0.3);
         }
 
         .card-title {
@@ -556,7 +577,7 @@
         input:focus, select:focus, textarea:focus {
             outline: none;
             border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(30, 58, 138, 0.2);
+            box-shadow: 0 0 0 3px rgba(255, 9, 108, 0.2);
         }
 
         input::placeholder, textarea::placeholder {
@@ -565,8 +586,8 @@
 
         /* Badges optimizados */
         .profit-badge {
-            background: rgba(5, 150, 105, 0.1);
-            color: var(--accent);
+            background: rgba(255, 9, 108, 0.1);
+            color: var(--primary);
             padding: 10px 15px;
             border-radius: var(--border-radius);
             font-weight: 600;
@@ -574,8 +595,8 @@
             align-items: center;
             justify-content: center;
             gap: 8px;
-            border: 1px solid rgba(5, 150, 105, 0.2);
-            box-shadow: 0 0 10px rgba(5, 150, 105, 0.2);
+            border: 1px solid rgba(255, 9, 108, 0.2);
+            box-shadow: 0 0 10px rgba(255, 9, 108, 0.2);
         }
 
         /* Grid de objetos optimizado */
@@ -607,14 +628,14 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: radial-gradient(circle at bottom left, rgba(30, 58, 138, 0.1), transparent 70%);
+            background: radial-gradient(circle at bottom left, rgba(255, 9, 108, 0.1), transparent 70%);
             pointer-events: none;
         }
 
         .object-card:hover {
             transform: translateY(-5px);
             box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4), var(--glow);
-            border-color: rgba(30, 58, 138, 0.3);
+            border-color: rgba(255, 9, 108, 0.3);
         }
 
         .object-header {
@@ -691,7 +712,7 @@
             border-radius: 5px;
             transition: width 0.5s ease;
             position: relative;
-            box-shadow: 0 0 10px rgba(30, 58, 138, 0.5);
+            box-shadow: 0 0 10px rgba(255, 9, 108, 0.5);
         }
 
         .progress-fill::after {
@@ -715,18 +736,18 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            background: rgba(5, 150, 105, 0.1);
+            background: rgba(255, 9, 108, 0.1);
             border-radius: var(--border-radius);
             padding: 15px;
             margin-top: 10px;
-            border: 1px solid rgba(5, 150, 105, 0.2);
-            box-shadow: 0 0 10px rgba(5, 150, 105, 0.2);
+            border: 1px solid rgba(255, 9, 108, 0.2);
+            box-shadow: 0 0 10px rgba(255, 9, 108, 0.2);
         }
 
         .profit-value {
             font-weight: 700;
             font-size: 18px;
-            color: var(--accent);
+            color: var(--primary);
             font-family: var(--font-heading);
         }
 
@@ -742,7 +763,7 @@
             font-size: 28px;
             font-weight: 700;
             font-family: var(--font-heading);
-            text-shadow: 0 0 10px rgba(30, 58, 138, 0.5);
+            text-shadow: 0 0 10px rgba(255, 9, 108, 0.5);
             position: relative;
             display: inline-block;
         }
@@ -768,8 +789,8 @@
         .empty-state i {
             font-size: 60px;
             margin-bottom: 20px;
-            color: rgba(30, 58, 138, 0.3);
-            filter: drop-shadow(0 0 10px rgba(30, 58, 138, 0.3));
+            color: rgba(255, 9, 108, 0.3);
+            filter: drop-shadow(0 0 10px rgba(255, 9, 108, 0.3));
         }
 
         /* Historial de transacciones optimizado con filtros */
@@ -793,6 +814,7 @@
             cursor: pointer;
             transition: var(--transition);
             font-size: 14px;
+            backdrop-filter: blur(10px);
         }
 
         .filter-btn.active {
@@ -802,7 +824,7 @@
         }
 
         .filter-btn:hover {
-            background: rgba(30, 58, 138, 0.2);
+            background: rgba(255, 9, 108, 0.2);
         }
 
         .transaction-item {
@@ -846,9 +868,9 @@
         }
 
         .status-completed {
-            background: rgba(5, 150, 105, 0.2);
-            color: var(--success);
-            border: 1px solid rgba(5, 150, 105, 0.3);
+            background: rgba(255, 9, 108, 0.2);
+            color: var(--primary);
+            border: 1px solid rgba(255, 9, 108, 0.3);
         }
 
         .status-failed {
@@ -882,8 +904,8 @@
         }
 
         .toast-success {
-            background: rgba(5, 150, 105, 0.9);
-            border-color: rgba(5, 150, 105, 0.3);
+            background: rgba(16, 185, 129, 0.9);
+            border-color: rgba(16, 185, 129, 0.3);
         }
 
         .toast-error {
@@ -892,8 +914,8 @@
         }
 
         .toast-info {
-            background: rgba(30, 58, 138, 0.9);
-            border-color: rgba(30, 58, 138, 0.3);
+            background: rgba(255, 9, 108, 0.9);
+            border-color: rgba(255, 9, 108, 0.3);
         }
 
         /* Modal de autenticación optimizado */
@@ -968,7 +990,7 @@
             color: white;
             text-align: center;
             font-family: var(--font-heading);
-            text-shadow: 0 0 10px rgba(30, 58, 138, 0.5);
+            text-shadow: 0 0 10px rgba(255, 9, 108, 0.5);
         }
 
         .tabs {
@@ -1014,11 +1036,35 @@
             font-family: monospace;
             font-size: 14px;
             border: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative;
+        }
+
+        .copy-address-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: var(--border-radius);
+            padding: 8px 12px;
+            cursor: pointer;
+            transition: var(--transition);
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .copy-address-btn:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: var(--glow);
         }
 
         .info-alert {
-            background: rgba(30, 58, 138, 0.1);
-            border: 1px solid rgba(30, 58, 138, 0.3);
+            background: rgba(255, 9, 108, 0.1);
+            border: 1px solid rgba(255, 9, 108, 0.3);
             color: var(--primary);
             padding: 12px;
             border-radius: var(--border-radius);
@@ -1081,7 +1127,7 @@
         .referral-level:hover {
             transform: translateY(-5px);
             box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4), var(--glow);
-            border-color: rgba(30, 58, 138, 0.3);
+            border-color: rgba(255, 9, 108, 0.3);
         }
 
         .referral-level-title {
@@ -1095,9 +1141,9 @@
             font-size: 36px;
             font-weight: 700;
             margin-bottom: 10px;
-            color: var(--accent);
+            color: var(--primary);
             font-family: var(--font-heading);
-            text-shadow: 0 0 10px rgba(5, 150, 105, 0.5);
+            text-shadow: 0 0 10px rgba(255, 9, 108, 0.5);
         }
 
         .referral-level-count {
@@ -1144,6 +1190,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            backdrop-filter: blur(10px);
         }
 
         .copy-btn:hover {
@@ -1201,7 +1248,7 @@
             justify-content: center;
             font-weight: bold;
             flex-shrink: 0;
-            box-shadow: 0 0 10px rgba(30, 58, 138, 0.5);
+            box-shadow: 0 0 10px rgba(255, 9, 108, 0.5);
         }
 
         .step-content {
@@ -1232,7 +1279,7 @@
         }
 
         .faq-question:hover {
-            background: rgba(30, 58, 138, 0.1);
+            background: rgba(255, 9, 108, 0.1);
         }
 
         .faq-answer {
@@ -1294,7 +1341,7 @@
         .education-card:hover {
             transform: translateY(-5px);
             box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4), var(--glow);
-            border-color: rgba(30, 58, 138, 0.3);
+            border-color: rgba(255, 9, 108, 0.3);
         }
 
         .education-icon {
@@ -1336,6 +1383,7 @@
             box-shadow: var(--shadow);
             font-family: var(--font-primary);
             margin: 20px 0;
+            backdrop-filter: blur(10px);
         }
 
         .documentation-btn:hover {
@@ -1382,7 +1430,7 @@
         .team-member:hover {
             transform: translateY(-5px);
             box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4), var(--glow);
-            border-color: rgba(30, 58, 138, 0.3);
+            border-color: rgba(255, 9, 108, 0.3);
         }
 
         .member-avatar {
@@ -1439,6 +1487,7 @@
             box-shadow: var(--shadow), var(--glow);
             transition: var(--transition);
             z-index: 100;
+            backdrop-filter: blur(10px);
         }
 
         .help-button:hover {
@@ -1482,7 +1531,7 @@
         }
         
         .btn-claim {
-            background: linear-gradient(135deg, var(--accent) 0%, #047857 100%);
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
             color: white;
             border: none;
             border-radius: var(--border-radius);
@@ -1497,10 +1546,11 @@
             gap: 12px;
             position: relative;
             overflow: hidden;
-            box-shadow: 0 0 20px rgba(5, 150, 105, 0.4);
+            box-shadow: 0 0 20px rgba(255, 9, 108, 0.4);
             font-family: var(--font-heading);
             text-transform: uppercase;
             letter-spacing: 1px;
+            backdrop-filter: blur(10px);
         }
         
         .btn-claim::before {
@@ -1520,7 +1570,7 @@
         
         .btn-claim:hover {
             transform: translateY(-5px);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4), 0 0 25px rgba(5, 150, 105, 0.6);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4), 0 0 25px rgba(255, 9, 108, 0.6);
         }
         
         .btn-claim:disabled {
@@ -1547,7 +1597,7 @@
         }
         
         .claim-timer span {
-            color: var(--accent);
+            color: var(--primary);
             font-weight: 600;
         }
 
@@ -1874,6 +1924,393 @@
                 transform: translateY(-100vh) translateX(100px);
             }
         }
+
+        /* ==================== */
+        /* ESTILOS DEL CHAT GRUPAL */
+        /* ==================== */
+        
+        .chat-section {
+            margin-top: 40px;
+        }
+
+        .chat-container {
+            display: flex;
+            flex-direction: column;
+            height: 600px;
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--border-radius-lg);
+            box-shadow: var(--shadow);
+            overflow: hidden;
+        }
+
+        .chat-header {
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border-bottom: 1px solid var(--glass-border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .chat-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: white;
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .online-indicator {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 14px;
+            color: var(--success);
+        }
+
+        .online-dot {
+            width: 8px;
+            height: 8px;
+            background: var(--success);
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        .chat-messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .message {
+            max-width: 70%;
+            padding: 12px 16px;
+            border-radius: 18px;
+            position: relative;
+            animation: messageSlide 0.3s ease;
+        }
+
+        @keyframes messageSlide {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .message.own {
+            align-self: flex-end;
+            background: var(--primary);
+            color: white;
+            border-bottom-right-radius: 4px;
+        }
+
+        .message.other {
+            align-self: flex-start;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            border-bottom-left-radius: 4px;
+        }
+
+        .message-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 5px;
+            font-size: 12px;
+            opacity: 0.8;
+        }
+
+        .message-sender {
+            font-weight: 600;
+        }
+
+        .message-time {
+            font-size: 11px;
+        }
+
+        .message-content {
+            word-wrap: break-word;
+        }
+
+        .audio-message {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 12px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 20px;
+        }
+
+        .audio-player {
+            flex: 1;
+            height: 30px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .audio-progress {
+            height: 100%;
+            background: var(--primary);
+            width: 0%;
+            transition: width 0.1s linear;
+        }
+
+        .audio-controls {
+            display: flex;
+            gap: 5px;
+        }
+
+        .audio-btn {
+            background: none;
+            border: none;
+            color: white;
+            cursor: pointer;
+            font-size: 14px;
+            padding: 5px;
+            border-radius: 50%;
+            transition: var(--transition);
+        }
+
+        .audio-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .chat-input-container {
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border-top: 1px solid var(--glass-border);
+            display: flex;
+            gap: 10px;
+        }
+
+        .chat-input {
+            flex: 1;
+            padding: 12px 16px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            color: white;
+            font-family: var(--font-primary);
+            resize: none;
+            max-height: 100px;
+        }
+
+        .chat-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 2px rgba(255, 9, 108, 0.2);
+        }
+
+        .chat-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .chat-btn {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: var(--primary);
+            color: white;
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: var(--transition);
+            box-shadow: var(--shadow);
+        }
+
+        .chat-btn:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: var(--glow);
+        }
+
+        .chat-btn:disabled {
+            background: var(--gray);
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .recording-indicator {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--danger);
+            font-size: 14px;
+            animation: pulse 1.5s infinite;
+        }
+
+        .recording-dot {
+            width: 10px;
+            height: 10px;
+            background: var(--danger);
+            border-radius: 50%;
+        }
+
+        .empty-chat {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            color: rgba(255, 255, 255, 0.5);
+            text-align: center;
+            padding: 40px;
+        }
+
+        .empty-chat i {
+            font-size: 48px;
+            margin-bottom: 15px;
+            opacity: 0.5;
+        }
+
+        .typing-indicator {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            padding: 10px 15px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 18px;
+            align-self: flex-start;
+            max-width: 100px;
+        }
+
+        .typing-dots {
+            display: flex;
+            gap: 3px;
+        }
+
+        .typing-dot {
+            width: 6px;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: 50%;
+            animation: typing 1.4s infinite ease-in-out;
+        }
+
+        .typing-dot:nth-child(1) { animation-delay: -0.32s; }
+        .typing-dot:nth-child(2) { animation-delay: -0.16s; }
+
+        @keyframes typing {
+            0%, 80%, 100% { transform: scale(0.8); opacity: 0.5; }
+            40% { transform: scale(1); opacity: 1; }
+        }
+
+        /* Modal de grabación de audio */
+        .recording-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(5, 8, 15, 0.9);
+            backdrop-filter: blur(5px);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .recording-content {
+            background: linear-gradient(135deg, rgba(10, 14, 23, 0.9) 0%, rgba(15, 26, 42, 0.9) 100%);
+            border-radius: var(--border-radius-lg);
+            box-shadow: var(--shadow), var(--glow);
+            width: 90%;
+            max-width: 400px;
+            padding: 30px;
+            position: relative;
+            text-align: center;
+            border: 1px solid var(--glass-border);
+            backdrop-filter: blur(10px);
+        }
+
+        .recording-visualizer {
+            height: 100px;
+            margin: 20px 0;
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            gap: 3px;
+        }
+
+        .visualizer-bar {
+            width: 6px;
+            background: var(--primary);
+            border-radius: 3px;
+            transition: height 0.1s ease;
+        }
+
+        .recording-timer {
+            font-size: 24px;
+            font-weight: bold;
+            margin: 15px 0;
+            color: white;
+            font-family: var(--font-heading);
+        }
+
+        .recording-controls {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .recording-btn {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            cursor: pointer;
+            transition: var(--transition);
+            box-shadow: var(--shadow);
+        }
+
+        .recording-btn.stop {
+            background: var(--danger);
+            color: white;
+        }
+
+        .recording-btn.cancel {
+            background: var(--gray);
+            color: white;
+        }
+
+        .recording-btn:hover {
+            transform: scale(1.1);
+            box-shadow: var(--glow);
+        }
+
+        /* Responsive para el chat */
+        @media (max-width: 768px) {
+            .chat-container {
+                height: 500px;
+            }
+            
+            .message {
+                max-width: 85%;
+            }
+            
+            .chat-buttons {
+                flex-direction: column;
+            }
+            
+            .chat-btn {
+                width: 40px;
+                height: 40px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -1892,51 +2329,43 @@
             <button class="close-menu" id="closeMenu">&times;</button>
         </div>
         <ul class="menu-items">
-            <li class="menu-item" data-section="stats">
-                <i class="fas fa-chart-bar"></i>
-                <span>Estadísticas</span>
+            <li class="menu-item" data-page="dashboard">
+                <i class="fas fa-home"></i>
+                <span>Dashboard</span>
             </li>
-            <li class="menu-item" data-section="metrics">
-                <i class="fas fa-tachometer-alt"></i>
-                <span>Métricas</span>
-            </li>
-            <li class="menu-item" data-section="create-object">
-                <i class="fas fa-plus-circle"></i>
-                <span>Crear Objeto</span>
-            </li>
-            <li class="menu-item" data-section="funds">
-                <i class="fas fa-wallet"></i>
-                <span>Gestión de Fondos</span>
-            </li>
-            <li class="menu-item" data-section="education">
-                <i class="fas fa-graduation-cap"></i>
-                <span>Educación</span>
-            </li>
-            <li class="menu-item" data-section="about">
-                <i class="fas fa-users"></i>
-                <span>Sobre Nosotros</span>
-            </li>
-            <li class="menu-item" data-section="referrals">
-                <i class="fas fa-user-friends"></i>
-                <span>Sistema de Referidos</span>
-            </li>
-            <li class="menu-item" data-section="objects">
+            <li class="menu-item" data-page="objects">
                 <i class="fas fa-cubes"></i>
                 <span>Tus Objetos</span>
             </li>
-            <li class="menu-item" data-section="transactions">
+            <li class="menu-item" data-page="transactions">
                 <i class="fas fa-exchange-alt"></i>
                 <span>Historial</span>
             </li>
-            <li class="menu-item" data-section="faq">
-                <i class="fas fa-question-circle"></i>
-                <span>Preguntas Frecuentes</span>
+            <li class="menu-item" data-page="referrals">
+                <i class="fas fa-user-friends"></i>
+                <span>Sistema de Referidos</span>
             </li>
-            <li class="menu-item" data-section="crypto">
+            <li class="menu-item" data-page="education">
+                <i class="fas fa-graduation-cap"></i>
+                <span>Educación</span>
+            </li>
+            <li class="menu-item" data-page="crypto">
                 <i class="fas fa-chart-line"></i>
                 <span>Criptomonedas</span>
             </li>
-            <li class="menu-item" data-section="contact">
+            <li class="menu-item" data-page="chat">
+                <i class="fas fa-comments"></i>
+                <span>Chat Grupal</span>
+            </li>
+            <li class="menu-item" data-page="about">
+                <i class="fas fa-users"></i>
+                <span>Sobre Nosotros</span>
+            </li>
+            <li class="menu-item" data-page="faq">
+                <i class="fas fa-question-circle"></i>
+                <span>Preguntas Frecuentes</span>
+            </li>
+            <li class="menu-item" data-page="contact">
                 <i class="fas fa-envelope"></i>
                 <span>Contacto</span>
             </li>
@@ -1999,427 +2428,499 @@
             </div>
         </header>
 
-        <!-- Botón de documentación -->
-        <button class="documentation-btn" id="documentationBtn">
-            <i class="fas fa-book"></i>
-            Conoce el Proyecto
-        </button>
-
-        <div class="stats-grid" id="stats-section">
-            <div class="stat-card">
-                <div class="stat-value" id="totalObjects">0</div>
-                <div class="stat-label">Objetos Activos</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-value" id="totalInvested">0 USDT</div>
-                <div class="stat-label">Total Invertido</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-value" id="totalEarned">0 USDT</div>
-                <div class="stat-label">Ganancias Totales</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-value" id="walletBalance">0 USDT</div>
-                <div class="stat-label">Balance Actual</div>
-            </div>
-        </div>
-
-        <!-- Nuevas métricas detalladas -->
-        <div class="metrics-grid" id="metrics-section">
-            <div class="metric-card">
-                <div class="metric-icon">
-                    <i class="fas fa-sync-alt"></i>
-                </div>
-                <div class="metric-value" id="estimatedProfit">0 USDT</div>
-                <div class="metric-label">Ganancia estimada hoy</div>
-            </div>
-            <div class="metric-card">
-                <div class="metric-icon">
-                    <i class="fas fa-chart-line"></i>
-                </div>
-                <div class="metric-value" id="accumulatedProfit">0 USDT</div>
-                <div class="metric-label">Rentabilidad acumulada</div>
-            </div>
-            <div class="metric-card">
-                <div class="metric-icon">
-                    <i class="fas fa-clock"></i>
-                </div>
-                <div class="metric-value" id="remainingTime">0 días</div>
-                <div class="metric-label">Tiempo restante del ciclo</div>
-            </div>
-        </div>
-
-        <!-- Botón de reclamar ganancias -->
-        <div class="claim-button-container" id="claimButtonContainer" style="display: none;">
-            <button class="btn-claim" id="claimButton">
-                <i class="fas fa-coins"></i>
-                Reclamar Ganancias
+        <!-- Sistema de páginas -->
+        <!-- Página Dashboard -->
+        <div id="dashboard-page" class="page active">
+            <!-- Botón de documentación -->
+            <button class="documentation-btn" id="documentationBtn">
+                <i class="fas fa-book"></i>
+                Conoce el Proyecto
             </button>
-        </div>
-        <div class="claim-timer" id="claimTimer" style="display: none;">
-            Podrás reclamar nuevamente en: <span id="timerCountdown">24:00:00</span>
-        </div>
 
-        <div class="main-content">
-            <div class="card" id="create-object-section">
-                <h2 class="card-title">
-                    <i class="fas fa-plus-circle"></i>
-                    Crear Nuevo Objeto
-                </h2>
-                <div class="form-group">
-                    <label for="investmentAmount">Cantidad a Invertir (USDT)</label>
-                    <input type="number" id="investmentAmount" min="10" step="1" placeholder="10" value="10">
+            <div class="stats-grid" id="stats-section">
+                <div class="stat-card">
+                    <div class="stat-value" id="totalObjects">0</div>
+                    <div class="stat-label">Objetos Activos</div>
                 </div>
-                <div class="form-group">
-                    <label>Rentabilidad Diaria</label>
-                    <div class="profit-badge">
-                        <i class="fas fa-chart-line"></i>
-                        <span>3% diario durante 15 días</span>
+                <div class="stat-card">
+                    <div class="stat-value" id="totalInvested">0 USDT</div>
+                    <div class="stat-label">Total Invertido</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="totalEarned">0 USDT</div>
+                    <div class="stat-label">Ganancias Totales</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="walletBalance">0 USDT</div>
+                    <div class="stat-label">Balance Actual</div>
+                </div>
+            </div>
+
+            <!-- Nuevas métricas detalladas -->
+            <div class="metrics-grid" id="metrics-section">
+                <div class="metric-card">
+                    <div class="metric-icon">
+                        <i class="fas fa-sync-alt"></i>
                     </div>
+                    <div class="metric-value" id="estimatedProfit">0 USDT</div>
+                    <div class="metric-label">Ganancia estimada hoy</div>
                 </div>
-                <button id="createObject" class="btn">
-                    <i class="fas fa-cube"></i>
-                    Crear Objeto Digital
+                <div class="metric-card">
+                    <div class="metric-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <div class="metric-value" id="accumulatedProfit">0 USDT</div>
+                    <div class="metric-label">Rentabilidad acumulada</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-icon">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <div class="metric-value" id="remainingTime">0 días</div>
+                    <div class="metric-label">Tiempo restante del ciclo</div>
+                </div>
+            </div>
+
+            <!-- Botón de reclamar ganancias -->
+            <div class="claim-button-container" id="claimButtonContainer" style="display: none;">
+                <button class="btn-claim" id="claimButton">
+                    <i class="fas fa-coins"></i>
+                    Reclamar Ganancias
                 </button>
             </div>
+            <div class="claim-timer" id="claimTimer" style="display: none;">
+                Podrás reclamar nuevamente en: <span id="timerCountdown">24:00:00</span>
+            </div>
 
-            <div class="card" id="funds-section">
-                <h2 class="card-title">
-                    <i class="fas fa-wallet"></i>
-                    Gestión de Fondos
+            <div class="main-content">
+                <div class="card" id="create-object-section">
+                    <h2 class="card-title">
+                        <i class="fas fa-plus-circle"></i>
+                        Crear Nuevo Objeto
+                    </h2>
+                    <div class="form-group">
+                        <label for="investmentAmount">Cantidad a Invertir (USDT)</label>
+                        <input type="number" id="investmentAmount" min="10" step="1" placeholder="10" value="10">
+                    </div>
+                    <div class="form-group">
+                        <label>Rentabilidad Diaria</label>
+                        <div class="profit-badge">
+                            <i class="fas fa-chart-line"></i>
+                            <span>3% diario durante 15 días</span>
+                        </div>
+                    </div>
+                    <button id="createObject" class="btn">
+                        <i class="fas fa-cube"></i>
+                        Crear Objeto Digital
+                    </button>
+                </div>
+
+                <div class="card" id="funds-section">
+                    <h2 class="card-title">
+                        <i class="fas fa-wallet"></i>
+                        Gestión de Fondos
+                    </h2>
+                    <div class="form-group">
+                        <label>Balance Disponible</label>
+                        <input type="text" id="availableBalance" value="0 USDT" readonly>
+                    </div>
+                    <div style="display: flex; gap: 10px;">
+                        <button class="btn" id="depositBtn" style="flex: 1;">
+                            <i class="fas fa-arrow-down"></i>
+                            Depositar
+                        </button>
+                        <button class="btn btn-success" id="withdrawBtn" style="flex: 1;">
+                            <i class="fas fa-arrow-up"></i>
+                            Retirar
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Página de Objetos -->
+        <div id="objects-page" class="page">
+            <h2 class="section-title">Tus Objetos Digitales</h2>
+            <div id="objectsContainer" class="objects-grid">
+                <div class="empty-state">
+                    <i class="fas fa-cubes"></i>
+                    <h3>No tienes objetos digitales</h3>
+                    <p>Inicia sesión y crea tu primer objeto para comenzar a generar ganancias</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Página de Transacciones -->
+        <div id="transactions-page" class="page">
+            <div class="transaction-history" id="transactions-section">
+                <h2 class="section-title">Historial de Transacciones</h2>
+                <div class="transaction-filters" id="transactionFilters">
+                    <button class="filter-btn active" data-filter="all">Todas</button>
+                    <button class="filter-btn" data-filter="deposit">Depósitos</button>
+                    <button class="filter-btn" data-filter="withdrawal">Retiros</button>
+                    <button class="filter-btn" data-filter="investment">Inversiones</button>
+                    <button class="filter-btn" data-filter="profit">Ganancias</button>
+                </div>
+                <div class="card">
+                    <div id="transactionsList">
+                        <div class="empty-state">
+                            <i class="fas fa-exchange-alt"></i>
+                            <h3>No hay transacciones</h3>
+                            <p>Realiza tu primer depósito para comenzar</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Página de Referidos -->
+        <div id="referrals-page" class="page">
+            <!-- Sección de Referidos optimizada -->
+            <div class="referral-section" id="referrals-section">
+                <h2 class="section-title">
+                    Sistema de Referidos
+                    <button class="info-button" id="referralInfoBtn" title="Cómo funciona el sistema de referidos">
+                        <i class="fas fa-info"></i>
+                    </button>
                 </h2>
-                <div class="form-group">
-                    <label>Balance Disponible</label>
-                    <input type="text" id="availableBalance" value="0 USDT" readonly>
-                </div>
-                <div style="display: flex; gap: 10px;">
-                    <button class="btn" id="depositBtn" style="flex: 1;">
-                        <i class="fas fa-arrow-down"></i>
-                        Depositar
-                    </button>
-                    <button class="btn btn-success" id="withdrawBtn" style="flex: 1;">
-                        <i class="fas fa-arrow-up"></i>
-                        Retirar
-                    </button>
-                </div>
-            </div>
-        </div>
-
-        <!-- Sección educativa expandida -->
-        <div class="education-section" id="education-section">
-            <h2 class="section-title">Aprende sobre Inversiones</h2>
-            <div class="education-grid">
-                <div class="education-card">
-                    <div class="education-icon">
-                        <i class="fas fa-coins"></i>
-                    </div>
-                    <h3 class="education-title">¿Qué es USDT?</h3>
-                    <p class="education-description">
-                        USDT (Tether) es una criptomoneda estable (stablecoin) vinculada al valor del dólar estadounidense. 
-                        Cada USDT está respaldado por un dólar real, lo que lo hace ideal para transacciones seguras.
-                    </p>
-                </div>
-                <div class="education-card">
-                    <div class="education-icon">
-                        <i class="fas fa-chart-line"></i>
-                    </div>
-                    <h3 class="education-title">¿Cómo funciona la rentabilidad?</h3>
-                    <p class="education-description">
-                        Tu inversión genera un 3% de rentabilidad diaria durante 15 días. Esto significa que al final del período 
-                        habrás obtenido un 45% de ganancia sobre tu inversión inicial.
-                    </p>
-                </div>
-                <div class="education-card">
-                    <div class="education-icon">
-                        <i class="fas fa-shield-alt"></i>
-                    </div>
-                    <h3 class="education-title">Seguridad de tu inversión</h3>
-                    <p class="education-description">
-                        Todas las transacciones están protegidas con tecnología blockchain y encriptación avanzada. 
-                        Tu capital está seguro en cada paso del proceso.
-                    </p>
-                </div>
-            </div>
-        </div>
-
-        <!-- Sección "Sobre Nosotros" -->
-        <div class="about-section" id="about-section">
-            <h2 class="section-title">Sobre Nosotros</h2>
-            <div class="card">
-                <h3 class="card-title">
-                    <i class="fas fa-users"></i>
-                    Nuestro Equipo
-                </h3>
-                <div class="team-grid">
-                    <div class="team-member">
-                        <div class="member-avatar">
-                            <i class="fas fa-user"></i>
-                        </div>
-                        <div class="member-name">fran</div>
-                        <div class="member-role">Fundador & CEO</div>
-                        <div class="member-description">
-                            Más de 5 años de experiencia en desarrollo de plataformas blockchain y educación financiera.
-                        </div>
-                    </div>
-                    <div class="team-member">
-                        <div class="member-avatar">
-                            <i class="fas fa-user"></i>
-                        </div>
-                        <div class="member-name">María González</div>
-                        <div class="member-role">Directora de Seguridad</div>
-                        <div class="member-description">
-                            Especialista en ciberseguridad y protección de activos digitales.
-                        </div>
-                    </div>
-                    <div class="team-member">
-                        <div class="member-avatar">
-                            <i class="fas fa-user"></i>
-                        </div>
-                        <div class="member-name">Carlos Rodríguez</div>
-                        <div class="member-role">Desarrollador Blockchain</div>
-                        <div class="member-description">
-                            Experto en smart contracts y desarrollo de aplicaciones descentralizadas.
-                        </div>
-                    </div>
-                </div>
-                
-                <div style="margin-top: 30px;">
+                <div class="card">
                     <h3 class="card-title">
-                        <i class="fas fa-bullseye"></i>
-                        Nuestra Misión
+                        <i class="fas fa-users"></i>
+                        Tu Enlace de Referido
                     </h3>
-                    <p style="margin-bottom: 15px;">
-                        Democratizar el acceso a inversiones digitales seguras y rentables, brindando herramientas educativas 
-                        para que cualquier persona pueda participar en la economía del futuro.
-                    </p>
+                    <div class="referral-link-container">
+                        <div class="referral-link" id="referralLink">Cargando...</div>
+                        <button class="copy-btn" id="copyReferralLink">
+                            <i class="fas fa-copy"></i>
+                        </button>
+                    </div>
                     
-                    <h3 class="card-title" style="margin-top: 20px;">
-                        <i class="fas fa-handshake"></i>
-                        Nuestros Valores
+                    <div class="referral-grid">
+                        <div class="referral-level">
+                            <div class="referral-level-title">Nivel 1</div>
+                            <div class="referral-level-percentage">15%</div>
+                            <div class="referral-level-count" id="level1Count">0</div>
+                            <div class="referral-level-earnings" id="level1Earnings">0 USDT</div>
+                        </div>
+                        <div class="referral-level">
+                            <div class="referral-level-title">Nivel 2</div>
+                            <div class="referral-level-percentage">5%</div>
+                            <div class="referral-level-count" id="level2Count">0</div>
+                            <div class="referral-level-earnings" id="level2Earnings">0 USDT</div>
+                        </div>
+                        <div class="referral-level">
+                            <div class="referral-level-title">Nivel 3</div>
+                            <div class="referral-level-percentage">1%</div>
+                            <div class="referral-level-count" id="level3Count">0</div>
+                            <div class="referral-level-earnings" id="level3Earnings">0 USDT</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Página de Educación -->
+        <div id="education-page" class="page">
+            <!-- Sección educativa expandida -->
+            <div class="education-section" id="education-section">
+                <h2 class="section-title">Aprende sobre Inversiones</h2>
+                <div class="education-grid">
+                    <div class="education-card">
+                        <div class="education-icon">
+                            <i class="fas fa-coins"></i>
+                        </div>
+                        <h3 class="education-title">¿Qué es USDT?</h3>
+                        <p class="education-description">
+                            USDT (Tether) es una criptomoneda estable (stablecoin) vinculada al valor del dólar estadounidense. 
+                            Cada USDT está respaldado por un dólar real, lo que lo hace ideal para transacciones seguras.
+                        </p>
+                    </div>
+                    <div class="education-card">
+                        <div class="education-icon">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <h3 class="education-title">¿Cómo funciona la rentabilidad?</h3>
+                        <p class="education-description">
+                            Tu inversión genera un 3% de rentabilidad diaria durante 15 días. Esto significa que al final del período 
+                            habrás obtenido un 45% de ganancia sobre tu inversión inicial.
+                        </p>
+                    </div>
+                    <div class="education-card">
+                        <div class="education-icon">
+                            <i class="fas fa-shield-alt"></i>
+                        </div>
+                        <h3 class="education-title">Seguridad de tu inversión</h3>
+                        <p class="education-description">
+                            Todas las transacciones están protegidas con tecnología blockchain y encriptación avanzada. 
+                            Tu capital está seguro en cada paso del proceso.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Página de Criptomonedas -->
+        <div id="crypto-page" class="page">
+            <!-- Sección de Criptomonedas en Tiempo Real -->
+            <div class="crypto-ticker" id="crypto-section">
+                <div class="ticker-header">
+                    <div class="ticker-title">
+                        <i class="fas fa-chart-line"></i>
+                        TOP 10 CRIPTOMONEDAS
+                        <div class="live-indicator">
+                            <div class="live-dot"></div>
+                            EN VIVO
+                        </div>
+                    </div>
+                    <div id="lastUpdated" class="last-updated">Cargando...</div>
+                </div>
+
+                <div id="cryptoContainer" class="crypto-grid">
+                    <div class="loading">
+                        <i class="fas fa-spinner fa-spin"></i>
+                        <p>Cargando datos en tiempo real...</p>
+                    </div>
+                </div>
+                <div id="apiStatus" class="api-status"></div>
+            </div>
+        </div>
+
+        <!-- Página de Chat Grupal -->
+        <div id="chat-page" class="page">
+            <div class="chat-section" id="chat-section">
+                <h2 class="section-title">
+                    Chat Grupal
+                    <button class="info-button" id="chatInfoBtn" title="Información del chat grupal">
+                        <i class="fas fa-info"></i>
+                    </button>
+                </h2>
+                <div class="card">
+                    <div class="chat-container">
+                        <div class="chat-header">
+                            <div class="chat-title">
+                                <i class="fas fa-comments"></i>
+                                <span>Comunidad DigitalObjects</span>
+                            </div>
+                            <div class="online-indicator">
+                                <div class="online-dot"></div>
+                                <span id="onlineCount">0</span> usuarios en línea
+                            </div>
+                        </div>
+                        <div class="chat-messages" id="chatMessages">
+                            <div class="empty-chat">
+                                <i class="fas fa-comments"></i>
+                                <h3>Bienvenido al chat grupal</h3>
+                                <p>Inicia sesión para unirte a la conversación</p>
+                            </div>
+                        </div>
+                        <div class="chat-input-container" id="chatInputContainer" style="display: none;">
+                            <textarea class="chat-input" id="chatInput" placeholder="Escribe tu mensaje..." rows="1"></textarea>
+                            <div class="chat-buttons">
+                                <button class="chat-btn" id="recordAudioBtn" title="Grabar audio">
+                                    <i class="fas fa-microphone"></i>
+                                </button>
+                                <button class="chat-btn" id="sendMessageBtn" title="Enviar mensaje">
+                                    <i class="fas fa-paper-plane"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Página Sobre Nosotros -->
+        <div id="about-page" class="page">
+            <!-- Sección "Sobre Nosotros" -->
+            <div class="about-section" id="about-section">
+                <h2 class="section-title">Sobre Nosotros</h2>
+                <div class="card">
+                    <h3 class="card-title">
+                        <i class="fas fa-users"></i>
+                        Nuestro Equipo
                     </h3>
-                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-top: 15px;">
-                        <div style="background: rgba(255, 255, 255, 0.05); padding: 15px; border-radius: var(--border-radius);">
-                            <i class="fas fa-shield-alt" style="color: var(--primary); margin-bottom: 10px;"></i>
-                            <h4 style="color: var(--light); margin-bottom: 5px;">Seguridad</h4>
-                            <p style="font-size: 14px; opacity: 0.8;">Protegemos tu capital con las mejores prácticas del sector.</p>
+                    <div class="team-grid">
+                        <div class="team-member">
+                            <div class="member-avatar">
+                                <i class="fas fa-user"></i>
+                            </div>
+                            <div class="member-name">fran</div>
+                            <div class="member-role">Fundador & CEO</div>
+                            <div class="member-description">
+                                Más de 5 años de experiencia en desarrollo de plataformas blockchain y educación financiera.
+                            </div>
                         </div>
-                        <div style="background: rgba(255, 255, 255, 0.05); padding: 15px; border-radius: var(--border-radius);">
-                            <i class="fas fa-eye" style="color: var(--primary); margin-bottom: 10px;"></i>
-                            <h4 style="color: var(--light); margin-bottom: 5px;">Transparencia</h4>
-                            <p style="font-size: 14px; opacity: 0.8;">Todas nuestras operaciones son auditables y verificables.</p>
+                        <div class="team-member">
+                            <div class="member-avatar">
+                                <i class="fas fa-user"></i>
+                            </div>
+                            <div class="member-name">María González</div>
+                            <div class="member-role">Directora de Seguridad</div>
+                            <div class="member-description">
+                                Especialista en ciberseguridad y protección de activos digitales.
+                            </div>
                         </div>
-                        <div style="background: rgba(255, 255, 255, 0.05); padding: 15px; border-radius: var(--border-radius);">
-                            <i class="fas fa-graduation-cap" style="color: var(--primary); margin-bottom: 10px;"></i>
-                            <h4 style="color: var(--light); margin-bottom: 5px;">Educación</h4>
-                            <p style="font-size: 14px; opacity: 0.8;">Te acompañamos en cada paso de tu viaje financiero.</p>
+                        <div class="team-member">
+                            <div class="member-avatar">
+                                <i class="fas fa-user"></i>
+                            </div>
+                            <div class="member-name">Carlos Rodríguez</div>
+                            <div class="member-role">Desarrollador Blockchain</div>
+                            <div class="member-description">
+                                Experto en smart contracts y desarrollo de aplicaciones descentralizadas.
+                            </div>
                         </div>
                     </div>
                     
-                    <h3 class="card-title" style="margin-top: 20px;">
-                        <i class="fas fa-phone-alt"></i>
-                        Canales de Contacto
+                    <div style="margin-top: 30px;">
+                        <h3 class="card-title">
+                            <i class="fas fa-bullseye"></i>
+                            Nuestra Misión
+                        </h3>
+                        <p style="margin-bottom: 15px;">
+                            Democratizar el acceso a inversiones digitales seguras y rentables, brindando herramientas educativas 
+                            para que cualquier persona pueda participar en la economía del futuro.
+                        </p>
+                        
+                        <h3 class="card-title" style="margin-top: 20px;">
+                            <i class="fas fa-handshake"></i>
+                            Nuestros Valores
+                        </h3>
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-top: 15px;">
+                            <div style="background: rgba(255, 255, 255, 0.05); padding: 15px; border-radius: var(--border-radius);">
+                                <i class="fas fa-shield-alt" style="color: var(--primary); margin-bottom: 10px;"></i>
+                                <h4 style="color: var(--light); margin-bottom: 5px;">Seguridad</h4>
+                                <p style="font-size: 14px; opacity: 0.8;">Protegemos tu capital con las mejores prácticas del sector.</p>
+                            </div>
+                            <div style="background: rgba(255, 255, 255, 0.05); padding: 15px; border-radius: var(--border-radius);">
+                                <i class="fas fa-eye" style="color: var(--primary); margin-bottom: 10px;"></i>
+                                <h4 style="color: var(--light); margin-bottom: 5px;">Transparencia</h4>
+                                <p style="font-size: 14px; opacity: 0.8;">Todas nuestras operaciones son auditables y verificables.</p>
+                            </div>
+                            <div style="background: rgba(255, 255, 255, 0.05); padding: 15px; border-radius: var(--border-radius);">
+                                <i class="fas fa-graduation-cap" style="color: var(--primary); margin-bottom: 10px;"></i>
+                                <h4 style="color: var(--light); margin-bottom: 5px;">Educación</h4>
+                                <p style="font-size: 14px; opacity: 0.8;">Te acompañamos en cada paso de tu viaje financiero.</p>
+                            </div>
+                        </div>
+                        
+                        <h3 class="card-title" style="margin-top: 20px;">
+                            <i class="fas fa-phone-alt"></i>
+                            Canales de Contacto
+                        </h3>
+                        <div style="display: flex; gap: 15px; margin-top: 15px; flex-wrap: wrap;">
+                            <!-- REEMPLAZADO: Correo por Telegram -->
+                            <a href="https://t.me/ayudarapida" target="_blank" class="btn btn-outline" style="text-decoration: none;">
+                                <i class="fab fa-telegram"></i>
+                                @ayudarapida en Telegram
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Página FAQ -->
+        <div id="faq-page" class="page">
+            <!-- Sección de ayuda y FAQ -->
+            <div class="help-section" id="faq-section">
+                <h2 class="section-title">Preguntas Frecuentes</h2>
+                <div class="card">
+                    <div class="faq-list" id="faqList">
+                        <div class="faq-item">
+                            <div class="faq-question">
+                                <span>¿Cómo puedo empezar a invertir?</span>
+                                <i class="fas fa-chevron-down"></i>
+                            </div>
+                            <div class="faq-answer">
+                                <p>Para empezar a invertir, primero debes registrarte en la plataforma, luego realizar un depósito 
+                                en USDT y finalmente crear tu primer objeto digital con la cantidad que desees invertir.</p>
+                            </div>
+                        </div>
+                        <div class="faq-item">
+                            <div class="faq-question">
+                                <span>¿Cuál es el monto mínimo de inversión?</span>
+                                <i class="fas fa-chevron-down"></i>
+                            </div>
+                            <div class="faq-answer">
+                                <p>El monto mínimo para crear un objeto digital es de 10 USDT. No hay límite máximo para invertir.</p>
+                            </div>
+                        </div>
+                        <div class="faq-item">
+                            <div class="faq-question">
+                                <span>¿Cómo funcionan las ganancias diarias?</span>
+                                <i class="fas fa-chevron-down"></i>
+                            </div>
+                            <div class="faq-answer">
+                                <p>Cada objeto digital genera un 3% de ganancia diaria durante 15 días. Esto significa que al final 
+                                del período habrás obtenido un 45% de ganancia sobre tu inversión inicial.</p>
+                            </div>
+                        </div>
+                        <div class="faq-item">
+                            <div class="faq-question">
+                                <span>¿Puedo reclamar mis ganancias en cualquier momento?</span>
+                                <i class="fas fa-chevron-down"></i>
+                            </div>
+                            <div class="faq-answer">
+                                <p>Sí, puedes reclamar tus ganancias cada 24 horas usando el botón "Reclamar Ganancias". 
+                                Una vez reclamadas, se añaden a tu balance disponible y puedes retirarlas cuando lo desees.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Página de Contacto -->
+        <div id="contact-page" class="page">
+            <!-- Sección de contacto y formulario de dudas -->
+            <div class="help-section" id="contact-section">
+                <h2 class="section-title">¿Tienes dudas o preguntas?</h2>
+                <div class="card">
+                    <h3 class="card-title">
+                        <i class="fas fa-envelope"></i>
+                        Envíanos tu consulta
                     </h3>
-                    <div style="display: flex; gap: 15px; margin-top: 15px; flex-wrap: wrap;">
+                    <p style="margin-bottom: 20px;">
+                        Si tienes alguna duda o pregunta sobre la plataforma, no dudes en contactarnos. 
+                        Nuestro equipo te responderá lo antes posible.
+                    </p>
+                    
+                    <form id="contactForm">
+                        <div class="form-group">
+                            <label for="contactName">Tu nombre</label>
+                            <input type="text" id="contactName" placeholder="Ingresa tu nombre" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="contactEmail">Tu correo electrónico</label>
+                            <input type="email" id="contactEmail" placeholder="tu@email.com" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="contactSubject">Asunto</label>
+                            <input type="text" id="contactSubject" placeholder="Asunto de tu mensaje" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="contactMessage">Tu mensaje</label>
+                            <textarea id="contactMessage" rows="5" placeholder="Describe tu duda o pregunta aquí..." required></textarea>
+                        </div>
+                        
+                        <button type="submit" class="btn">
+                            <i class="fas fa-paper-plane"></i>
+                            Enviar Mensaje
+                        </button>
+                    </form>
+                    
+                    <div style="margin-top: 30px; text-align: center;">
+                        <p>También puedes contactarnos directamente:</p>
                         <!-- REEMPLAZADO: Correo por Telegram -->
-                        <a href="https://t.me/ayudarapida" target="_blank" class="btn btn-outline" style="text-decoration: none;">
+                        <a href="https://t.me/ayudarapida" target="_blank" class="btn btn-outline" style="margin-top: 15px; text-decoration: none;">
                             <i class="fab fa-telegram"></i>
                             @ayudarapida en Telegram
                         </a>
                     </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Sección de Referidos optimizada -->
-        <div class="referral-section" id="referrals-section">
-            <h2 class="section-title">
-                Sistema de Referidos
-                <button class="info-button" id="referralInfoBtn" title="Cómo funciona el sistema de referidos">
-                    <i class="fas fa-info"></i>
-                </button>
-            </h2>
-            <div class="card">
-                <h3 class="card-title">
-                    <i class="fas fa-users"></i>
-                    Tu Enlace de Referido
-                </h3>
-                <div class="referral-link-container">
-                    <div class="referral-link" id="referralLink">Cargando...</div>
-                    <button class="copy-btn" id="copyReferralLink">
-                        <i class="fas fa-copy"></i>
-                    </button>
-                </div>
-                
-                <div class="referral-grid">
-                    <div class="referral-level">
-                        <div class="referral-level-title">Nivel 1</div>
-                        <div class="referral-level-percentage">15%</div>
-                        <div class="referral-level-count" id="level1Count">0</div>
-                        <div class="referral-level-earnings" id="level1Earnings">0 USDT</div>
-                    </div>
-                    <div class="referral-level">
-                        <div class="referral-level-title">Nivel 2</div>
-                        <div class="referral-level-percentage">5%</div>
-                        <div class="referral-level-count" id="level2Count">0</div>
-                        <div class="referral-level-earnings" id="level2Earnings">0 USDT</div>
-                    </div>
-                    <div class="referral-level">
-                        <div class="referral-level-title">Nivel 3</div>
-                        <div class="referral-level-percentage">1%</div>
-                        <div class="referral-level-count" id="level3Count">0</div>
-                        <div class="referral-level-earnings" id="level3Earnings">0 USDT</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <h2 class="section-title" id="objects-section">Tus Objetos Digitales</h2>
-        <div id="objectsContainer" class="objects-grid">
-            <div class="empty-state">
-                <i class="fas fa-cubes"></i>
-                <h3>No tienes objetos digitales</h3>
-                <p>Inicia sesión y crea tu primer objeto para comenzar a generar ganancias</p>
-            </div>
-        </div>
-
-        <div class="transaction-history" id="transactions-section">
-            <h2 class="section-title">Historial de Transacciones</h2>
-            <div class="transaction-filters" id="transactionFilters">
-                <button class="filter-btn active" data-filter="all">Todas</button>
-                <button class="filter-btn" data-filter="deposit">Depósitos</button>
-                <button class="filter-btn" data-filter="withdrawal">Retiros</button>
-                <button class="filter-btn" data-filter="investment">Inversiones</button>
-                <button class="filter-btn" data-filter="profit">Ganancias</button>
-            </div>
-            <div class="card">
-                <div id="transactionsList">
-                    <div class="empty-state">
-                        <i class="fas fa-exchange-alt"></i>
-                        <h3>No hay transacciones</h3>
-                        <p>Realiza tu primer depósito para comenzar</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Sección de ayuda y FAQ -->
-        <div class="help-section" id="faq-section">
-            <h2 class="section-title">Preguntas Frecuentes</h2>
-            <div class="card">
-                <div class="faq-list" id="faqList">
-                    <div class="faq-item">
-                        <div class="faq-question">
-                            <span>¿Cómo puedo empezar a invertir?</span>
-                            <i class="fas fa-chevron-down"></i>
-                        </div>
-                        <div class="faq-answer">
-                            <p>Para empezar a invertir, primero debes registrarte en la plataforma, luego realizar un depósito 
-                            en USDT y finalmente crear tu primer objeto digital con la cantidad que desees invertir.</p>
-                        </div>
-                    </div>
-                    <div class="faq-item">
-                        <div class="faq-question">
-                            <span>¿Cuál es el monto mínimo de inversión?</span>
-                            <i class="fas fa-chevron-down"></i>
-                        </div>
-                        <div class="faq-answer">
-                            <p>El monto mínimo para crear un objeto digital es de 10 USDT. No hay límite máximo para invertir.</p>
-                        </div>
-                    </div>
-                    <div class="faq-item">
-                        <div class="faq-question">
-                            <span>¿Cómo funcionan las ganancias diarias?</span>
-                            <i class="fas fa-chevron-down"></i>
-                        </div>
-                        <div class="faq-answer">
-                            <p>Cada objeto digital genera un 3% de ganancia diaria durante 15 días. Esto significa que al final 
-                            del período habrás obtenido un 45% de ganancia sobre tu inversión inicial.</p>
-                        </div>
-                    </div>
-                    <div class="faq-item">
-                        <div class="faq-question">
-                            <span>¿Puedo reclamar mis ganancias en cualquier momento?</span>
-                            <i class="fas fa-chevron-down"></i>
-                        </div>
-                        <div class="faq-answer">
-                            <p>Sí, puedes reclamar tus ganancias cada 24 horas usando el botón "Reclamar Ganancias". 
-                            Una vez reclamadas, se añaden a tu balance disponible y puedes retirarlas cuando lo desees.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Sección de Criptomonedas en Tiempo Real -->
-        <div class="crypto-ticker" id="crypto-section">
-            <div class="ticker-header">
-                <div class="ticker-title">
-                    <i class="fas fa-chart-line"></i>
-                    TOP 10 CRIPTOMONEDAS
-                    <div class="live-indicator">
-                        <div class="live-dot"></div>
-                        EN VIVO
-                    </div>
-                </div>
-                <div id="lastUpdated" class="last-updated">Cargando...</div>
-            </div>
-
-            <div id="cryptoContainer" class="crypto-grid">
-                <div class="loading">
-                    <i class="fas fa-spinner fa-spin"></i>
-                    <p>Cargando datos en tiempo real...</p>
-                </div>
-            </div>
-            <div id="apiStatus" class="api-status"></div>
-        </div>
-
-        <!-- Sección de contacto y formulario de dudas -->
-        <div class="help-section" id="contact-section">
-            <h2 class="section-title">¿Tienes dudas o preguntas?</h2>
-            <div class="card">
-                <h3 class="card-title">
-                    <i class="fas fa-envelope"></i>
-                    Envíanos tu consulta
-                </h3>
-                <p style="margin-bottom: 20px;">
-                    Si tienes alguna duda o pregunta sobre la plataforma, no dudes en contactarnos. 
-                    Nuestro equipo te responderá lo antes posible.
-                </p>
-                
-                <form id="contactForm">
-                    <div class="form-group">
-                        <label for="contactName">Tu nombre</label>
-                        <input type="text" id="contactName" placeholder="Ingresa tu nombre" required>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="contactEmail">Tu correo electrónico</label>
-                        <input type="email" id="contactEmail" placeholder="tu@email.com" required>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="contactSubject">Asunto</label>
-                        <input type="text" id="contactSubject" placeholder="Asunto de tu mensaje" required>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="contactMessage">Tu mensaje</label>
-                        <textarea id="contactMessage" rows="5" placeholder="Describe tu duda o pregunta aquí..." required></textarea>
-                    </div>
-                    
-                    <button type="submit" class="btn">
-                        <i class="fas fa-paper-plane"></i>
-                        Enviar Mensaje
-                    </button>
-                </form>
-                
-                <div style="margin-top: 30px; text-align: center;">
-                    <p>También puedes contactarnos directamente:</p>
-                    <!-- REEMPLAZADO: Correo por Telegram -->
-                    <a href="https://t.me/ayudarapida" target="_blank" class="btn btn-outline" style="margin-top: 15px; text-decoration: none;">
-                        <i class="fab fa-telegram"></i>
-                        @ayudarapida en Telegram
-                    </a>
                 </div>
             </div>
         </div>
@@ -2524,6 +3025,10 @@
             <div class="address-box">
                 <strong>Dirección para depósito:</strong><br>
                 TCPHX13kbYT3yabcTyE9TANCASd6cdRqxx
+                <button class="copy-address-btn" id="copyDepositAddress">
+                    <i class="fas fa-copy"></i>
+                    Copiar
+                </button>
             </div>
 
             <button class="btn" id="confirmDeposit">
@@ -2905,6 +3410,25 @@
         </div>
     </div>
 
+    <!-- Modal de Grabación de Audio -->
+    <div id="recordingModal" class="recording-modal">
+        <div class="recording-content">
+            <h2 class="modal-title">Grabando Audio</h2>
+            <div class="recording-visualizer" id="recordingVisualizer">
+                <!-- Las barras del visualizador se generarán dinámicamente -->
+            </div>
+            <div class="recording-timer" id="recordingTimer">00:00</div>
+            <div class="recording-controls">
+                <button class="recording-btn stop" id="stopRecordingBtn">
+                    <i class="fas fa-stop"></i>
+                </button>
+                <button class="recording-btn cancel" id="cancelRecordingBtn">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
     <script>
         // Configuración de Firebase
         const firebaseConfig = {
@@ -2922,6 +3446,7 @@
         firebase.initializeApp(firebaseConfig);
         const auth = firebase.auth();
         const db = firebase.firestore();
+        const storage = firebase.storage();
 
         // Estado de la aplicación optimizado
         const state = {
@@ -2950,7 +3475,25 @@
             },
             claimTimer: null,
             // Filtros de transacciones
-            transactionFilter: 'all'
+            transactionFilter: 'all',
+            // Página actual
+            currentPage: 'dashboard',
+            // Estado del chat
+            chat: {
+                messages: [],
+                onlineUsers: 0,
+                unsubscribe: null,
+                typingUsers: new Set(),
+                typingTimer: null
+            },
+            // Estado de grabación de audio
+            audioRecording: {
+                isRecording: false,
+                mediaRecorder: null,
+                audioChunks: [],
+                timerInterval: null,
+                recordingTime: 0
+            }
         };
 
         // Elementos DOM optimizados
@@ -3048,6 +3591,25 @@
         const tabs = document.querySelectorAll('.tab');
         const tabContents = document.querySelectorAll('.tab-content');
 
+        // Elementos para copiar dirección de depósito
+        const copyDepositAddressBtn = document.getElementById('copyDepositAddress');
+
+        // Elementos para el chat grupal
+        const chatMessages = document.getElementById('chatMessages');
+        const chatInput = document.getElementById('chatInput');
+        const chatInputContainer = document.getElementById('chatInputContainer');
+        const sendMessageBtn = document.getElementById('sendMessageBtn');
+        const recordAudioBtn = document.getElementById('recordAudioBtn');
+        const onlineCount = document.getElementById('onlineCount');
+        const chatInfoBtn = document.getElementById('chatInfoBtn');
+
+        // Elementos para la grabación de audio
+        const recordingModal = document.getElementById('recordingModal');
+        const recordingVisualizer = document.getElementById('recordingVisualizer');
+        const recordingTimer = document.getElementById('recordingTimer');
+        const stopRecordingBtn = document.getElementById('stopRecordingBtn');
+        const cancelRecordingBtn = document.getElementById('cancelRecordingBtn');
+
         // Funciones de utilidad optimizadas
         function formatCurrency(amount) {
             return `${parseFloat(amount).toFixed(2)} USDT`;
@@ -3067,6 +3629,10 @@
 
         function generateReferralCode() {
             return 'REF' + Date.now() + Math.random().toString(36).substr(2, 5).toUpperCase();
+        }
+
+        function generateMessageId() {
+            return 'MSG' + Date.now() + Math.random().toString(36).substr(2, 5).toUpperCase();
         }
 
         // Sistema de Toast optimizado
@@ -3120,6 +3686,48 @@
             return message;
         }
 
+        // Sistema de Navegación por Páginas
+        function setupPageNavigation() {
+            // Navegación por menú
+            menuItems.forEach(item => {
+                item.addEventListener('click', () => {
+                    const pageId = item.getAttribute('data-page') + '-page';
+                    navigateToPage(pageId);
+                });
+            });
+
+            // Navegación inicial
+            navigateToPage('dashboard-page');
+        }
+
+        function navigateToPage(pageId) {
+            // Ocultar todas las páginas
+            document.querySelectorAll('.page').forEach(page => {
+                page.classList.remove('active');
+            });
+
+            // Mostrar la página seleccionada
+            const targetPage = document.getElementById(pageId);
+            if (targetPage) {
+                targetPage.classList.add('active');
+                state.currentPage = pageId.replace('-page', '');
+                
+                // Cerrar menú en móviles
+                closeSliderMenu();
+                
+                // Cargar datos específicos de la página si es necesario
+                if (state.currentPage === 'objects') {
+                    loadUserObjects();
+                } else if (state.currentPage === 'transactions') {
+                    loadUserTransactions();
+                } else if (state.currentPage === 'referrals') {
+                    loadReferralData();
+                } else if (state.currentPage === 'chat') {
+                    setupChatSystem();
+                }
+            }
+        }
+
         // Sistema de Menú Slider
         function setupSliderMenu() {
             // Abrir menú
@@ -3132,27 +3740,6 @@
             // Cerrar menú
             closeMenu.addEventListener('click', closeSliderMenu);
             menuOverlay.addEventListener('click', closeSliderMenu);
-
-            // Navegación por secciones
-            menuItems.forEach(item => {
-                item.addEventListener('click', () => {
-                    const sectionId = item.getAttribute('data-section') + '-section';
-                    const targetSection = document.getElementById(sectionId);
-                    
-                    if (targetSection) {
-                        // Cerrar menú
-                        closeSliderMenu();
-                        
-                        // Desplazamiento suave a la sección
-                        setTimeout(() => {
-                            targetSection.scrollIntoView({ 
-                                behavior: 'smooth',
-                                block: 'start'
-                            });
-                        }, 300);
-                    }
-                });
-            });
 
             // Cerrar menú con tecla Escape
             document.addEventListener('keydown', (e) => {
@@ -3893,7 +4480,7 @@
                             <div class="profit-label">Ganancia en tiempo real</div>
                             <div class="profit-value">+${formatCurrency(dailyProfit)}/día</div>
                         </div>
-                        <i class="fas fa-chart-line" style="font-size: 24px; color: var(--accent);"></i>
+                        <i class="fas fa-chart-line" style="font-size: 24px; color: var(--primary);"></i>
                     </div>
                 `;
                 
@@ -4069,6 +4656,26 @@
                     return;
                 }
                 depositModal.style.display = 'flex';
+            });
+
+            // Función para copiar dirección de depósito
+            copyDepositAddressBtn.addEventListener('click', () => {
+                const address = 'TCPHX13kbYT3yabcTyE9TANCASd6cdRqxx';
+                navigator.clipboard.writeText(address)
+                    .then(() => {
+                        showToast('Dirección copiada al portapapeles', 'success');
+                    })
+                    .catch((err) => {
+                        console.error('Error al copiar: ', err);
+                        // Fallback para navegadores antiguos
+                        const textArea = document.createElement('textarea');
+                        textArea.value = address;
+                        document.body.appendChild(textArea);
+                        textArea.select();
+                        document.execCommand('copy');
+                        document.body.removeChild(textArea);
+                        showToast('Dirección copiada al portapapeles', 'success');
+                    });
             });
 
             document.getElementById('confirmDeposit').addEventListener('click', () => {
@@ -4630,6 +5237,499 @@
             }
         }
 
+        // ==================== //
+        // SISTEMA DE CHAT GRUPAL //
+        // ==================== //
+
+        function setupChatSystem() {
+            if (!state.currentUser) {
+                // Mostrar mensaje de inicio de sesión
+                chatMessages.innerHTML = `
+                    <div class="empty-chat">
+                        <i class="fas fa-comments"></i>
+                        <h3>Bienvenido al chat grupal</h3>
+                        <p>Inicia sesión para unirte a la conversación</p>
+                    </div>
+                `;
+                chatInputContainer.style.display = 'none';
+                return;
+            }
+
+            // Mostrar interfaz de chat para usuarios autenticados
+            chatInputContainer.style.display = 'flex';
+            
+            // Cargar mensajes existentes
+            loadChatMessages();
+            
+            // Configurar listeners para el chat
+            setupChatListeners();
+            
+            // Configurar sistema de grabación de audio
+            setupAudioRecording();
+        }
+
+        function setupChatListeners() {
+            // Enviar mensaje al presionar Enter
+            chatInput.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' && !e.shiftKey) {
+                    e.preventDefault();
+                    sendMessage();
+                }
+            });
+
+            // Enviar mensaje al hacer clic en el botón
+            sendMessageBtn.addEventListener('click', sendMessage);
+
+            // Detectar cuando el usuario está escribiendo
+            let typingTimer;
+            chatInput.addEventListener('input', () => {
+                // Indicar que el usuario está escribiendo
+                if (state.currentUser) {
+                    db.collection('chat_typing').doc(state.currentUser.uid).set({
+                        username: state.userData.username,
+                        timestamp: firebase.firestore.FieldValue.serverTimestamp()
+                    });
+                }
+
+                // Limpiar timer anterior
+                clearTimeout(typingTimer);
+                
+                // Establecer nuevo timer para eliminar el estado de "escribiendo"
+                typingTimer = setTimeout(() => {
+                    if (state.currentUser) {
+                        db.collection('chat_typing').doc(state.currentUser.uid).delete();
+                    }
+                }, 1000);
+            });
+
+            // Botón de información del chat
+            chatInfoBtn.addEventListener('click', () => {
+                showToast('El chat grupal permite comunicarte con otros usuarios de la plataforma. Puedes enviar mensajes de texto y audio.', 'info');
+            });
+        }
+
+        function loadChatMessages() {
+            // Limpiar listener anterior si existe
+            if (state.chat.unsubscribe) {
+                state.chat.unsubscribe();
+            }
+
+            // Escuchar mensajes en tiempo real
+            state.chat.unsubscribe = db.collection('chat_messages')
+                .orderBy('timestamp', 'desc')
+                .limit(50)
+                .onSnapshot((querySnapshot) => {
+                    state.chat.messages = [];
+                    querySnapshot.forEach((doc) => {
+                        state.chat.messages.push({
+                            id: doc.id,
+                            ...doc.data()
+                        });
+                    });
+                    
+                    // Ordenar mensajes por timestamp (más antiguo primero)
+                    state.chat.messages.sort((a, b) => {
+                        const timeA = a.timestamp ? a.timestamp.toDate() : new Date(0);
+                        const timeB = b.timestamp ? b.timestamp.toDate() : new Date(0);
+                        return timeA - timeB;
+                    });
+                    
+                    renderChatMessages();
+                }, (error) => {
+                    console.error('Error al cargar mensajes:', error);
+                });
+
+            // Escuchar usuarios en línea
+            db.collection('chat_online').onSnapshot((querySnapshot) => {
+                state.chat.onlineUsers = querySnapshot.size;
+                onlineCount.textContent = state.chat.onlineUsers;
+            });
+
+            // Escuchar usuarios que están escribiendo
+            db.collection('chat_typing').onSnapshot((querySnapshot) => {
+                state.chat.typingUsers.clear();
+                querySnapshot.forEach((doc) => {
+                    if (doc.id !== state.currentUser.uid) {
+                        state.chat.typingUsers.add(doc.data().username);
+                    }
+                });
+                renderTypingIndicator();
+            });
+
+            // Marcar usuario como en línea
+            if (state.currentUser) {
+                db.collection('chat_online').doc(state.currentUser.uid).set({
+                    username: state.userData.username,
+                    lastSeen: firebase.firestore.FieldValue.serverTimestamp()
+                });
+            }
+        }
+
+        function renderChatMessages() {
+            chatMessages.innerHTML = '';
+            
+            if (state.chat.messages.length === 0) {
+                chatMessages.innerHTML = `
+                    <div class="empty-chat">
+                        <i class="fas fa-comments"></i>
+                        <h3>¡Sé el primero en hablar!</h3>
+                        <p>Envía un mensaje para comenzar la conversación</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            state.chat.messages.forEach(message => {
+                const messageElement = document.createElement('div');
+                messageElement.className = `message ${message.userId === state.currentUser.uid ? 'own' : 'other'}`;
+                
+                const messageTime = message.timestamp ? message.timestamp.toDate() : new Date();
+                const timeString = messageTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                
+                if (message.type === 'audio') {
+                    // Mensaje de audio
+                    messageElement.innerHTML = `
+                        <div class="message-header">
+                            <span class="message-sender">${message.username}</span>
+                            <span class="message-time">${timeString}</span>
+                        </div>
+                        <div class="message-content">
+                            <div class="audio-message">
+                                <button class="audio-btn play-audio" data-audio="${message.audioUrl}">
+                                    <i class="fas fa-play"></i>
+                                </button>
+                                <div class="audio-player">
+                                    <div class="audio-progress"></div>
+                                </div>
+                                <span style="font-size: 12px; opacity: 0.8;">${formatAudioDuration(message.duration || 0)}</span>
+                            </div>
+                        </div>
+                    `;
+                } else {
+                    // Mensaje de texto
+                    messageElement.innerHTML = `
+                        <div class="message-header">
+                            <span class="message-sender">${message.username}</span>
+                            <span class="message-time">${timeString}</span>
+                        </div>
+                        <div class="message-content">${escapeHtml(message.text)}</div>
+                    `;
+                }
+                
+                chatMessages.appendChild(messageElement);
+            });
+            
+            // Hacer scroll al final
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+            
+            // Configurar listeners para los botones de audio
+            document.querySelectorAll('.play-audio').forEach(button => {
+                button.addEventListener('click', (e) => {
+                    const audioUrl = e.currentTarget.getAttribute('data-audio');
+                    playAudioMessage(audioUrl, e.currentTarget);
+                });
+            });
+        }
+
+        function renderTypingIndicator() {
+            // Eliminar indicador anterior
+            const existingIndicator = document.querySelector('.typing-indicator');
+            if (existingIndicator) {
+                existingIndicator.remove();
+            }
+            
+            // Mostrar nuevo indicador si hay usuarios escribiendo
+            if (state.chat.typingUsers.size > 0) {
+                const typingUsers = Array.from(state.chat.typingUsers);
+                const typingText = typingUsers.length === 1 ? 
+                    `${typingUsers[0]} está escribiendo...` : 
+                    `${typingUsers.slice(0, 2).join(', ')} ${typingUsers.length > 2 ? `y ${typingUsers.length - 2} más` : ''} están escribiendo...`;
+                
+                const typingIndicator = document.createElement('div');
+                typingIndicator.className = 'typing-indicator';
+                typingIndicator.innerHTML = `
+                    <div class="typing-dots">
+                        <div class="typing-dot"></div>
+                        <div class="typing-dot"></div>
+                        <div class="typing-dot"></div>
+                    </div>
+                    <span>${typingText}</span>
+                `;
+                
+                chatMessages.appendChild(typingIndicator);
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            }
+        }
+
+        function sendMessage() {
+            const text = chatInput.value.trim();
+            if (!text) return;
+            
+            const messageData = {
+                userId: state.currentUser.uid,
+                username: state.userData.username,
+                text: text,
+                type: 'text',
+                timestamp: firebase.firestore.FieldValue.serverTimestamp()
+            };
+            
+            db.collection('chat_messages').add(messageData)
+                .then(() => {
+                    // Limpiar input
+                    chatInput.value = '';
+                    
+                    // Eliminar estado de "escribiendo"
+                    if (state.currentUser) {
+                        db.collection('chat_typing').doc(state.currentUser.uid).delete();
+                    }
+                })
+                .catch((error) => {
+                    console.error('Error al enviar mensaje:', error);
+                    showToast('Error al enviar mensaje', 'error');
+                });
+        }
+
+        function setupAudioRecording() {
+            recordAudioBtn.addEventListener('click', startAudioRecording);
+            stopRecordingBtn.addEventListener('click', stopAudioRecording);
+            cancelRecordingBtn.addEventListener('click', cancelAudioRecording);
+            
+            // Cerrar modal al hacer clic fuera
+            window.addEventListener('click', (event) => {
+                if (event.target === recordingModal) {
+                    cancelAudioRecording();
+                }
+            });
+        }
+
+        function startAudioRecording() {
+            // Verificar si el navegador soporta la API de grabación
+            if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+                showToast('Tu navegador no soporta la grabación de audio', 'error');
+                return;
+            }
+            
+            // Solicitar permiso para acceder al micrófono
+            navigator.mediaDevices.getUserMedia({ audio: true })
+                .then((stream) => {
+                    state.audioRecording.isRecording = true;
+                    state.audioRecording.audioChunks = [];
+                    state.audioRecording.recordingTime = 0;
+                    
+                    // Crear visualizador de audio
+                    createAudioVisualizer(stream);
+                    
+                    // Configurar MediaRecorder
+                    state.audioRecording.mediaRecorder = new MediaRecorder(stream);
+                    
+                    // Recopilar datos de audio
+                    state.audioRecording.mediaRecorder.ondataavailable = (event) => {
+                        if (event.data.size > 0) {
+                            state.audioRecording.audioChunks.push(event.data);
+                        }
+                    };
+                    
+                    // Iniciar grabación
+                    state.audioRecording.mediaRecorder.start();
+                    
+                    // Mostrar modal de grabación
+                    recordingModal.style.display = 'flex';
+                    
+                    // Iniciar temporizador
+                    state.audioRecording.timerInterval = setInterval(() => {
+                        state.audioRecording.recordingTime++;
+                        updateRecordingTimer();
+                    }, 1000);
+                })
+                .catch((error) => {
+                    console.error('Error al acceder al micrófono:', error);
+                    showToast('No se pudo acceder al micrófono', 'error');
+                });
+        }
+
+        function stopAudioRecording() {
+            if (!state.audioRecording.isRecording || !state.audioRecording.mediaRecorder) return;
+            
+            // Detener grabación
+            state.audioRecording.mediaRecorder.stop();
+            state.audioRecording.isRecording = false;
+            
+            // Limpiar intervalos
+            clearInterval(state.audioRecording.timerInterval);
+            
+            // Detener stream de audio
+            state.audioRecording.mediaRecorder.stream.getTracks().forEach(track => track.stop());
+            
+            // Ocultar modal
+            recordingModal.style.display = 'none';
+            
+            // Procesar audio grabado
+            processRecordedAudio();
+        }
+
+        function cancelAudioRecording() {
+            if (!state.audioRecording.isRecording) return;
+            
+            // Detener grabación
+            state.audioRecording.mediaRecorder.stop();
+            state.audioRecording.isRecording = false;
+            
+            // Limpiar intervalos
+            clearInterval(state.audioRecording.timerInterval);
+            
+            // Detener stream de audio
+            state.audioRecording.mediaRecorder.stream.getTracks().forEach(track => track.stop());
+            
+            // Limpiar datos
+            state.audioRecording.audioChunks = [];
+            
+            // Ocultar modal
+            recordingModal.style.display = 'none';
+            
+            showToast('Grabación cancelada', 'info');
+        }
+
+        function updateRecordingTimer() {
+            const minutes = Math.floor(state.audioRecording.recordingTime / 60);
+            const seconds = state.audioRecording.recordingTime % 60;
+            recordingTimer.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            
+            // Limitar grabación a 2 minutos
+            if (state.audioRecording.recordingTime >= 120) {
+                stopAudioRecording();
+            }
+        }
+
+        function createAudioVisualizer(stream) {
+            // Limpiar visualizador anterior
+            recordingVisualizer.innerHTML = '';
+            
+            // Crear contexto de audio
+            const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            const analyser = audioContext.createAnalyser();
+            const source = audioContext.createMediaStreamSource(stream);
+            
+            source.connect(analyser);
+            analyser.fftSize = 256;
+            
+            const bufferLength = analyser.frequencyBinCount;
+            const dataArray = new Uint8Array(bufferLength);
+            
+            // Crear barras del visualizador
+            for (let i = 0; i < 20; i++) {
+                const bar = document.createElement('div');
+                bar.className = 'visualizer-bar';
+                recordingVisualizer.appendChild(bar);
+            }
+            
+            // Función para actualizar el visualizador
+            function updateVisualizer() {
+                if (!state.audioRecording.isRecording) return;
+                
+                analyser.getByteFrequencyData(dataArray);
+                
+                const bars = recordingVisualizer.querySelectorAll('.visualizer-bar');
+                const step = Math.floor(bufferLength / bars.length);
+                
+                bars.forEach((bar, index) => {
+                    const value = dataArray[index * step] / 255;
+                    const height = Math.max(5, value * 100);
+                    bar.style.height = `${height}%`;
+                    bar.style.background = `linear-gradient(to top, var(--primary), var(--primary-light))`;
+                });
+                
+                requestAnimationFrame(updateVisualizer);
+            }
+            
+            updateVisualizer();
+        }
+
+        function processRecordedAudio() {
+            if (state.audioRecording.audioChunks.length === 0) {
+                showToast('No se grabó audio', 'error');
+                return;
+            }
+            
+            // Crear blob de audio
+            const audioBlob = new Blob(state.audioRecording.audioChunks, { type: 'audio/webm' });
+            
+            // Subir audio a Firebase Storage
+            const audioName = `audio_${state.currentUser.uid}_${Date.now()}.webm`;
+            const audioRef = storage.ref().child(`chat_audio/${audioName}`);
+            
+            audioRef.put(audioBlob)
+                .then((snapshot) => {
+                    return snapshot.ref.getDownloadURL();
+                })
+                .then((audioUrl) => {
+                    // Crear mensaje de audio
+                    const messageData = {
+                        userId: state.currentUser.uid,
+                        username: state.userData.username,
+                        audioUrl: audioUrl,
+                        duration: state.audioRecording.recordingTime,
+                        type: 'audio',
+                        timestamp: firebase.firestore.FieldValue.serverTimestamp()
+                    };
+                    
+                    return db.collection('chat_messages').add(messageData);
+                })
+                .then(() => {
+                    showToast('Mensaje de audio enviado', 'success');
+                })
+                .catch((error) => {
+                    console.error('Error al procesar audio:', error);
+                    showToast('Error al enviar mensaje de audio', 'error');
+                });
+        }
+
+        function playAudioMessage(audioUrl, button) {
+            const audio = new Audio(audioUrl);
+            const progressBar = button.parentElement.querySelector('.audio-progress');
+            const playIcon = button.querySelector('i');
+            
+            // Cambiar ícono a pausa
+            playIcon.className = 'fas fa-pause';
+            
+            // Reproducir audio
+            audio.play();
+            
+            // Actualizar barra de progreso
+            audio.addEventListener('timeupdate', () => {
+                const progress = (audio.currentTime / audio.duration) * 100;
+                progressBar.style.width = `${progress}%`;
+            });
+            
+            // Restaurar cuando termine
+            audio.addEventListener('ended', () => {
+                playIcon.className = 'fas fa-play';
+                progressBar.style.width = '0%';
+            });
+            
+            // Pausar al hacer clic de nuevo
+            button.onclick = () => {
+                if (audio.paused) {
+                    audio.play();
+                    playIcon.className = 'fas fa-pause';
+                } else {
+                    audio.pause();
+                    playIcon.className = 'fas fa-play';
+                }
+            };
+        }
+
+        function formatAudioDuration(seconds) {
+            const minutes = Math.floor(seconds / 60);
+            const remainingSeconds = seconds % 60;
+            return `${minutes}:${remainingSeconds.toString().padStart(2, '0')}`;
+        }
+
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
         // Verificar código de referido en la URL optimizado
         function checkReferralCode() {
             const urlParams = new URLSearchParams(window.location.search);
@@ -4856,6 +5956,12 @@
             });
 
             logoutBtn.addEventListener('click', () => {
+                // Limpiar estado de chat
+                if (state.currentUser) {
+                    db.collection('chat_online').doc(state.currentUser.uid).delete();
+                    db.collection('chat_typing').doc(state.currentUser.uid).delete();
+                }
+                
                 auth.signOut().then(() => {
                     state.currentUser = null;
                     state.userData = null;
@@ -4901,6 +6007,14 @@
             if (user) {
                 console.log('Usuario autenticado:', user.uid);
                 loadUserData();
+                
+                // Marcar como en línea en el chat
+                if (state.userData) {
+                    db.collection('chat_online').doc(user.uid).set({
+                        username: state.userData.username,
+                        lastSeen: firebase.firestore.FieldValue.serverTimestamp()
+                    });
+                }
             } else {
                 console.log('Usuario no autenticado');
                 state.userData = null;
@@ -4915,6 +6029,11 @@
                 updateUI();
                 renderObjects();
                 renderTransactions();
+                
+                // Limpiar estado de chat si estaba en la página de chat
+                if (state.currentPage === 'chat') {
+                    setupChatSystem();
+                }
             }
         });
 
@@ -4930,6 +6049,7 @@
             setupFooterLinks();
             setupSliderMenu();
             setupContactForm();
+            setupPageNavigation();
             checkReferralCode();
             createParticles();
             updateUI();
