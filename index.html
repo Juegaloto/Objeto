@@ -2035,49 +2035,46 @@
             word-wrap: break-word;
         }
 
-        .audio-message {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            padding: 8px 12px;
-            background: rgba(0, 0, 0, 0.2);
-            border-radius: 20px;
-        }
-
-        .audio-player {
-            flex: 1;
-            height: 30px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 15px;
-            overflow: hidden;
-            position: relative;
-        }
-
-        .audio-progress {
-            height: 100%;
-            background: var(--primary);
-            width: 0%;
-            transition: width 0.1s linear;
-        }
-
-        .audio-controls {
+        .message-actions {
             display: flex;
             gap: 5px;
+            margin-top: 5px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
         }
 
-        .audio-btn {
+        .message:hover .message-actions {
+            opacity: 1;
+        }
+
+        .message-action {
             background: none;
             border: none;
-            color: white;
+            color: rgba(255, 255, 255, 0.7);
             cursor: pointer;
-            font-size: 14px;
-            padding: 5px;
-            border-radius: 50%;
+            font-size: 12px;
+            padding: 2px 6px;
+            border-radius: 4px;
             transition: var(--transition);
         }
 
-        .audio-btn:hover {
+        .message-action:hover {
             background: rgba(255, 255, 255, 0.1);
+            color: white;
+        }
+
+        .message-action.delete:hover {
+            background: var(--danger);
+            color: white;
+        }
+
+        .message-action.unread:hover {
+            background: var(--warning);
+            color: white;
+        }
+
+        .message.unread {
+            border-left: 3px solid var(--warning);
         }
 
         .chat-input-container {
@@ -2139,22 +2136,6 @@
             box-shadow: none;
         }
 
-        .recording-indicator {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            color: var(--danger);
-            font-size: 14px;
-            animation: pulse 1.5s infinite;
-        }
-
-        .recording-dot {
-            width: 10px;
-            height: 10px;
-            background: var(--danger);
-            border-radius: 50%;
-        }
-
         .empty-chat {
             display: flex;
             flex-direction: column;
@@ -2202,94 +2183,6 @@
         @keyframes typing {
             0%, 80%, 100% { transform: scale(0.8); opacity: 0.5; }
             40% { transform: scale(1); opacity: 1; }
-        }
-
-        /* Modal de grabación de audio */
-        .recording-modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(5, 8, 15, 0.9);
-            backdrop-filter: blur(5px);
-            z-index: 1000;
-            align-items: center;
-            justify-content: center;
-            animation: fadeIn 0.3s ease;
-        }
-
-        .recording-content {
-            background: linear-gradient(135deg, rgba(10, 14, 23, 0.9) 0%, rgba(15, 26, 42, 0.9) 100%);
-            border-radius: var(--border-radius-lg);
-            box-shadow: var(--shadow), var(--glow);
-            width: 90%;
-            max-width: 400px;
-            padding: 30px;
-            position: relative;
-            text-align: center;
-            border: 1px solid var(--glass-border);
-            backdrop-filter: blur(10px);
-        }
-
-        .recording-visualizer {
-            height: 100px;
-            margin: 20px 0;
-            display: flex;
-            align-items: flex-end;
-            justify-content: center;
-            gap: 3px;
-        }
-
-        .visualizer-bar {
-            width: 6px;
-            background: var(--primary);
-            border-radius: 3px;
-            transition: height 0.1s ease;
-        }
-
-        .recording-timer {
-            font-size: 24px;
-            font-weight: bold;
-            margin: 15px 0;
-            color: white;
-            font-family: var(--font-heading);
-        }
-
-        .recording-controls {
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-            margin-top: 20px;
-        }
-
-        .recording-btn {
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 20px;
-            cursor: pointer;
-            transition: var(--transition);
-            box-shadow: var(--shadow);
-        }
-
-        .recording-btn.stop {
-            background: var(--danger);
-            color: white;
-        }
-
-        .recording-btn.cancel {
-            background: var(--gray);
-            color: white;
-        }
-
-        .recording-btn:hover {
-            transform: scale(1.1);
-            box-shadow: var(--glow);
         }
 
         /* Responsive para el chat */
@@ -2506,7 +2399,7 @@
                         <label>Rentabilidad Diaria</label>
                         <div class="profit-badge">
                             <i class="fas fa-chart-line"></i>
-                            <span>3% diario durante 15 días</span>
+                            <span id="profitRateDisplay">3% diario durante 15 días</span>
                         </div>
                     </div>
                     <button id="createObject" class="btn">
@@ -2598,19 +2491,19 @@
                     <div class="referral-grid">
                         <div class="referral-level">
                             <div class="referral-level-title">Nivel 1</div>
-                            <div class="referral-level-percentage">15%</div>
+                            <div class="referral-level-percentage" id="referralLevel1Display">15%</div>
                             <div class="referral-level-count" id="level1Count">0</div>
                             <div class="referral-level-earnings" id="level1Earnings">0 USDT</div>
                         </div>
                         <div class="referral-level">
                             <div class="referral-level-title">Nivel 2</div>
-                            <div class="referral-level-percentage">5%</div>
+                            <div class="referral-level-percentage" id="referralLevel2Display">5%</div>
                             <div class="referral-level-count" id="level2Count">0</div>
                             <div class="referral-level-earnings" id="level2Earnings">0 USDT</div>
                         </div>
                         <div class="referral-level">
                             <div class="referral-level-title">Nivel 3</div>
-                            <div class="referral-level-percentage">1%</div>
+                            <div class="referral-level-percentage" id="referralLevel3Display">1%</div>
                             <div class="referral-level-count" id="level3Count">0</div>
                             <div class="referral-level-earnings" id="level3Earnings">0 USDT</div>
                         </div>
@@ -2641,8 +2534,8 @@
                         </div>
                         <h3 class="education-title">¿Cómo funciona la rentabilidad?</h3>
                         <p class="education-description">
-                            Tu inversión genera un 3% de rentabilidad diaria durante 15 días. Esto significa que al final del período 
-                            habrás obtenido un 45% de ganancia sobre tu inversión inicial.
+                            Tu inversión genera un porcentaje de rentabilidad diaria durante un período específico. 
+                            Consulta la configuración actual en el dashboard para conocer las tasas vigentes.
                         </p>
                     </div>
                     <div class="education-card">
@@ -2716,9 +2609,6 @@
                         <div class="chat-input-container" id="chatInputContainer" style="display: none;">
                             <textarea class="chat-input" id="chatInput" placeholder="Escribe tu mensaje..." rows="1"></textarea>
                             <div class="chat-buttons">
-                                <button class="chat-btn" id="recordAudioBtn" title="Grabar audio">
-                                    <i class="fas fa-microphone"></i>
-                                </button>
                                 <button class="chat-btn" id="sendMessageBtn" title="Enviar mensaje">
                                     <i class="fas fa-paper-plane"></i>
                                 </button>
@@ -2810,9 +2700,9 @@
                         </h3>
                         <div style="display: flex; gap: 15px; margin-top: 15px; flex-wrap: wrap;">
                             <!-- REEMPLAZADO: Correo por Telegram -->
-                            <a href="https://t.me/ayudarapida" target="_blank" class="btn btn-outline" style="text-decoration: none;">
+                            <a href="https://t.me/ayudarapida1" target="_blank" class="btn btn-outline" style="text-decoration: none;">
                                 <i class="fab fa-telegram"></i>
-                                @ayudarapida en Telegram
+                                @ayudarapida1 en Telegram
                             </a>
                         </div>
                     </div>
@@ -2843,7 +2733,7 @@
                                 <i class="fas fa-chevron-down"></i>
                             </div>
                             <div class="faq-answer">
-                                <p>El monto mínimo para crear un objeto digital es de 10 USDT. No hay límite máximo para invertir.</p>
+                                <p>El monto mínimo para crear un objeto digital es configurable por el administrador. Consulta la sección de inversión para ver el valor actual.</p>
                             </div>
                         </div>
                         <div class="faq-item">
@@ -2852,8 +2742,8 @@
                                 <i class="fas fa-chevron-down"></i>
                             </div>
                             <div class="faq-answer">
-                                <p>Cada objeto digital genera un 3% de ganancia diaria durante 15 días. Esto significa que al final 
-                                del período habrás obtenido un 45% de ganancia sobre tu inversión inicial.</p>
+                                <p>Cada objeto digital genera un porcentaje de ganancia diaria durante un período específico. 
+                                Las tasas y períodos son configurables por el administrador y se muestran en tiempo real en el dashboard.</p>
                             </div>
                         </div>
                         <div class="faq-item">
@@ -2916,9 +2806,9 @@
                     <div style="margin-top: 30px; text-align: center;">
                         <p>También puedes contactarnos directamente:</p>
                         <!-- REEMPLAZADO: Correo por Telegram -->
-                        <a href="https://t.me/ayudarapida" target="_blank" class="btn btn-outline" style="margin-top: 15px; text-decoration: none;">
+                        <a href="https://t.me/ayudarapida1" target="_blank" class="btn btn-outline" style="margin-top: 15px; text-decoration: none;">
                             <i class="fab fa-telegram"></i>
-                            @ayudarapida en Telegram
+                            @ayudarapida1 en Telegram
                         </a>
                     </div>
                 </div>
@@ -3014,7 +2904,7 @@
             
             <div class="info-alert">
                 <i class="fas fa-info-circle"></i> 
-                <div>Depósito mínimo: 10 USDT. Solo se aceptan depósitos en red TRC20.</div>
+                <div>Depósito mínimo: <span id="minInvestmentDisplay">10</span> USDT. Solo se aceptan depósitos en red TRC20.</div>
             </div>
 
             <div class="form-group">
@@ -3046,7 +2936,7 @@
             
             <div class="info-alert">
                 <i class="fas fa-info-circle"></i> 
-                <div>Retiro mínimo: 10 USDT. Comisión de red: 1 USDT.</div>
+                <div>Retiro mínimo: <span id="minWithdrawalDisplay">10</span> USDT. Comisión de red: <span id="withdrawalFeeDisplay">1</span> USDT.</div>
             </div>
 
             <div class="form-group">
@@ -3068,7 +2958,7 @@
                     </div>
                     <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
                         <span>Comisión de red:</span>
-                        <span>1 USDT</span>
+                        <span id="withdrawSummaryFee">1 USDT</span>
                     </div>
                     <div style="display: flex; justify-content: space-between; font-weight: bold;">
                         <span>Total a recibir:</span>
@@ -3160,7 +3050,7 @@
                     <div class="step-number">2</div>
                     <div class="step-content">
                         <h3>Gana comisiones</h3>
-                        <p>Recibirás el 15% de los depósitos de tus referidos de nivel 1, el 5% de los depósitos de tus referidos de nivel 2, y el 1% de los depósitos de tus referidos de nivel 3.</p>
+                        <p>Recibirás el <span id="referralInfoLevel1">15%</span> de los depósitos de tus referidos de nivel 1, el <span id="referralInfoLevel2">5%</span> de los depósitos de tus referidos de nivel 2, y el <span id="referralInfoLevel3">1%</span> de los depósitos de tus referidos de nivel 3.</p>
                     </div>
                 </div>
                 
@@ -3239,15 +3129,15 @@
                 <h3 style="margin-top: 20px; color: var(--primary);">💼 Servicios ofrecidos</h3>
                 <ul style="margin-left: 20px; margin-bottom: 20px;">
                     <li>Crear objetos digitales con USDT</li>
-                    <li>Obtener rentabilidad diaria (3% por 15 días)</li>
+                    <li>Obtener rentabilidad diaria (configurable por administrador)</li>
                     <li>Gestionar depósitos, retiros y ganancias</li>
                     <li>Sistema de referidos con comisiones</li>
                 </ul>
                 
                 <h3 style="color: var(--primary);">💰 Condiciones de inversión</h3>
                 <ul style="margin-left: 20px; margin-bottom: 20px;">
-                    <li>Rentabilidad: 3% diario por 15 días</li>
-                    <li>Monto mínimo: 10 USDT</li>
+                    <li>Rentabilidad: Configurable por administrador</li>
+                    <li>Monto mínimo: Configurable por administrador</li>
                     <li>Ganancias calculadas en tiempo real</li>
                     <li>No se garantizan rendimientos futuros</li>
                 </ul>
@@ -3261,8 +3151,8 @@
                 
                 <h3 style="color: var(--primary);">🤝 Sistema de referidos</h3>
                 <ul style="margin-left: 20px; margin-bottom: 20px;">
-                    <li>Nivel 1: 15% de inversión del referido</li>
-                    <li>Nivel 2: 5% de inversión indirecta</li>
+                    <li>Nivel 1: Porcentaje configurable de inversión del referido</li>
+                    <li>Nivel 2: Porcentaje configurable de inversión indirecta</li>
                     <li>Comisiones en USDT, disponibles para retiro</li>
                 </ul>
                 
@@ -3320,8 +3210,8 @@
                 
                 <h3 style="color: var(--primary);">💰 3. Condiciones de inversión</h3>
                 <ul style="margin-left: 20px; margin-bottom: 20px;">
-                    <li>La rentabilidad diaria es del 3% durante 15 días, sujeta a cambios según condiciones del mercado.</li>
-                    <li>El monto mínimo de inversión es de 10 USDT.</li>
+                    <li>La rentabilidad diaria es configurable por el administrador y puede cambiar según condiciones del mercado.</li>
+                    <li>El monto mínimo de inversión es configurable por el administrador.</li>
                     <li>Las ganancias se calculan automáticamente y se reflejan en tiempo real.</li>
                     <li>DigitalObjects no garantiza rendimientos futuros ni permanencia de tasas actuales.</li>
                 </ul>
@@ -3335,8 +3225,8 @@
                 <h3 style="color: var(--primary);">📊 5. Sistema de referidos</h3>
                 <ul style="margin-left: 20px; margin-bottom: 20px;">
                     <li>Los usuarios pueden compartir su enlace de referido para obtener comisiones:</li>
-                    <li>Nivel 1: 15% de la inversión del referido directo.</li>
-                    <li>Nivel 2: 5% de la inversión del referido indirecto.</li>
+                    <li>Nivel 1: Porcentaje configurable de la inversión del referido directo.</li>
+                    <li>Nivel 2: Porcentaje configurable de la inversión del referido indirecto.</li>
                     <li>Las comisiones se acreditan en USDT y pueden ser retiradas según disponibilidad.</li>
                 </ul>
                 
@@ -3410,25 +3300,6 @@
         </div>
     </div>
 
-    <!-- Modal de Grabación de Audio -->
-    <div id="recordingModal" class="recording-modal">
-        <div class="recording-content">
-            <h2 class="modal-title">Grabando Audio</h2>
-            <div class="recording-visualizer" id="recordingVisualizer">
-                <!-- Las barras del visualizador se generarán dinámicamente -->
-            </div>
-            <div class="recording-timer" id="recordingTimer">00:00</div>
-            <div class="recording-controls">
-                <button class="recording-btn stop" id="stopRecordingBtn">
-                    <i class="fas fa-stop"></i>
-                </button>
-                <button class="recording-btn cancel" id="cancelRecordingBtn">
-                    <i class="fas fa-times"></i>
-                </button>
-            </div>
-        </div>
-    </div>
-
     <script>
         // Configuración de Firebase
         const firebaseConfig = {
@@ -3486,13 +3357,16 @@
                 typingUsers: new Set(),
                 typingTimer: null
             },
-            // Estado de grabación de audio
-            audioRecording: {
-                isRecording: false,
-                mediaRecorder: null,
-                audioChunks: [],
-                timerInterval: null,
-                recordingTime: 0
+            // Configuración del sistema desde Firestore
+            systemSettings: {
+                dailyProfitRate: 3,
+                investmentPeriod: 15,
+                minInvestment: 10,
+                withdrawalFee: 1,
+                referralLevel1: 15,
+                referralLevel2: 5,
+                referralLevel3: 1,
+                welcomeBonus: 3
             }
         };
 
@@ -3599,16 +3473,20 @@
         const chatInput = document.getElementById('chatInput');
         const chatInputContainer = document.getElementById('chatInputContainer');
         const sendMessageBtn = document.getElementById('sendMessageBtn');
-        const recordAudioBtn = document.getElementById('recordAudioBtn');
         const onlineCount = document.getElementById('onlineCount');
         const chatInfoBtn = document.getElementById('chatInfoBtn');
 
-        // Elementos para la grabación de audio
-        const recordingModal = document.getElementById('recordingModal');
-        const recordingVisualizer = document.getElementById('recordingVisualizer');
-        const recordingTimer = document.getElementById('recordingTimer');
-        const stopRecordingBtn = document.getElementById('stopRecordingBtn');
-        const cancelRecordingBtn = document.getElementById('cancelRecordingBtn');
+        // Elementos para mostrar la configuración del sistema
+        const minInvestmentDisplay = document.getElementById('minInvestmentDisplay');
+        const withdrawalFeeDisplay = document.getElementById('withdrawalFeeDisplay');
+        const minWithdrawalDisplay = document.getElementById('minWithdrawalDisplay');
+        const profitRateDisplay = document.getElementById('profitRateDisplay');
+        const referralLevel1Display = document.getElementById('referralLevel1Display');
+        const referralLevel2Display = document.getElementById('referralLevel2Display');
+        const referralLevel3Display = document.getElementById('referralLevel3Display');
+        const referralInfoLevel1 = document.getElementById('referralInfoLevel1');
+        const referralInfoLevel2 = document.getElementById('referralInfoLevel2');
+        const referralInfoLevel3 = document.getElementById('referralInfoLevel3');
 
         // Funciones de utilidad optimizadas
         function formatCurrency(amount) {
@@ -3616,11 +3494,11 @@
         }
 
         function calculateDailyProfit(investment) {
-            return investment * 0.03;
+            return investment * (state.systemSettings.dailyProfitRate / 100);
         }
 
         function calculateTotalProfit(investment, days) {
-            return investment * 0.03 * days;
+            return investment * (state.systemSettings.dailyProfitRate / 100) * days;
         }
 
         function generateTransactionId() {
@@ -3684,6 +3562,393 @@
             
             showToast(message, 'error');
             return message;
+        }
+
+        // ============================================
+        // FUNCIONES DE CONFIGURACIÓN DESDE FIRESTORE
+        // ============================================
+
+        // 1. Función para cargar configuración desde Firestore
+        async function loadSystemSettings() {
+            try {
+                const settingsDoc = await db.collection('settings').doc('system').get();
+                if (settingsDoc.exists) {
+                    const settingsData = settingsDoc.data();
+                    state.systemSettings = {
+                        dailyProfitRate: settingsData.dailyProfitRate || 3,
+                        investmentPeriod: settingsData.investmentPeriod || 15,
+                        minInvestment: settingsData.minInvestment || 10,
+                        withdrawalFee: settingsData.withdrawalFee || 1,
+                        referralLevel1: settingsData.referralLevel1 || 15,
+                        referralLevel2: settingsData.referralLevel2 || 5,
+                        referralLevel3: settingsData.referralLevel3 || 1,
+                        welcomeBonus: settingsData.welcomeBonus || 3
+                    };
+                    console.log('Configuración cargada desde Firestore:', state.systemSettings);
+                } else {
+                    // Valores por defecto si no existe configuración
+                    state.systemSettings = {
+                        dailyProfitRate: 3,
+                        investmentPeriod: 15,
+                        minInvestment: 10,
+                        withdrawalFee: 1,
+                        referralLevel1: 15,
+                        referralLevel2: 5,
+                        referralLevel3: 1,
+                        welcomeBonus: 3
+                    };
+                    console.log('Usando configuración por defecto');
+                }
+                
+                // Actualizar la UI con los valores de configuración
+                updateUIWithSettings();
+                return state.systemSettings;
+            } catch (error) {
+                console.error('Error cargando configuración:', error);
+                // Valores por defecto en caso de error
+                state.systemSettings = {
+                    dailyProfitRate: 3,
+                    investmentPeriod: 15,
+                    minInvestment: 10,
+                    withdrawalFee: 1,
+                    referralLevel1: 15,
+                    referralLevel2: 5,
+                    referralLevel3: 1,
+                    welcomeBonus: 3
+                };
+                updateUIWithSettings();
+                return state.systemSettings;
+            }
+        }
+
+        // 2. Función para actualizar la UI con valores de configuración
+        function updateUIWithSettings() {
+            const settings = state.systemSettings;
+            
+            // Actualizar información de inversión
+            if (minInvestmentDisplay) minInvestmentDisplay.textContent = `${settings.minInvestment} USDT`;
+            if (withdrawalFeeDisplay) withdrawalFeeDisplay.textContent = `${settings.withdrawalFee} USDT`;
+            if (minWithdrawalDisplay) minWithdrawalDisplay.textContent = `${settings.minInvestment} USDT`;
+            if (profitRateDisplay) profitRateDisplay.textContent = `${settings.dailyProfitRate}% diario durante ${settings.investmentPeriod} días`;
+            
+            // Actualizar valores de referidos
+            if (referralLevel1Display) referralLevel1Display.textContent = `${settings.referralLevel1}%`;
+            if (referralLevel2Display) referralLevel2Display.textContent = `${settings.referralLevel2}%`;
+            if (referralLevel3Display) referralLevel3Display.textContent = `${settings.referralLevel3}%`;
+            
+            // Actualizar modal de información de referidos
+            if (referralInfoLevel1) referralInfoLevel1.textContent = `${settings.referralLevel1}%`;
+            if (referralInfoLevel2) referralInfoLevel2.textContent = `${settings.referralLevel2}%`;
+            if (referralInfoLevel3) referralInfoLevel3.textContent = `${settings.referralLevel3}%`;
+            
+            // Actualizar placeholders y valores mínimos en formularios
+            if (investmentAmountInput) {
+                investmentAmountInput.placeholder = `Mínimo: ${settings.minInvestment} USDT`;
+                investmentAmountInput.min = settings.minInvestment;
+                investmentAmountInput.value = settings.minInvestment;
+            }
+            
+            if (document.getElementById('depositAmount')) {
+                document.getElementById('depositAmount').min = settings.minInvestment;
+                document.getElementById('depositAmount').value = settings.minInvestment;
+            }
+            
+            if (document.getElementById('withdrawAmount')) {
+                document.getElementById('withdrawAmount').min = settings.minInvestment;
+                document.getElementById('withdrawAmount').value = settings.minInvestment;
+                updateWithdrawSummary();
+            }
+        }
+
+        // 3. Función de compra de objetos actualizada
+        async function buyObject() {
+            if (!state.currentUser) {
+                showToast('Debes iniciar sesión para comprar objetos', 'error');
+                return;
+            }
+
+            const investmentAmount = parseFloat(investmentAmountInput.value);
+            
+            // Validar inversión mínima
+            if (investmentAmount < state.systemSettings.minInvestment) {
+                showToast(`La inversión mínima es ${state.systemSettings.minInvestment} USDT`, 'error');
+                return;
+            }
+
+            // Validar saldo suficiente
+            if (state.userData.balance < investmentAmount) {
+                showToast('Saldo insuficiente', 'error');
+                return;
+            }
+
+            try {
+                // Crear objeto digital
+                const objectData = {
+                    userId: state.currentUser.uid,
+                    investment: investmentAmount,
+                    dailyProfitRate: state.systemSettings.dailyProfitRate,
+                    investmentPeriod: state.systemSettings.investmentPeriod,
+                    status: 'active',
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+                    lastProfitDate: firebase.firestore.FieldValue.serverTimestamp()
+                };
+
+                // Actualizar balance del usuario
+                const newBalance = state.userData.balance - investmentAmount;
+                const totalInvested = (state.userData.totalInvested || 0) + investmentAmount;
+
+                // Ejecutar transacción
+                const batch = db.batch();
+                
+                // Crear objeto
+                const objectRef = db.collection('objects').doc();
+                batch.set(objectRef, objectData);
+                
+                // Actualizar usuario
+                const userRef = db.collection('users').doc(state.currentUser.uid);
+                batch.update(userRef, {
+                    balance: newBalance,
+                    totalInvested: totalInvested
+                });
+                
+                // Crear transacción de inversión
+                const transactionRef = db.collection('transactions').doc();
+                batch.set(transactionRef, {
+                    userId: state.currentUser.uid,
+                    type: 'investment',
+                    amount: investmentAmount,
+                    status: 'completed',
+                    description: `Compra de objeto digital - Inversión: ${investmentAmount} USDT`,
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                });
+
+                await batch.commit();
+
+                // Actualizar estado local
+                state.userData.balance = newBalance;
+                state.userData.totalInvested = totalInvested;
+                updateUI();
+                
+                showToast('Objeto digital comprado exitosamente', 'success');
+                investmentAmountInput.value = state.systemSettings.minInvestment;
+                
+                // Recargar objetos
+                loadUserObjects();
+                
+            } catch (error) {
+                console.error('Error comprando objeto:', error);
+                showToast('Error al comprar objeto', 'error');
+            }
+        }
+
+        // 4. Función de cálculo de ganancias actualizada
+        async function calculateObjectProfit(object) {
+            const settings = state.systemSettings;
+            
+            const now = new Date();
+            const createdDate = object.createdAt.toDate();
+            const daysActive = Math.floor((now - createdDate) / (1000 * 60 * 60 * 24));
+            const daysToCount = Math.min(daysActive, settings.investmentPeriod);
+            
+            // Calcular ganancia usando la tasa configurada
+            const dailyProfit = (object.investment * settings.dailyProfitRate) / 100;
+            const totalProfit = dailyProfit * daysToCount;
+            
+            return {
+                daysActive,
+                maxDays: settings.investmentPeriod,
+                dailyProfit,
+                totalProfit,
+                isActive: daysActive < settings.investmentPeriod
+            };
+        }
+
+        // 5. Función de retiro actualizada para usar la comisión configurada
+        async function requestWithdrawal() {
+            if (!state.currentUser) {
+                showToast('Debes iniciar sesión para retirar', 'error');
+                return;
+            }
+
+            const amount = parseFloat(document.getElementById('withdrawAmount').value);
+            const settings = state.systemSettings;
+            
+            // Calcular monto después de comisión
+            const netAmount = amount - settings.withdrawalFee;
+            
+            if (netAmount <= 0) {
+                showToast('El monto debe ser mayor a la comisión de retiro', 'error');
+                return;
+            }
+
+            if (state.userData.balance < amount) {
+                showToast('Saldo insuficiente', 'error');
+                return;
+            }
+
+            try {
+                // Crear transacción de retiro
+                await db.collection('transactions').add({
+                    userId: state.currentUser.uid,
+                    type: 'withdrawal',
+                    amount: netAmount,
+                    fee: settings.withdrawalFee,
+                    total: amount,
+                    status: 'pending',
+                    description: `Solicitud de retiro - Neto: ${netAmount} USDT, Comisión: ${settings.withdrawalFee} USDT`,
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                });
+
+                showToast('Solicitud de retiro enviada para aprobación', 'success');
+                document.getElementById('withdrawAmount').value = '';
+                
+            } catch (error) {
+                console.error('Error solicitando retiro:', error);
+                showToast('Error al solicitar retiro', 'error');
+            }
+        }
+
+        // 6. Sistema de referidos actualizado
+        async function handleUserRegistration(userData, referralCode = null) {
+            const settings = state.systemSettings;
+            
+            let welcomeBonus = 0;
+            let referralData = null;
+
+            // Aplicar bono de bienvenida
+            if (settings.welcomeBonus > 0) {
+                welcomeBonus = settings.welcomeBonus;
+                
+                // Crear transacción de bono
+                await db.collection('transactions').add({
+                    userId: userData.uid,
+                    type: 'bonus',
+                    amount: welcomeBonus,
+                    status: 'completed',
+                    description: 'Bono de bienvenida',
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                });
+            }
+
+            // Procesar referido si existe
+            if (referralCode) {
+                referralData = await processReferral(userData.uid, referralCode, settings);
+            }
+
+            // Actualizar usuario con bonos
+            await db.collection('users').doc(userData.uid).update({
+                welcomeBonus: welcomeBonus,
+                referralData: referralData,
+                balance: firebase.firestore.FieldValue.increment(welcomeBonus)
+            });
+
+            return { welcomeBonus, referralData };
+        }
+
+        // Función para procesar referidos
+        async function processReferral(newUserId, referralCode, settings) {
+            try {
+                // Buscar usuario referidor
+                const usersRef = db.collection('users');
+                const query = usersRef.where('referralCode', '==', referralCode);
+                const snapshot = await query.get();
+                
+                if (snapshot.empty) {
+                    return null;
+                }
+
+                const referrerDoc = snapshot.docs[0];
+                const referrerData = referrerDoc.data();
+                
+                const referralData = {
+                    level1: referrerDoc.id,
+                    level2: referrerData.referralData?.level1 || null,
+                    level3: referrerData.referralData?.level2 || null,
+                    joinedAt: new Date()
+                };
+
+                // Aplicar comisiones a los referidos
+                await applyReferralCommissions(newUserId, referralData, settings);
+
+                return referralData;
+            } catch (error) {
+                console.error('Error procesando referido:', error);
+                return null;
+            }
+        }
+
+        // Aplicar comisiones de referidos
+        async function applyReferralCommissions(newUserId, referralData, settings) {
+            const batch = db.batch();
+            
+            // Nivel 1
+            if (referralData.level1 && settings.referralLevel1 > 0) {
+                const commission = settings.welcomeBonus * (settings.referralLevel1 / 100);
+                const transactionRef = db.collection('transactions').doc();
+                batch.set(transactionRef, {
+                    userId: referralData.level1,
+                    type: 'referral',
+                    amount: commission,
+                    status: 'completed',
+                    description: `Comisión por referido nivel 1 - ${commission} USDT`,
+                    fromUser: newUserId,
+                    level: 1,
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                });
+                
+                // Actualizar balance del referidor
+                const userRef = db.collection('users').doc(referralData.level1);
+                batch.update(userRef, {
+                    balance: firebase.firestore.FieldValue.increment(commission),
+                    totalReferralEarnings: firebase.firestore.FieldValue.increment(commission)
+                });
+            }
+
+            // Nivel 2
+            if (referralData.level2 && settings.referralLevel2 > 0) {
+                const commission = settings.welcomeBonus * (settings.referralLevel2 / 100);
+                const transactionRef = db.collection('transactions').doc();
+                batch.set(transactionRef, {
+                    userId: referralData.level2,
+                    type: 'referral',
+                    amount: commission,
+                    status: 'completed',
+                    description: `Comisión por referido nivel 2 - ${commission} USDT`,
+                    fromUser: newUserId,
+                    level: 2,
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                });
+                
+                const userRef = db.collection('users').doc(referralData.level2);
+                batch.update(userRef, {
+                    balance: firebase.firestore.FieldValue.increment(commission),
+                    totalReferralEarnings: firebase.firestore.FieldValue.increment(commission)
+                });
+            }
+
+            // Nivel 3
+            if (referralData.level3 && settings.referralLevel3 > 0) {
+                const commission = settings.welcomeBonus * (settings.referralLevel3 / 100);
+                const transactionRef = db.collection('transactions').doc();
+                batch.set(transactionRef, {
+                    userId: referralData.level3,
+                    type: 'referral',
+                    amount: commission,
+                    status: 'completed',
+                    description: `Comisión por referido nivel 3 - ${commission} USDT`,
+                    fromUser: newUserId,
+                    level: 3,
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                });
+                
+                const userRef = db.collection('users').doc(referralData.level3);
+                batch.update(userRef, {
+                    balance: firebase.firestore.FieldValue.increment(commission),
+                    totalReferralEarnings: firebase.firestore.FieldValue.increment(commission)
+                });
+            }
+
+            await batch.commit();
         }
 
         // Sistema de Navegación por Páginas
@@ -3900,9 +4165,9 @@
                                         if (user.referredBy) {
                                             // Calcular comisión según el nivel
                                             let commissionRate = 0;
-                                            if (currentLevel === 1) commissionRate = 0.15;
-                                            else if (currentLevel === 2) commissionRate = 0.05;
-                                            else if (currentLevel === 3) commissionRate = 0.01;
+                                            if (currentLevel === 1) commissionRate = state.systemSettings.referralLevel1 / 100;
+                                            else if (currentLevel === 2) commissionRate = state.systemSettings.referralLevel2 / 100;
+                                            else if (currentLevel === 3) commissionRate = state.systemSettings.referralLevel3 / 100;
                                             
                                             const commission = depositAmount * commissionRate;
                                             
@@ -4065,7 +4330,7 @@
                                     return db.collection('users').doc(userCredential.user.uid).set({
                                         username: email.split('@')[0], // Usar parte del email como nombre de usuario
                                         email: email,
-                                        balance: 3, // BONO DE BIENVENIDA DE 3 USDT
+                                        balance: state.systemSettings.welcomeBonus, // BONO DE BIENVENIDA CONFIGURABLE
                                         totalInvested: 0,
                                         totalEarned: 0,
                                         referralCode: generateReferralCode(),
@@ -4085,7 +4350,7 @@
                             return db.collection('users').doc(userCredential.user.uid).set({
                                 username: email.split('@')[0],
                                 email: email,
-                                balance: 3, // BONO DE BIENVENIDA DE 3 USDT
+                                balance: state.systemSettings.welcomeBonus, // BONO DE BIENVENIDA CONFIGURABLE
                                 totalInvested: 0,
                                 totalEarned: 0,
                                 referralCode: generateReferralCode(),
@@ -4105,7 +4370,7 @@
                         return db.collection('transactions').add({
                             userId: state.currentUser.uid,
                             type: 'bonus',
-                            amount: 3,
+                            amount: state.systemSettings.welcomeBonus,
                             status: 'completed',
                             createdAt: firebase.firestore.FieldValue.serverTimestamp(),
                             id: generateTransactionId(),
@@ -4115,7 +4380,7 @@
                     .then(() => {
                         loadUserData();
                         authModal.style.display = 'none';
-                        showToast('¡Cuenta creada exitosamente! Se te ha acreditado un bono de bienvenida de 3 USDT.', 'success');
+                        showToast(`¡Cuenta creada exitosamente! Se te ha acreditado un bono de bienvenida de ${state.systemSettings.welcomeBonus} USDT.`, 'success');
                     })
                     .catch((error) => {
                         handleFirebaseError(error, 'Error al crear la cuenta');
@@ -4229,7 +4494,7 @@
                     if (obj.status === 'active') {
                         const createdAt = obj.createdAt ? obj.createdAt.toDate() : new Date();
                         const daysActive = Math.floor((now - createdAt) / (1000 * 60 * 60 * 24));
-                        const daysRemaining = Math.max(0, 15 - daysActive);
+                        const daysRemaining = Math.max(0, state.systemSettings.investmentPeriod - daysActive);
                         if (daysRemaining > remainingTime) {
                             remainingTime = daysRemaining;
                         }
@@ -4433,11 +4698,11 @@
             state.objects.forEach(obj => {
                 const createdAt = obj.createdAt ? obj.createdAt.toDate() : new Date();
                 const daysActive = Math.floor((new Date() - createdAt) / (1000 * 60 * 60 * 24));
-                const daysRemaining = Math.max(0, 15 - daysActive);
-                const totalEarned = calculateTotalProfit(obj.investment, Math.min(daysActive, 15));
+                const daysRemaining = Math.max(0, state.systemSettings.investmentPeriod - daysActive);
+                const totalEarned = calculateTotalProfit(obj.investment, Math.min(daysActive, state.systemSettings.investmentPeriod));
                 const dailyProfit = calculateDailyProfit(obj.investment);
                 const isActive = daysRemaining > 0;
-                const progressPercentage = Math.min(100, (daysActive / 15) * 100);
+                const progressPercentage = Math.min(100, (daysActive / state.systemSettings.investmentPeriod) * 100);
                 
                 const objectCard = document.createElement('div');
                 objectCard.className = 'object-card lazy-load';
@@ -4455,7 +4720,7 @@
                         </div>
                         <div class="detail-item">
                             <span class="detail-label">Días activo</span>
-                            <span class="detail-value">${daysActive}/15</span>
+                            <span class="detail-value">${daysActive}/${state.systemSettings.investmentPeriod}</span>
                         </div>
                         <div class="detail-item">
                             <span class="detail-label">Ganancia diaria</span>
@@ -4469,7 +4734,7 @@
                     <div class="progress-container">
                         <div class="progress-header">
                             <span>Progreso</span>
-                            <span>${daysActive}/15 días</span>
+                            <span>${daysActive}/${state.systemSettings.investmentPeriod} días</span>
                         </div>
                         <div class="progress-bar">
                             <div class="progress-fill" style="width: ${progressPercentage}%"></div>
@@ -4592,8 +4857,8 @@
             }
             
             const investment = parseFloat(investmentAmountInput.value);
-            if (isNaN(investment) || investment < 10) {
-                showToast('La inversión mínima es 10 USDT', 'error');
+            if (isNaN(investment) || investment < state.systemSettings.minInvestment) {
+                showToast(`La inversión mínima es ${state.systemSettings.minInvestment} USDT`, 'error');
                 return;
             }
 
@@ -4602,50 +4867,8 @@
                 return;
             }
 
-            const objectData = {
-                userId: state.currentUser.uid,
-                investment: investment,
-                createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-                status: 'active'
-            };
-
-            // Actualizar balance del usuario
-            const newBalance = state.userData.balance - investment;
-            const newTotalInvested = (state.userData.totalInvested || 0) + investment;
-
-            db.collection('objects').add(objectData)
-                .then((docRef) => {
-                    return db.collection('users').doc(state.currentUser.uid).update({
-                        balance: newBalance,
-                        totalInvested: newTotalInvested
-                    });
-                })
-                .then(() => {
-                    // Invalidar cache
-                    state.cache.objects = null;
-                    
-                    // Crear transacción de inversión
-                    return db.collection('transactions').add({
-                        userId: state.currentUser.uid,
-                        type: 'investment',
-                        amount: investment,
-                        status: 'completed',
-                        createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-                        id: generateTransactionId()
-                    });
-                })
-                .then(() => {
-                    // Invalidar cache de transacciones
-                    state.cache.transactions = null;
-                    
-                    loadUserData();
-                    loadUserObjects();
-                    investmentAmountInput.value = '10';
-                    showToast('¡Objeto creado exitosamente!', 'success');
-                })
-                .catch((error) => {
-                    handleFirebaseError(error, 'Error al crear el objeto');
-                });
+            // Usar la función actualizada de compra de objetos
+            buyObject();
         }
 
         // Sistema de depósitos optimizado
@@ -4681,8 +4904,8 @@
             document.getElementById('confirmDeposit').addEventListener('click', () => {
                 const amount = parseFloat(document.getElementById('depositAmount').value);
                 
-                if (isNaN(amount) || amount < 10) {
-                    showToast('El depósito mínimo es 10 USDT', 'error');
+                if (isNaN(amount) || amount < state.systemSettings.minInvestment) {
+                    showToast(`El depósito mínimo es ${state.systemSettings.minInvestment} USDT`, 'error');
                     return;
                 }
 
@@ -4722,12 +4945,12 @@
                     return;
                 }
 
-                if (state.userData.balance < 10) {
-                    showToast('Saldo insuficiente. El retiro mínimo es 10 USDT', 'error');
+                if (state.userData.balance < state.systemSettings.minInvestment) {
+                    showToast(`Saldo insuficiente. El retiro mínimo es ${state.systemSettings.minInvestment} USDT`, 'error');
                     return;
                 }
 
-                document.getElementById('withdrawAmount').value = '10';
+                document.getElementById('withdrawAmount').value = state.systemSettings.minInvestment;
                 document.getElementById('withdrawAddress').value = '';
                 updateWithdrawSummary();
                 withdrawModal.style.display = 'flex';
@@ -4739,8 +4962,8 @@
                 const amount = parseFloat(document.getElementById('withdrawAmount').value);
                 const address = document.getElementById('withdrawAddress').value.trim();
                 
-                if (isNaN(amount) || amount < 10) {
-                    showToast('El retiro mínimo es 10 USDT', 'error');
+                if (isNaN(amount) || amount < state.systemSettings.minInvestment) {
+                    showToast(`El retiro mínimo es ${state.systemSettings.minInvestment} USDT`, 'error');
                     return;
                 }
 
@@ -4754,46 +4977,17 @@
                     return;
                 }
 
-                // Crear transacción de retiro
-                const netAmount = amount - 1; // Comisión de 1 USDT
-
-                db.collection('transactions').add({
-                    userId: state.currentUser.uid,
-                    type: 'withdrawal',
-                    amount: amount,
-                    netAmount: netAmount,
-                    address: address,
-                    status: 'pending',
-                    createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-                    id: generateTransactionId(),
-                    network: 'TRC20'
-                })
-                .then(() => {
-                    // Invalidar cache de transacciones
-                    state.cache.transactions = null;
-                    
-                    // Actualizar balance del usuario
-                    return db.collection('users').doc(state.currentUser.uid).update({
-                        balance: state.userData.balance - amount
-                    });
-                })
-                .then(() => {
-                    withdrawModal.style.display = 'none';
-                    showToast('Retiro solicitado. Será procesado en las próximas 24 horas.', 'success');
-                    loadUserData();
-                    loadUserTransactions();
-                })
-                .catch((error) => {
-                    handleFirebaseError(error, 'Error al solicitar el retiro');
-                });
+                // Usar la función actualizada de retiro
+                requestWithdrawal();
             });
         }
 
         function updateWithdrawSummary() {
             const amount = parseFloat(document.getElementById('withdrawAmount').value) || 0;
-            const netAmount = Math.max(0, amount - 1);
+            const netAmount = Math.max(0, amount - state.systemSettings.withdrawalFee);
             
             document.getElementById('withdrawSummaryAmount').textContent = formatCurrency(amount);
+            document.getElementById('withdrawSummaryFee').textContent = formatCurrency(state.systemSettings.withdrawalFee);
             document.getElementById('withdrawSummaryTotal').textContent = formatCurrency(netAmount);
         }
 
@@ -4827,7 +5021,7 @@
                 if (obj.status === 'active') {
                     const createdAt = obj.createdAt ? obj.createdAt.toDate() : new Date();
                     const daysActive = Math.floor((now - createdAt) / (1000 * 60 * 60 * 24));
-                    const daysToCount = Math.min(daysActive, 15);
+                    const daysToCount = Math.min(daysActive, state.systemSettings.investmentPeriod);
                     const profit = calculateTotalProfit(obj.investment, daysToCount);
                     totalProfit += profit;
                 }
@@ -5263,9 +5457,6 @@
             
             // Configurar listeners para el chat
             setupChatListeners();
-            
-            // Configurar sistema de grabación de audio
-            setupAudioRecording();
         }
 
         function setupChatListeners() {
@@ -5304,7 +5495,7 @@
 
             // Botón de información del chat
             chatInfoBtn.addEventListener('click', () => {
-                showToast('El chat grupal permite comunicarte con otros usuarios de la plataforma. Puedes enviar mensajes de texto y audio.', 'info');
+                showToast('El chat grupal permite comunicarte con otros usuarios de la plataforma. Puedes enviar mensajes de texto.', 'info');
             });
         }
 
@@ -5381,54 +5572,52 @@
             
             state.chat.messages.forEach(message => {
                 const messageElement = document.createElement('div');
-                messageElement.className = `message ${message.userId === state.currentUser.uid ? 'own' : 'other'}`;
+                messageElement.className = `message ${message.userId === state.currentUser.uid ? 'own' : 'other'} ${message.unread ? 'unread' : ''}`;
                 
                 const messageTime = message.timestamp ? message.timestamp.toDate() : new Date();
                 const timeString = messageTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
                 
-                if (message.type === 'audio') {
-                    // Mensaje de audio
-                    messageElement.innerHTML = `
-                        <div class="message-header">
-                            <span class="message-sender">${message.username}</span>
-                            <span class="message-time">${timeString}</span>
-                        </div>
-                        <div class="message-content">
-                            <div class="audio-message">
-                                <button class="audio-btn play-audio" data-audio="${message.audioUrl}">
-                                    <i class="fas fa-play"></i>
-                                </button>
-                                <div class="audio-player">
-                                    <div class="audio-progress"></div>
-                                </div>
-                                <span style="font-size: 12px; opacity: 0.8;">${formatAudioDuration(message.duration || 0)}</span>
-                            </div>
-                        </div>
-                    `;
-                } else {
-                    // Mensaje de texto
-                    messageElement.innerHTML = `
-                        <div class="message-header">
-                            <span class="message-sender">${message.username}</span>
-                            <span class="message-time">${timeString}</span>
-                        </div>
-                        <div class="message-content">${escapeHtml(message.text)}</div>
-                    `;
-                }
+                // Mensaje de texto
+                messageElement.innerHTML = `
+                    <div class="message-header">
+                        <span class="message-sender">${message.username}</span>
+                        <span class="message-time">${timeString}</span>
+                    </div>
+                    <div class="message-content">${escapeHtml(message.text)}</div>
+                    <div class="message-actions">
+                        ${message.userId === state.currentUser.uid ? 
+                            `<button class="message-action delete" data-id="${message.id}">
+                                <i class="fas fa-trash"></i> Eliminar
+                            </button>` : 
+                            `<button class="message-action unread" data-id="${message.id}">
+                                <i class="fas fa-envelope"></i> Marcar como no leído
+                            </button>`
+                        }
+                    </div>
+                `;
                 
                 chatMessages.appendChild(messageElement);
+                
+                // Configurar listeners para los botones de acción
+                const deleteBtn = messageElement.querySelector('.message-action.delete');
+                if (deleteBtn) {
+                    deleteBtn.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        deleteMessage(message.id);
+                    });
+                }
+                
+                const unreadBtn = messageElement.querySelector('.message-action.unread');
+                if (unreadBtn) {
+                    unreadBtn.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        markMessageAsUnread(message.id);
+                    });
+                }
             });
             
             // Hacer scroll al final
             chatMessages.scrollTop = chatMessages.scrollHeight;
-            
-            // Configurar listeners para los botones de audio
-            document.querySelectorAll('.play-audio').forEach(button => {
-                button.addEventListener('click', (e) => {
-                    const audioUrl = e.currentTarget.getAttribute('data-audio');
-                    playAudioMessage(audioUrl, e.currentTarget);
-                });
-            });
         }
 
         function renderTypingIndicator() {
@@ -5470,7 +5659,8 @@
                 username: state.userData.username,
                 text: text,
                 type: 'text',
-                timestamp: firebase.firestore.FieldValue.serverTimestamp()
+                timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+                unread: false
             };
             
             db.collection('chat_messages').add(messageData)
@@ -5489,239 +5679,48 @@
                 });
         }
 
-        function setupAudioRecording() {
-            recordAudioBtn.addEventListener('click', startAudioRecording);
-            stopRecordingBtn.addEventListener('click', stopAudioRecording);
-            cancelRecordingBtn.addEventListener('click', cancelAudioRecording);
+        function deleteMessage(messageId) {
+            if (!state.currentUser) return;
             
-            // Cerrar modal al hacer clic fuera
-            window.addEventListener('click', (event) => {
-                if (event.target === recordingModal) {
-                    cancelAudioRecording();
-                }
-            });
-        }
-
-        function startAudioRecording() {
-            // Verificar si el navegador soporta la API de grabación
-            if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
-                showToast('Tu navegador no soporta la grabación de audio', 'error');
+            // Verificar que el mensaje pertenece al usuario actual
+            const message = state.chat.messages.find(m => m.id === messageId);
+            if (!message || message.userId !== state.currentUser.uid) {
+                showToast('No puedes eliminar este mensaje', 'error');
                 return;
             }
             
-            // Solicitar permiso para acceder al micrófono
-            navigator.mediaDevices.getUserMedia({ audio: true })
-                .then((stream) => {
-                    state.audioRecording.isRecording = true;
-                    state.audioRecording.audioChunks = [];
-                    state.audioRecording.recordingTime = 0;
-                    
-                    // Crear visualizador de audio
-                    createAudioVisualizer(stream);
-                    
-                    // Configurar MediaRecorder
-                    state.audioRecording.mediaRecorder = new MediaRecorder(stream);
-                    
-                    // Recopilar datos de audio
-                    state.audioRecording.mediaRecorder.ondataavailable = (event) => {
-                        if (event.data.size > 0) {
-                            state.audioRecording.audioChunks.push(event.data);
-                        }
-                    };
-                    
-                    // Iniciar grabación
-                    state.audioRecording.mediaRecorder.start();
-                    
-                    // Mostrar modal de grabación
-                    recordingModal.style.display = 'flex';
-                    
-                    // Iniciar temporizador
-                    state.audioRecording.timerInterval = setInterval(() => {
-                        state.audioRecording.recordingTime++;
-                        updateRecordingTimer();
-                    }, 1000);
-                })
-                .catch((error) => {
-                    console.error('Error al acceder al micrófono:', error);
-                    showToast('No se pudo acceder al micrófono', 'error');
-                });
-        }
-
-        function stopAudioRecording() {
-            if (!state.audioRecording.isRecording || !state.audioRecording.mediaRecorder) return;
-            
-            // Detener grabación
-            state.audioRecording.mediaRecorder.stop();
-            state.audioRecording.isRecording = false;
-            
-            // Limpiar intervalos
-            clearInterval(state.audioRecording.timerInterval);
-            
-            // Detener stream de audio
-            state.audioRecording.mediaRecorder.stream.getTracks().forEach(track => track.stop());
-            
-            // Ocultar modal
-            recordingModal.style.display = 'none';
-            
-            // Procesar audio grabado
-            processRecordedAudio();
-        }
-
-        function cancelAudioRecording() {
-            if (!state.audioRecording.isRecording) return;
-            
-            // Detener grabación
-            state.audioRecording.mediaRecorder.stop();
-            state.audioRecording.isRecording = false;
-            
-            // Limpiar intervalos
-            clearInterval(state.audioRecording.timerInterval);
-            
-            // Detener stream de audio
-            state.audioRecording.mediaRecorder.stream.getTracks().forEach(track => track.stop());
-            
-            // Limpiar datos
-            state.audioRecording.audioChunks = [];
-            
-            // Ocultar modal
-            recordingModal.style.display = 'none';
-            
-            showToast('Grabación cancelada', 'info');
-        }
-
-        function updateRecordingTimer() {
-            const minutes = Math.floor(state.audioRecording.recordingTime / 60);
-            const seconds = state.audioRecording.recordingTime % 60;
-            recordingTimer.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-            
-            // Limitar grabación a 2 minutos
-            if (state.audioRecording.recordingTime >= 120) {
-                stopAudioRecording();
-            }
-        }
-
-        function createAudioVisualizer(stream) {
-            // Limpiar visualizador anterior
-            recordingVisualizer.innerHTML = '';
-            
-            // Crear contexto de audio
-            const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-            const analyser = audioContext.createAnalyser();
-            const source = audioContext.createMediaStreamSource(stream);
-            
-            source.connect(analyser);
-            analyser.fftSize = 256;
-            
-            const bufferLength = analyser.frequencyBinCount;
-            const dataArray = new Uint8Array(bufferLength);
-            
-            // Crear barras del visualizador
-            for (let i = 0; i < 20; i++) {
-                const bar = document.createElement('div');
-                bar.className = 'visualizer-bar';
-                recordingVisualizer.appendChild(bar);
-            }
-            
-            // Función para actualizar el visualizador
-            function updateVisualizer() {
-                if (!state.audioRecording.isRecording) return;
-                
-                analyser.getByteFrequencyData(dataArray);
-                
-                const bars = recordingVisualizer.querySelectorAll('.visualizer-bar');
-                const step = Math.floor(bufferLength / bars.length);
-                
-                bars.forEach((bar, index) => {
-                    const value = dataArray[index * step] / 255;
-                    const height = Math.max(5, value * 100);
-                    bar.style.height = `${height}%`;
-                    bar.style.background = `linear-gradient(to top, var(--primary), var(--primary-light))`;
-                });
-                
-                requestAnimationFrame(updateVisualizer);
-            }
-            
-            updateVisualizer();
-        }
-
-        function processRecordedAudio() {
-            if (state.audioRecording.audioChunks.length === 0) {
-                showToast('No se grabó audio', 'error');
-                return;
-            }
-            
-            // Crear blob de audio
-            const audioBlob = new Blob(state.audioRecording.audioChunks, { type: 'audio/webm' });
-            
-            // Subir audio a Firebase Storage
-            const audioName = `audio_${state.currentUser.uid}_${Date.now()}.webm`;
-            const audioRef = storage.ref().child(`chat_audio/${audioName}`);
-            
-            audioRef.put(audioBlob)
-                .then((snapshot) => {
-                    return snapshot.ref.getDownloadURL();
-                })
-                .then((audioUrl) => {
-                    // Crear mensaje de audio
-                    const messageData = {
-                        userId: state.currentUser.uid,
-                        username: state.userData.username,
-                        audioUrl: audioUrl,
-                        duration: state.audioRecording.recordingTime,
-                        type: 'audio',
-                        timestamp: firebase.firestore.FieldValue.serverTimestamp()
-                    };
-                    
-                    return db.collection('chat_messages').add(messageData);
-                })
+            // Eliminar mensaje de la base de datos
+            db.collection('chat_messages').doc(messageId).delete()
                 .then(() => {
-                    showToast('Mensaje de audio enviado', 'success');
+                    showToast('Mensaje eliminado', 'success');
                 })
                 .catch((error) => {
-                    console.error('Error al procesar audio:', error);
-                    showToast('Error al enviar mensaje de audio', 'error');
+                    console.error('Error al eliminar mensaje:', error);
+                    showToast('Error al eliminar mensaje', 'error');
                 });
         }
 
-        function playAudioMessage(audioUrl, button) {
-            const audio = new Audio(audioUrl);
-            const progressBar = button.parentElement.querySelector('.audio-progress');
-            const playIcon = button.querySelector('i');
+        function markMessageAsUnread(messageId) {
+            if (!state.currentUser) return;
             
-            // Cambiar ícono a pausa
-            playIcon.className = 'fas fa-pause';
+            // Verificar que el mensaje NO pertenece al usuario actual
+            const message = state.chat.messages.find(m => m.id === messageId);
+            if (!message || message.userId === state.currentUser.uid) {
+                showToast('No puedes marcar tus propios mensajes como no leídos', 'error');
+                return;
+            }
             
-            // Reproducir audio
-            audio.play();
-            
-            // Actualizar barra de progreso
-            audio.addEventListener('timeupdate', () => {
-                const progress = (audio.currentTime / audio.duration) * 100;
-                progressBar.style.width = `${progress}%`;
+            // Marcar mensaje como no leído en la base de datos
+            db.collection('chat_messages').doc(messageId).update({
+                unread: true
+            })
+            .then(() => {
+                showToast('Mensaje marcado como no leído', 'success');
+            })
+            .catch((error) => {
+                console.error('Error al marcar mensaje como no leído:', error);
+                showToast('Error al marcar mensaje como no leído', 'error');
             });
-            
-            // Restaurar cuando termine
-            audio.addEventListener('ended', () => {
-                playIcon.className = 'fas fa-play';
-                progressBar.style.width = '0%';
-            });
-            
-            // Pausar al hacer clic de nuevo
-            button.onclick = () => {
-                if (audio.paused) {
-                    audio.play();
-                    playIcon.className = 'fas fa-pause';
-                } else {
-                    audio.pause();
-                    playIcon.className = 'fas fa-play';
-                }
-            };
-        }
-
-        function formatAudioDuration(seconds) {
-            const minutes = Math.floor(seconds / 60);
-            const remainingSeconds = seconds % 60;
-            return `${minutes}:${remainingSeconds.toString().padStart(2, '0')}`;
         }
 
         function escapeHtml(text) {
@@ -6038,7 +6037,10 @@
         });
 
         // Inicialización optimizada
-        function init() {
+        async function init() {
+            // Primero cargar la configuración del sistema
+            await loadSystemSettings();
+            
             setupAuthListeners();
             setupEventListeners();
             setupDepositSystem();
