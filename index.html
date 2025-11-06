@@ -2204,6 +2204,90 @@
                 height: 40px;
             }
         }
+
+        /* Estilos para el sistema Yape */
+        .payment-method-selector {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .payment-method-btn {
+            flex: 1;
+            padding: 12px;
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--border-radius);
+            color: var(--light);
+            cursor: pointer;
+            transition: var(--transition);
+            text-align: center;
+            font-weight: 600;
+        }
+
+        .payment-method-btn.active {
+            background: var(--primary);
+            color: white;
+            box-shadow: var(--glow);
+        }
+
+        .payment-method-btn:hover {
+            background: rgba(255, 9, 108, 0.2);
+        }
+
+        .yape-qr-container {
+            text-align: center;
+            margin: 20px 0;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: var(--border-radius);
+            border: 1px solid var(--glass-border);
+        }
+
+        .yape-qr-image {
+            max-width: 250px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            margin-bottom: 15px;
+        }
+
+        .yape-phone {
+            font-size: 18px;
+            font-weight: bold;
+            color: var(--primary);
+            margin-bottom: 15px;
+            font-family: var(--font-heading);
+        }
+
+        .yape-steps {
+            text-align: left;
+            margin-top: 20px;
+        }
+
+        .yape-step {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 15px;
+            gap: 15px;
+        }
+
+        .yape-step-number {
+            background: var(--primary);
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            flex-shrink: 0;
+            box-shadow: 0 0 10px rgba(255, 9, 108, 0.5);
+        }
+
+        .yape-step-content {
+            flex: 1;
+        }
     </style>
 </head>
 <body>
@@ -2900,11 +2984,20 @@
     <div id="depositModal" class="modal">
         <div class="modal-content">
             <button class="modal-close" id="closeDepositModal">&times;</button>
-            <h2 class="modal-title">Depositar USDT</h2>
+            <h2 class="modal-title">Depositar Fondos</h2>
             
             <div class="info-alert">
                 <i class="fas fa-info-circle"></i> 
-                <div>Depósito mínimo: <span id="minInvestmentDisplay">10</span> USDT. Solo se aceptan depósitos en red TRC20.</div>
+                <div>Depósito mínimo: <span id="minInvestmentDisplay">10</span> USDT. Selecciona tu método de pago preferido.</div>
+            </div>
+
+            <div class="payment-method-selector">
+                <button class="payment-method-btn active" data-method="usdt">
+                    <i class="fab fa-usd"></i> USDT
+                </button>
+                <button class="payment-method-btn" data-method="yape">
+                    <i class="fas fa-mobile-alt"></i> Yape
+                </button>
             </div>
 
             <div class="form-group">
@@ -2912,13 +3005,65 @@
                 <input type="number" id="depositAmount" min="10" step="1" placeholder="10" value="10">
             </div>
 
-            <div class="address-box">
-                <strong>Dirección para depósito:</strong><br>
-                TCPHX13kbYT3yabcTyE9TANCASd6cdRqxx
-                <button class="copy-address-btn" id="copyDepositAddress">
-                    <i class="fas fa-copy"></i>
-                    Copiar
-                </button>
+            <!-- Sección USDT -->
+            <div id="usdtSection" class="payment-section">
+                <div class="address-box">
+                    <strong>Dirección para depósito USDT (TRC20):</strong><br>
+                    TCPHX13kbYT3yabcTyE9TANCASd6cdRqxx
+                    <button class="copy-address-btn" id="copyDepositAddress">
+                        <i class="fas fa-copy"></i>
+                        Copiar
+                    </button>
+                </div>
+                <div class="warning-alert">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <div>¡Atención! Solo se aceptan depósitos en red TRC20. Los depósitos en otras redes se perderán.</div>
+                </div>
+            </div>
+
+            <!-- Sección Yape -->
+            <div id="yapeSection" class="payment-section" style="display: none;">
+                <div class="yape-qr-container">
+                    <img src="https://i.postimg.cc/ryg1d937/IMG-0775.jpg" alt="Código QR Yape" class="yape-qr-image">
+                    <div class="yape-phone">960202345</div>
+                    <p>Escanea el código QR con Yape o envía al número indicado</p>
+                </div>
+                
+                <div class="yape-steps">
+                    <div class="yape-step">
+                        <div class="yape-step-number">1</div>
+                        <div class="yape-step-content">
+                            <strong>Realiza el pago</strong>
+                            <p>Escanea el código QR o envía al número 960202345 desde tu app Yape</p>
+                        </div>
+                    </div>
+                    <div class="yape-step">
+                        <div class="yape-step-number">2</div>
+                        <div class="yape-step-content">
+                            <strong>Envía el comprobante</strong>
+                            <p>Toma captura del comprobante y envíala por Telegram a @ayudarapida1</p>
+                        </div>
+                    </div>
+                    <div class="yape-step">
+                        <div class="yape-step-number">3</div>
+                        <div class="yape-step-content">
+                            <strong>Conversión automática</strong>
+                            <p>El monto se convertirá a USDT según la tasa de cambio en tiempo real</p>
+                        </div>
+                    </div>
+                    <div class="yape-step">
+                        <div class="yape-step-number">4</div>
+                        <div class="yape-step-content">
+                            <strong>Aprobación</strong>
+                            <p>El administrador verificará y aprobará tu depósito en minutos</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="info-alert">
+                    <i class="fas fa-sync-alt"></i>
+                    <div><strong>Tasa de cambio actual:</strong> <span id="exchangeRate">1 PEN = 0.27 USDT</span> (se actualiza automáticamente)</div>
+                </div>
             </div>
 
             <button class="btn" id="confirmDeposit">
@@ -2932,11 +3077,20 @@
     <div id="withdrawModal" class="modal">
         <div class="modal-content">
             <button class="modal-close" id="closeWithdrawModal">&times;</button>
-            <h2 class="modal-title">Retirar USDT</h2>
+            <h2 class="modal-title">Retirar Fondos</h2>
             
             <div class="info-alert">
                 <i class="fas fa-info-circle"></i> 
                 <div>Retiro mínimo: <span id="minWithdrawalDisplay">10</span> USDT. Comisión de red: <span id="withdrawalFeeDisplay">1</span> USDT.</div>
+            </div>
+
+            <div class="payment-method-selector">
+                <button class="payment-method-btn active" data-method="usdt">
+                    <i class="fab fa-usd"></i> USDT
+                </button>
+                <button class="payment-method-btn" data-method="yape">
+                    <i class="fas fa-mobile-alt"></i> Yape
+                </button>
             </div>
 
             <div class="form-group">
@@ -2944,9 +3098,24 @@
                 <input type="number" id="withdrawAmount" min="10" step="1" placeholder="10" value="10">
             </div>
 
-            <div class="form-group">
-                <label for="withdrawAddress">Dirección de Retiro (TRC20)</label>
-                <input type="text" id="withdrawAddress" placeholder="TU_Direccion_TRC20">
+            <!-- Sección USDT -->
+            <div id="withdrawUsdtSection" class="payment-section">
+                <div class="form-group">
+                    <label for="withdrawAddress">Dirección de Retiro (TRC20)</label>
+                    <input type="text" id="withdrawAddress" placeholder="TU_Direccion_TRC20">
+                </div>
+            </div>
+
+            <!-- Sección Yape -->
+            <div id="withdrawYapeSection" class="payment-section" style="display: none;">
+                <div class="form-group">
+                    <label for="yapePhoneNumber">Número de teléfono Yape</label>
+                    <input type="text" id="yapePhoneNumber" placeholder="+51 123 456 789">
+                </div>
+                <div class="info-alert">
+                    <i class="fas fa-info-circle"></i>
+                    <div>El retiro por Yape puede tomar hasta 24 horas para ser procesado. Se aplicará la tasa de cambio del día.</div>
+                </div>
             </div>
 
             <div class="form-group">
@@ -3367,6 +3536,11 @@
                 referralLevel2: 5,
                 referralLevel3: 1,
                 welcomeBonus: 3
+            },
+            // Estado del sistema de pago
+            payment: {
+                method: 'usdt', // 'usdt' o 'yape'
+                exchangeRate: 0.27 // 1 PEN = 0.27 USDT
             }
         };
 
@@ -3488,6 +3662,15 @@
         const referralInfoLevel2 = document.getElementById('referralInfoLevel2');
         const referralInfoLevel3 = document.getElementById('referralInfoLevel3');
 
+        // Elementos para el sistema Yape
+        const paymentMethodBtns = document.querySelectorAll('.payment-method-btn');
+        const usdtSection = document.getElementById('usdtSection');
+        const yapeSection = document.getElementById('yapeSection');
+        const withdrawUsdtSection = document.getElementById('withdrawUsdtSection');
+        const withdrawYapeSection = document.getElementById('withdrawYapeSection');
+        const exchangeRateElement = document.getElementById('exchangeRate');
+        const yapePhoneNumber = document.getElementById('yapePhoneNumber');
+
         // Funciones de utilidad optimizadas
         function formatCurrency(amount) {
             return `${parseFloat(amount).toFixed(2)} USDT`;
@@ -3562,6 +3745,124 @@
             
             showToast(message, 'error');
             return message;
+        }
+
+        // ============================================
+        // SISTEMA DE PAGO YAPE
+        // ============================================
+
+        // Configurar selectores de método de pago
+        function setupPaymentMethodSelectors() {
+            // Selector en modal de depósito
+            paymentMethodBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    // Remover clase active de todos los botones
+                    paymentMethodBtns.forEach(b => b.classList.remove('active'));
+                    
+                    // Agregar clase active al botón clickeado
+                    btn.classList.add('active');
+                    
+                    // Actualizar método de pago
+                    state.payment.method = btn.getAttribute('data-method');
+                    
+                    // Mostrar/ocultar secciones según el método seleccionado
+                    if (state.payment.method === 'usdt') {
+                        usdtSection.style.display = 'block';
+                        yapeSection.style.display = 'none';
+                        withdrawUsdtSection.style.display = 'block';
+                        withdrawYapeSection.style.display = 'none';
+                    } else {
+                        usdtSection.style.display = 'none';
+                        yapeSection.style.display = 'block';
+                        withdrawUsdtSection.style.display = 'none';
+                        withdrawYapeSection.style.display = 'block';
+                    }
+                });
+            });
+        }
+
+        // Actualizar tasa de cambio en tiempo real
+        function updateExchangeRate() {
+            // Simular obtención de tasa de cambio (en una implementación real, esto vendría de una API)
+            // Para este ejemplo, usamos un valor fijo con pequeñas variaciones
+            const baseRate = 0.27; // 1 PEN = 0.27 USDT
+            const variation = (Math.random() - 0.5) * 0.01; // ±0.5%
+            const currentRate = baseRate + variation;
+            
+            state.payment.exchangeRate = currentRate;
+            exchangeRateElement.textContent = `1 PEN = ${currentRate.toFixed(4)} USDT`;
+            
+            // Actualizar cada 30 segundos
+            setTimeout(updateExchangeRate, 30000);
+        }
+
+        // Procesar depósito por Yape
+        async function processYapeDeposit(amount) {
+            if (!state.currentUser) {
+                showToast('Debes iniciar sesión para realizar un depósito', 'error');
+                return;
+            }
+
+            try {
+                // Crear transacción de depósito pendiente por Yape
+                await db.collection('transactions').add({
+                    userId: state.currentUser.uid,
+                    type: 'deposit',
+                    amount: amount,
+                    method: 'yape',
+                    status: 'pending',
+                    exchangeRate: state.payment.exchangeRate,
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+                    id: generateTransactionId(),
+                    description: `Depósito por Yape - ${amount} USDT (Tasa: ${state.payment.exchangeRate})`
+                });
+
+                // Invalidar cache de transacciones
+                state.cache.transactions = null;
+                
+                // Procesar comisiones de referidos
+                processReferralCommission(amount, state.currentUser.uid);
+                
+                depositModal.style.display = 'none';
+                showToast('Depósito por Yape registrado. Envía el comprobante por Telegram para su aprobación.', 'success');
+                loadUserTransactions();
+            } catch (error) {
+                handleFirebaseError(error, 'Error al registrar el depósito por Yape');
+            }
+        }
+
+        // Procesar retiro por Yape
+        async function processYapeWithdrawal(amount, phoneNumber) {
+            if (!state.currentUser) {
+                showToast('Debes iniciar sesión para solicitar un retiro', 'error');
+                return;
+            }
+
+            if (state.userData.balance < amount) {
+                showToast('Saldo insuficiente', 'error');
+                return;
+            }
+
+            try {
+                // Crear transacción de retiro pendiente por Yape
+                await db.collection('transactions').add({
+                    userId: state.currentUser.uid,
+                    type: 'withdrawal',
+                    amount: amount,
+                    method: 'yape',
+                    status: 'pending',
+                    phoneNumber: phoneNumber,
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+                    id: generateTransactionId(),
+                    description: `Retiro por Yape - ${amount} USDT a ${phoneNumber}`
+                });
+
+                showToast('Solicitud de retiro por Yape enviada para aprobación', 'success');
+                withdrawModal.style.display = 'none';
+                
+            } catch (error) {
+                handleFirebaseError(error, 'Error al solicitar retiro por Yape');
+            }
         }
 
         // ============================================
@@ -3787,19 +4088,38 @@
             }
 
             try {
-                // Crear transacción de retiro
-                await db.collection('transactions').add({
-                    userId: state.currentUser.uid,
-                    type: 'withdrawal',
-                    amount: netAmount,
-                    fee: settings.withdrawalFee,
-                    total: amount,
-                    status: 'pending',
-                    description: `Solicitud de retiro - Neto: ${netAmount} USDT, Comisión: ${settings.withdrawalFee} USDT`,
-                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
-                });
+                // Determinar método de retiro
+                if (state.payment.method === 'yape') {
+                    const phoneNumber = document.getElementById('yapePhoneNumber').value.trim();
+                    if (!phoneNumber) {
+                        showToast('Por favor ingresa tu número de teléfono Yape', 'error');
+                        return;
+                    }
+                    await processYapeWithdrawal(netAmount, phoneNumber);
+                } else {
+                    // Retiro por USDT
+                    const address = document.getElementById('withdrawAddress').value.trim();
+                    if (!address) {
+                        showToast('Por favor ingresa una dirección de retiro válida', 'error');
+                        return;
+                    }
+                    
+                    // Crear transacción de retiro
+                    await db.collection('transactions').add({
+                        userId: state.currentUser.uid,
+                        type: 'withdrawal',
+                        amount: netAmount,
+                        fee: settings.withdrawalFee,
+                        total: amount,
+                        status: 'pending',
+                        description: `Solicitud de retiro - Neto: ${netAmount} USDT, Comisión: ${settings.withdrawalFee} USDT`,
+                        address: address,
+                        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                    });
 
-                showToast('Solicitud de retiro enviada para aprobación', 'success');
+                    showToast('Solicitud de retiro enviada para aprobación', 'success');
+                }
+                
                 document.getElementById('withdrawAmount').value = '';
                 
             } catch (error) {
@@ -4909,31 +5229,37 @@
                     return;
                 }
 
-                // Crear transacción de depósito pendiente
-                db.collection('transactions').add({
-                    userId: state.currentUser.uid,
-                    type: 'deposit',
-                    amount: amount,
-                    status: 'pending',
-                    createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-                    id: generateTransactionId(),
-                    address: 'TCPHX13kbYT3yabcTyE9TANCASd6cdRqxx',
-                    network: 'TRC20'
-                })
-                .then(() => {
-                    // Invalidar cache de transacciones
-                    state.cache.transactions = null;
-                    
-                    // Procesar comisiones de referidos
-                    processReferralCommission(amount, state.currentUser.uid);
-                    
-                    depositModal.style.display = 'none';
-                    showToast('Depósito registrado. Los fondos se acreditarán después de la confirmación.', 'success');
-                    loadUserTransactions();
-                })
-                .catch((error) => {
-                    handleFirebaseError(error, 'Error al registrar el depósito');
-                });
+                // Determinar método de pago
+                if (state.payment.method === 'yape') {
+                    processYapeDeposit(amount);
+                } else {
+                    // Depósito por USDT
+                    // Crear transacción de depósito pendiente
+                    db.collection('transactions').add({
+                        userId: state.currentUser.uid,
+                        type: 'deposit',
+                        amount: amount,
+                        status: 'pending',
+                        createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+                        id: generateTransactionId(),
+                        address: 'TCPHX13kbYT3yabcTyE9TANCASd6cdRqxx',
+                        network: 'TRC20'
+                    })
+                    .then(() => {
+                        // Invalidar cache de transacciones
+                        state.cache.transactions = null;
+                        
+                        // Procesar comisiones de referidos
+                        processReferralCommission(amount, state.currentUser.uid);
+                        
+                        depositModal.style.display = 'none';
+                        showToast('Depósito registrado. Los fondos se acreditarán después de la confirmación.', 'success');
+                        loadUserTransactions();
+                    })
+                    .catch((error) => {
+                        handleFirebaseError(error, 'Error al registrar el depósito');
+                    });
+                }
             });
         }
 
@@ -4952,6 +5278,7 @@
 
                 document.getElementById('withdrawAmount').value = state.systemSettings.minInvestment;
                 document.getElementById('withdrawAddress').value = '';
+                document.getElementById('yapePhoneNumber').value = '';
                 updateWithdrawSummary();
                 withdrawModal.style.display = 'flex';
             });
@@ -4960,7 +5287,6 @@
 
             document.getElementById('confirmWithdraw').addEventListener('click', () => {
                 const amount = parseFloat(document.getElementById('withdrawAmount').value);
-                const address = document.getElementById('withdrawAddress').value.trim();
                 
                 if (isNaN(amount) || amount < state.systemSettings.minInvestment) {
                     showToast(`El retiro mínimo es ${state.systemSettings.minInvestment} USDT`, 'error');
@@ -4969,11 +5295,6 @@
 
                 if (state.userData.balance < amount) {
                     showToast('Saldo insuficiente', 'error');
-                    return;
-                }
-
-                if (!address || address.length < 10) {
-                    showToast('Por favor ingresa una dirección válida', 'error');
                     return;
                 }
 
@@ -6052,6 +6373,8 @@
             setupSliderMenu();
             setupContactForm();
             setupPageNavigation();
+            setupPaymentMethodSelectors();
+            updateExchangeRate();
             checkReferralCode();
             createParticles();
             updateUI();
