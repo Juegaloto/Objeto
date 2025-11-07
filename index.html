@@ -4180,7 +4180,7 @@
         function updateReferralUI() {
             if (state.userData && state.userData.referralCode) {
                 // Enlace directo al bot de Telegram con el código de referido
-                const telegramBotLink = `https://t.me/DigitalObjects_bot?start=${state.userData.referralCode}`;
+                const telegramBotLink = `https://t.me/DigitalObjects1_bot?start=${state.userData.referralCode}`;
                 referralLink.textContent = telegramBotLink;
             } else {
                 referralLink.textContent = "Inicia sesión para ver tu enlace";
@@ -5820,17 +5820,20 @@
             return div.innerHTML;
         }
 
-        // Verificar código de referido en la URL optimizado
+        // Verificar código de referido en la URL optimizado - FUNCIÓN CORREGIDA
         function checkReferralCode() {
             const urlParams = new URLSearchParams(window.location.search);
             const refCode = urlParams.get('ref');
             
             if (refCode) {
                 // Prellenar el campo de código de referido en el registro
-                document.getElementById('registerReferralCode').value = refCode;
-                
-                // Mostrar mensaje informativo
-                showToast('Código de referido detectado. Será aplicado al registrarte.', 'info');
+                const referralCodeInput = document.getElementById('registerReferralCode');
+                if (referralCodeInput) {
+                    referralCodeInput.value = refCode;
+                    
+                    // Mostrar mensaje informativo
+                    showToast('Código de referido detectado. Será aplicado al registrarte.', 'info');
+                }
             }
         }
 
@@ -6043,6 +6046,9 @@
             registerBtn.addEventListener('click', () => {
                 authModal.style.display = 'flex';
                 document.querySelector('.tab[data-tab="register"]').click();
+                
+                // Verificar si hay un código de referido en la URL cuando se abre el modal de registro
+                checkReferralCode();
             });
 
             logoutBtn.addEventListener('click', () => {
@@ -6144,7 +6150,10 @@
             setupContactForm();
             setupPageNavigation();
             setupPaymentMethodSelectors();
+            
+            // Verificar código de referido al cargar la página
             checkReferralCode();
+            
             createParticles();
             updateUI();
             
