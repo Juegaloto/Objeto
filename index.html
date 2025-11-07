@@ -3009,7 +3009,7 @@
             <div id="usdtSection" class="payment-section">
                 <div class="address-box">
                     <strong>Dirección para depósito USDT (TRC20):</strong><br>
-                    TCPHX13kbYT3yabcTyE9TANCASd6cdRqxx
+                    TRvzJ5gtskxSEH3kaQGbkVxsmo7afiu7Dm
                     <button class="copy-address-btn" id="copyDepositAddress">
                         <i class="fas fa-copy"></i>
                         Copiar
@@ -3084,13 +3084,11 @@
                 <div>Retiro mínimo: <span id="minWithdrawalDisplay">10</span> USDT. Comisión de red: <span id="withdrawalFeeDisplay">1</span> USDT.</div>
             </div>
 
-            <div class="payment-method-selector">
-                <button class="payment-method-btn active" data-method="usdt">
-                    <i class="fab fa-usd"></i> USDT
-                </button>
-                <button class="payment-method-btn" data-method="yape">
-                    <i class="fas fa-mobile-alt"></i> Yape
-                </button>
+            <!-- MODIFICACIÓN: Eliminamos el selector de método de pago para retiros -->
+            <!-- Solo se permite USDT para retiros -->
+            <div class="info-alert">
+                <i class="fas fa-info-circle"></i> 
+                <div>Los retiros solo están disponibles en USDT (TRC20).</div>
             </div>
 
             <div class="form-group">
@@ -3098,7 +3096,7 @@
                 <input type="number" id="withdrawAmount" min="10" step="1" placeholder="10" value="10">
             </div>
 
-            <!-- Sección USDT -->
+            <!-- Sección USDT (única opción disponible) -->
             <div id="withdrawUsdtSection" class="payment-section">
                 <div class="form-group">
                     <label for="withdrawAddress">Dirección de Retiro (TRC20)</label>
@@ -3106,11 +3104,11 @@
                 </div>
             </div>
 
-            <!-- Sección Yape -->
+            <!-- Sección Yape (oculta y deshabilitada para retiros) -->
             <div id="withdrawYapeSection" class="payment-section" style="display: none;">
                 <div class="form-group">
                     <label for="yapePhoneNumber">Número de teléfono Yape</label>
-                    <input type="text" id="yapePhoneNumber" placeholder="+51 123 456 789">
+                    <input type="text" id="yapePhoneNumber" placeholder="+51 123 456 789" disabled>
                 </div>
                 <div class="info-alert">
                     <i class="fas fa-info-circle"></i>
@@ -3268,12 +3266,12 @@
                     <div class="step-number"><i class="fab fa-telegram"></i></div>
                     <div class="step-content">
                         <h3>Contáctanos por Telegram</h3>
-                        <p>Si no encuentras la respuesta que buscas, puedes contactarnos a través de nuestro canal de soporte en Telegram: @ayudarapida</p>
+                        <p>Si no encuentras la respuesta que buscas, puedes contactarnos a través de nuestro canal de soporte en Telegram: @ayudarapida1</p>
                     </div>
                 </div>
                 
                 <div style="text-align: center; margin-top: 30px;">
-                    <a href="https://t.me/ayudarapida" target="_blank" class="btn" id="contactSupport">
+                    <a href="https://t.me/ayudarapida1" target="_blank" class="btn" id="contactSupport">
                         <i class="fab fa-telegram"></i>
                         Contactar Soporte
                     </a>
@@ -3342,7 +3340,7 @@
                 <p>Para dudas, soporte o reclamos:</p>
                 <div class="address-box">
                     <strong>Soporte en Telegram:</strong><br>
-                    @ayudarapida
+                    @ayudarapida1
                 </div>
             </div>
         </div>
@@ -4088,37 +4086,27 @@
             }
 
             try {
-                // Determinar método de retiro
-                if (state.payment.method === 'yape') {
-                    const phoneNumber = document.getElementById('yapePhoneNumber').value.trim();
-                    if (!phoneNumber) {
-                        showToast('Por favor ingresa tu número de teléfono Yape', 'error');
-                        return;
-                    }
-                    await processYapeWithdrawal(netAmount, phoneNumber);
-                } else {
-                    // Retiro por USDT
-                    const address = document.getElementById('withdrawAddress').value.trim();
-                    if (!address) {
-                        showToast('Por favor ingresa una dirección de retiro válida', 'error');
-                        return;
-                    }
-                    
-                    // Crear transacción de retiro
-                    await db.collection('transactions').add({
-                        userId: state.currentUser.uid,
-                        type: 'withdrawal',
-                        amount: netAmount,
-                        fee: settings.withdrawalFee,
-                        total: amount,
-                        status: 'pending',
-                        description: `Solicitud de retiro - Neto: ${netAmount} USDT, Comisión: ${settings.withdrawalFee} USDT`,
-                        address: address,
-                        createdAt: firebase.firestore.FieldValue.serverTimestamp()
-                    });
-
-                    showToast('Solicitud de retiro enviada para aprobación', 'success');
+                // MODIFICACIÓN: Solo se permite retiro por USDT
+                const address = document.getElementById('withdrawAddress').value.trim();
+                if (!address) {
+                    showToast('Por favor ingresa una dirección de retiro válida', 'error');
+                    return;
                 }
+                
+                // Crear transacción de retiro
+                await db.collection('transactions').add({
+                    userId: state.currentUser.uid,
+                    type: 'withdrawal',
+                    amount: netAmount,
+                    fee: settings.withdrawalFee,
+                    total: amount,
+                    status: 'pending',
+                    description: `Solicitud de retiro - Neto: ${netAmount} USDT, Comisión: ${settings.withdrawalFee} USDT`,
+                    address: address,
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                });
+
+                showToast('Solicitud de retiro enviada para aprobación', 'success');
                 
                 document.getElementById('withdrawAmount').value = '';
                 
