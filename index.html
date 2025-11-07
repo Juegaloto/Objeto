@@ -15,15 +15,15 @@
     <style>
         /* Variables CSS optimizadas con nueva paleta de colores */
         :root {
-            --primary: #ff096c;
-            --primary-dark: #e0085f;
-            --primary-light: #ff3a85;
-            --secondary: #4f6172;
-            --accent: #2a3843;
-            --dark: #192731;
-            --darker: #0f1a21;
+            --primary: #2563eb;
+            --primary-dark: #1d4ed8;
+            --primary-light: #3b82f6;
+            --secondary: #475569;
+            --accent: #1e293b;
+            --dark: #0f172a;
+            --darker: #020617;
             --light: #f8fafc;
-            --light-gray: #e5e7eb;
+            --light-gray: #e2e8f0;
             --gray: #64748b;
             --gray-light: #cbd5e1;
             --gray-dark: #475569;
@@ -32,12 +32,12 @@
             --success: #059669;
             --border-radius: 12px;
             --border-radius-lg: 20px;
-            --shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
-            --shadow-light: 0 4px 16px rgba(0, 0, 0, 0.1);
-            --glow: 0 0 15px rgba(255, 9, 108, 0.3);
+            --shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            --shadow-light: 0 4px 16px rgba(0, 0, 0, 0.05);
+            --glow: 0 0 15px rgba(37, 99, 235, 0.2);
             --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-            --glass-bg: rgba(255, 255, 255, 0.08);
-            --glass-border: rgba(255, 255, 255, 0.12);
+            --glass-bg: rgba(255, 255, 255, 0.7);
+            --glass-border: rgba(37, 99, 235, 0.1);
             --font-primary: 'Montserrat', sans-serif;
             --font-heading: 'Orbitron', sans-serif;
             --font-secondary: 'Exo 2', sans-serif;
@@ -51,8 +51,8 @@
         }
 
         body {
-            background: linear-gradient(135deg, var(--darker) 0%, var(--dark) 50%, var(--accent) 100%);
-            color: var(--light);
+            background: linear-gradient(135deg, #ffffff 0%, #f1f5f9 50%, #e2e8f0 100%);
+            color: var(--dark);
             min-height: 100vh;
             padding: 20px;
             overflow-x: hidden;
@@ -69,9 +69,9 @@
             width: 100%;
             height: 100%;
             background: 
-                radial-gradient(circle at 20% 80%, rgba(255, 9, 108, 0.1) 0%, transparent 50%),
-                radial-gradient(circle at 80% 20%, rgba(42, 56, 67, 0.1) 0%, transparent 50%),
-                radial-gradient(circle at 40% 40%, rgba(25, 39, 49, 0.05) 0%, transparent 50%);
+                radial-gradient(circle at 20% 80%, rgba(37, 99, 235, 0.05) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(30, 41, 59, 0.05) 0%, transparent 50%),
+                radial-gradient(circle at 40% 40%, rgba(15, 23, 42, 0.03) 0%, transparent 50%);
             pointer-events: none;
             z-index: -1;
         }
@@ -120,17 +120,17 @@
             display: flex;
             align-items: center;
             gap: 12px;
-            color: white;
+            color: var(--dark);
             font-size: 24px;
             font-weight: 700;
             font-family: var(--font-heading);
-            text-shadow: 0 0 10px rgba(255, 9, 108, 0.5);
+            text-shadow: 0 0 10px rgba(37, 99, 235, 0.3);
         }
 
         .logo i {
             font-size: 28px;
             color: var(--primary);
-            filter: drop-shadow(0 0 8px rgba(255, 9, 108, 0.5));
+            filter: drop-shadow(0 0 8px rgba(37, 99, 235, 0.3));
         }
 
         /* Botón del menú slider - SIEMPRE VISIBLE */
@@ -165,8 +165,8 @@
             left: -300px;
             width: 300px;
             height: 100%;
-            background: linear-gradient(135deg, var(--darker) 0%, var(--dark) 100%);
-            box-shadow: 5px 0 25px rgba(0, 0, 0, 0.3);
+            background: linear-gradient(135deg, var(--light) 0%, var(--light-gray) 100%);
+            box-shadow: 5px 0 25px rgba(0, 0, 0, 0.1);
             z-index: 999;
             transition: var(--transition);
             overflow-y: auto;
@@ -190,7 +190,7 @@
         .menu-title {
             font-size: 20px;
             font-weight: 700;
-            color: white;
+            color: var(--dark);
             font-family: var(--font-heading);
         }
 
@@ -204,7 +204,7 @@
         }
 
         .close-menu:hover {
-            color: white;
+            color: var(--dark);
             transform: rotate(90deg);
         }
 
@@ -215,16 +215,17 @@
 
         .menu-item {
             padding: 15px 20px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
             transition: var(--transition);
             cursor: pointer;
             display: flex;
             align-items: center;
             gap: 12px;
+            color: var(--dark);
         }
 
         .menu-item:hover {
-            background: rgba(255, 255, 255, 0.05);
+            background: rgba(37, 99, 235, 0.05);
             padding-left: 25px;
         }
 
@@ -239,7 +240,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.5);
+            background: rgba(0, 0, 0, 0.3);
             backdrop-filter: blur(5px);
             z-index: 998;
             display: none;
@@ -261,8 +262,8 @@
             display: flex;
             align-items: center;
             gap: 8px;
-            background: rgba(255, 9, 108, 0.1);
-            border: 1px solid rgba(255, 9, 108, 0.3);
+            background: rgba(37, 99, 235, 0.1);
+            border: 1px solid rgba(37, 99, 235, 0.2);
             border-radius: 20px;
             padding: 8px 16px;
             font-size: 14px;
@@ -272,7 +273,7 @@
         }
 
         .security-badge:hover {
-            background: rgba(255, 9, 108, 0.2);
+            background: rgba(37, 99, 235, 0.2);
             transform: translateY(-2px);
         }
 
@@ -320,7 +321,7 @@
 
         .btn:hover {
             transform: translateY(-3px);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4), var(--glow);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2), var(--glow);
         }
 
         .btn:active {
@@ -332,7 +333,7 @@
         }
 
         .btn-success:hover {
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4), 0 0 15px rgba(5, 150, 105, 0.5);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2), 0 0 15px rgba(5, 150, 105, 0.3);
         }
 
         .btn-outline {
@@ -353,7 +354,7 @@
         }
 
         .btn-danger:hover {
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4), 0 0 15px rgba(220, 38, 38, 0.5);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2), 0 0 15px rgba(220, 38, 38, 0.3);
         }
 
         /* Información de usuario optimizada con avatar */
@@ -361,7 +362,7 @@
             display: flex;
             align-items: center;
             gap: 15px;
-            color: white;
+            color: var(--dark);
         }
 
         .user-avatar {
@@ -407,7 +408,7 @@
             padding: 25px 20px;
             text-align: center;
             transition: var(--transition);
-            color: white;
+            color: var(--dark);
             position: relative;
             overflow: hidden;
         }
@@ -424,8 +425,8 @@
 
         .stat-card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4), var(--glow);
-            border-color: rgba(255, 9, 108, 0.3);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2), var(--glow);
+            border-color: rgba(37, 99, 235, 0.2);
         }
 
         .stat-value {
@@ -433,7 +434,7 @@
             font-weight: 700;
             margin-bottom: 5px;
             font-family: var(--font-heading);
-            text-shadow: 0 0 10px rgba(255, 9, 108, 0.5);
+            text-shadow: 0 0 10px rgba(37, 99, 235, 0.3);
             background: linear-gradient(90deg, var(--primary), var(--accent));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
@@ -461,7 +462,7 @@
             box-shadow: var(--shadow);
             padding: 20px;
             transition: var(--transition);
-            color: white;
+            color: var(--dark);
             position: relative;
             overflow: hidden;
         }
@@ -478,8 +479,8 @@
 
         .metric-card:hover {
             transform: translateY(-3px);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3), var(--glow);
-            border-color: rgba(255, 9, 108, 0.3);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15), var(--glow);
+            border-color: rgba(37, 99, 235, 0.2);
         }
 
         .metric-icon {
@@ -493,7 +494,7 @@
             font-weight: 700;
             margin-bottom: 5px;
             font-family: var(--font-heading);
-            color: var(--light);
+            color: var(--dark);
         }
 
         .metric-label {
@@ -517,7 +518,7 @@
             box-shadow: var(--shadow);
             padding: 28px;
             transition: var(--transition);
-            color: white;
+            color: var(--dark);
             position: relative;
             overflow: hidden;
         }
@@ -529,14 +530,14 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: radial-gradient(circle at top right, rgba(255, 9, 108, 0.1), transparent 70%);
+            background: radial-gradient(circle at top right, rgba(37, 99, 235, 0.05), transparent 70%);
             pointer-events: none;
         }
 
         .card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4), var(--glow);
-            border-color: rgba(255, 9, 108, 0.3);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2), var(--glow);
+            border-color: rgba(37, 99, 235, 0.2);
         }
 
         .card-title {
@@ -559,34 +560,34 @@
             display: block;
             margin-bottom: 8px;
             font-weight: 600;
-            color: var(--light);
+            color: var(--dark);
         }
 
         input, select, textarea {
             width: 100%;
             padding: 14px 16px;
-            background: rgba(10, 14, 23, 0.7);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.8);
+            border: 1px solid rgba(0, 0, 0, 0.1);
             border-radius: var(--border-radius);
             font-size: 16px;
             transition: var(--transition);
-            color: white;
+            color: var(--dark);
             font-family: var(--font-primary);
         }
 
         input:focus, select:focus, textarea:focus {
             outline: none;
             border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(255, 9, 108, 0.2);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
         }
 
         input::placeholder, textarea::placeholder {
-            color: rgba(255, 255, 255, 0.4);
+            color: rgba(0, 0, 0, 0.4);
         }
 
         /* Badges optimizados */
         .profit-badge {
-            background: rgba(255, 9, 108, 0.1);
+            background: rgba(37, 99, 235, 0.1);
             color: var(--primary);
             padding: 10px 15px;
             border-radius: var(--border-radius);
@@ -595,8 +596,8 @@
             align-items: center;
             justify-content: center;
             gap: 8px;
-            border: 1px solid rgba(255, 9, 108, 0.2);
-            box-shadow: 0 0 10px rgba(255, 9, 108, 0.2);
+            border: 1px solid rgba(37, 99, 235, 0.2);
+            box-shadow: 0 0 10px rgba(37, 99, 235, 0.1);
         }
 
         /* Grid de objetos optimizado */
@@ -615,7 +616,7 @@
             box-shadow: var(--shadow);
             padding: 24px;
             transition: var(--transition);
-            color: white;
+            color: var(--dark);
             position: relative;
             overflow: hidden;
             border-left: 4px solid var(--primary);
@@ -628,14 +629,14 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: radial-gradient(circle at bottom left, rgba(255, 9, 108, 0.1), transparent 70%);
+            background: radial-gradient(circle at bottom left, rgba(37, 99, 235, 0.05), transparent 70%);
             pointer-events: none;
         }
 
         .object-card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4), var(--glow);
-            border-color: rgba(255, 9, 108, 0.3);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15), var(--glow);
+            border-color: rgba(37, 99, 235, 0.2);
         }
 
         .object-header {
@@ -659,7 +660,7 @@
             border-radius: 20px;
             font-size: 12px;
             font-weight: 600;
-            box-shadow: 0 0 10px rgba(5, 150, 105, 0.5);
+            box-shadow: 0 0 10px rgba(5, 150, 105, 0.3);
         }
 
         .object-details {
@@ -683,7 +684,7 @@
         .detail-value {
             font-weight: 600;
             font-size: 16px;
-            color: var(--light);
+            color: var(--dark);
         }
 
         /* Barras de progreso optimizadas con animaciones */
@@ -700,7 +701,7 @@
 
         .progress-bar {
             height: 10px;
-            background: rgba(255, 255, 255, 0.1);
+            background: rgba(0, 0, 0, 0.1);
             border-radius: 5px;
             overflow: hidden;
             position: relative;
@@ -712,7 +713,7 @@
             border-radius: 5px;
             transition: width 0.5s ease;
             position: relative;
-            box-shadow: 0 0 10px rgba(255, 9, 108, 0.5);
+            box-shadow: 0 0 10px rgba(37, 99, 235, 0.3);
         }
 
         .progress-fill::after {
@@ -736,12 +737,12 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            background: rgba(255, 9, 108, 0.1);
+            background: rgba(37, 99, 235, 0.1);
             border-radius: var(--border-radius);
             padding: 15px;
             margin-top: 10px;
-            border: 1px solid rgba(255, 9, 108, 0.2);
-            box-shadow: 0 0 10px rgba(255, 9, 108, 0.2);
+            border: 1px solid rgba(37, 99, 235, 0.2);
+            box-shadow: 0 0 10px rgba(37, 99, 235, 0.1);
         }
 
         .profit-value {
@@ -758,12 +759,12 @@
 
         /* Títulos de sección optimizados */
         .section-title {
-            color: white;
+            color: var(--dark);
             margin: 30px 0 20px;
             font-size: 28px;
             font-weight: 700;
             font-family: var(--font-heading);
-            text-shadow: 0 0 10px rgba(255, 9, 108, 0.5);
+            text-shadow: 0 0 10px rgba(37, 99, 235, 0.2);
             position: relative;
             display: inline-block;
         }
@@ -783,14 +784,14 @@
         .empty-state {
             text-align: center;
             padding: 50px 20px;
-            color: rgba(255, 255, 255, 0.7);
+            color: rgba(0, 0, 0, 0.5);
         }
 
         .empty-state i {
             font-size: 60px;
             margin-bottom: 20px;
-            color: rgba(255, 9, 108, 0.3);
-            filter: drop-shadow(0 0 10px rgba(255, 9, 108, 0.3));
+            color: rgba(37, 99, 235, 0.2);
+            filter: drop-shadow(0 0 10px rgba(37, 99, 235, 0.2));
         }
 
         /* Historial de transacciones optimizado con filtros */
@@ -808,7 +809,7 @@
         .filter-btn {
             background: var(--glass-bg);
             border: 1px solid var(--glass-border);
-            color: var(--light);
+            color: var(--dark);
             padding: 8px 16px;
             border-radius: var(--border-radius);
             cursor: pointer;
@@ -824,7 +825,7 @@
         }
 
         .filter-btn:hover {
-            background: rgba(255, 9, 108, 0.2);
+            background: rgba(37, 99, 235, 0.1);
         }
 
         .transaction-item {
@@ -832,14 +833,14 @@
             justify-content: space-between;
             align-items: center;
             padding: 18px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
             transition: var(--transition);
-            color: white;
+            color: var(--dark);
             border-radius: var(--border-radius);
         }
 
         .transaction-item:hover {
-            background: rgba(255, 255, 255, 0.05);
+            background: rgba(37, 99, 235, 0.05);
             transform: translateX(5px);
         }
 
@@ -862,21 +863,21 @@
         }
 
         .status-pending {
-            background: rgba(217, 119, 6, 0.2);
+            background: rgba(217, 119, 6, 0.1);
             color: var(--warning);
-            border: 1px solid rgba(217, 119, 6, 0.3);
+            border: 1px solid rgba(217, 119, 6, 0.2);
         }
 
         .status-completed {
-            background: rgba(255, 9, 108, 0.2);
+            background: rgba(37, 99, 235, 0.1);
             color: var(--primary);
-            border: 1px solid rgba(255, 9, 108, 0.3);
+            border: 1px solid rgba(37, 99, 235, 0.2);
         }
 
         .status-failed {
-            background: rgba(220, 38, 38, 0.2);
+            background: rgba(220, 38, 38, 0.1);
             color: var(--danger);
-            border: 1px solid rgba(220, 38, 38, 0.3);
+            border: 1px solid rgba(220, 38, 38, 0.2);
         }
 
         /* Sistema de Toast optimizado */
@@ -914,8 +915,8 @@
         }
 
         .toast-info {
-            background: rgba(255, 9, 108, 0.9);
-            border-color: rgba(255, 9, 108, 0.3);
+            background: rgba(37, 99, 235, 0.9);
+            border-color: rgba(37, 99, 235, 0.3);
         }
 
         /* Modal de autenticación optimizado */
@@ -926,7 +927,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(5, 8, 15, 0.9);
+            background: rgba(0, 0, 0, 0.7);
             backdrop-filter: blur(5px);
             z-index: 1000;
             align-items: center;
@@ -940,7 +941,7 @@
         }
 
         .modal-content {
-            background: linear-gradient(135deg, rgba(10, 14, 23, 0.9) 0%, rgba(15, 26, 42, 0.9) 100%);
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(248, 250, 252, 0.95) 100%);
             border-radius: var(--border-radius-lg);
             box-shadow: var(--shadow), var(--glow);
             width: 90%;
@@ -978,8 +979,8 @@
         }
 
         .modal-close:hover {
-            color: white;
-            background: rgba(255, 255, 255, 0.1);
+            color: var(--dark);
+            background: rgba(0, 0, 0, 0.1);
             transform: rotate(90deg);
         }
 
@@ -987,16 +988,16 @@
             font-size: 26px;
             font-weight: 700;
             margin-bottom: 20px;
-            color: white;
+            color: var(--dark);
             text-align: center;
             font-family: var(--font-heading);
-            text-shadow: 0 0 10px rgba(255, 9, 108, 0.5);
+            text-shadow: 0 0 10px rgba(37, 99, 235, 0.2);
         }
 
         .tabs {
             display: flex;
             margin-bottom: 20px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
         }
 
         .tab {
@@ -1028,14 +1029,14 @@
         }
 
         .address-box {
-            background: rgba(255, 255, 255, 0.05);
+            background: rgba(0, 0, 0, 0.05);
             padding: 15px;
             border-radius: var(--border-radius);
             margin: 15px 0;
             word-break: break-all;
             font-family: monospace;
             font-size: 14px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(0, 0, 0, 0.1);
             position: relative;
         }
 
@@ -1063,8 +1064,8 @@
         }
 
         .info-alert {
-            background: rgba(255, 9, 108, 0.1);
-            border: 1px solid rgba(255, 9, 108, 0.3);
+            background: rgba(37, 99, 235, 0.1);
+            border: 1px solid rgba(37, 99, 235, 0.2);
             color: var(--primary);
             padding: 12px;
             border-radius: var(--border-radius);
@@ -1077,7 +1078,7 @@
 
         .warning-alert {
             background: rgba(217, 119, 6, 0.1);
-            border: 1px solid rgba(217, 119, 6, 0.3);
+            border: 1px solid rgba(217, 119, 6, 0.2);
             color: var(--secondary);
             padding: 12px;
             border-radius: var(--border-radius);
@@ -1109,7 +1110,7 @@
             padding: 24px;
             text-align: center;
             transition: var(--transition);
-            color: white;
+            color: var(--dark);
             position: relative;
             overflow: hidden;
         }
@@ -1126,15 +1127,15 @@
 
         .referral-level:hover {
             transform: translateY(-5px);
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4), var(--glow);
-            border-color: rgba(255, 9, 108, 0.3);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2), var(--glow);
+            border-color: rgba(37, 99, 235, 0.2);
         }
 
         .referral-level-title {
             font-size: 18px;
             font-weight: 700;
             margin-bottom: 10px;
-            color: var(--light);
+            color: var(--dark);
         }
 
         .referral-level-percentage {
@@ -1143,14 +1144,14 @@
             margin-bottom: 10px;
             color: var(--primary);
             font-family: var(--font-heading);
-            text-shadow: 0 0 10px rgba(255, 9, 108, 0.5);
+            text-shadow: 0 0 10px rgba(37, 99, 235, 0.2);
         }
 
         .referral-level-count {
             font-size: 28px;
             font-weight: 600;
             margin-bottom: 10px;
-            color: var(--light);
+            color: var(--dark);
         }
 
         .referral-level-earnings {
@@ -1168,7 +1169,7 @@
 
         .referral-link {
             flex: 1;
-            background: rgba(255, 255, 255, 0.05);
+            background: rgba(0, 0, 0, 0.05);
             padding: 14px 16px;
             border-radius: var(--border-radius);
             font-family: monospace;
@@ -1176,7 +1177,7 @@
             overflow: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(0, 0, 0, 0.1);
         }
 
         .copy-btn {
@@ -1201,7 +1202,7 @@
 
         /* Botón de información optimizado */
         .info-button {
-            background: rgba(255, 255, 255, 0.1);
+            background: rgba(0, 0, 0, 0.1);
             border: none;
             border-radius: 50%;
             width: 32px;
@@ -1248,7 +1249,7 @@
             justify-content: center;
             font-weight: bold;
             flex-shrink: 0;
-            box-shadow: 0 0 10px rgba(255, 9, 108, 0.5);
+            box-shadow: 0 0 10px rgba(37, 99, 235, 0.3);
         }
 
         .step-content {
@@ -1279,11 +1280,11 @@
         }
 
         .faq-question:hover {
-            background: rgba(255, 9, 108, 0.1);
+            background: rgba(37, 99, 235, 0.05);
         }
 
         .faq-answer {
-            background: rgba(255, 255, 255, 0.05);
+            background: rgba(0, 0, 0, 0.05);
             padding: 0 18px;
             max-height: 0;
             overflow: hidden;
@@ -1323,7 +1324,7 @@
             box-shadow: var(--shadow);
             padding: 24px;
             transition: var(--transition);
-            color: white;
+            color: var(--dark);
             position: relative;
             overflow: hidden;
         }
@@ -1340,8 +1341,8 @@
 
         .education-card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4), var(--glow);
-            border-color: rgba(255, 9, 108, 0.3);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2), var(--glow);
+            border-color: rgba(37, 99, 235, 0.2);
         }
 
         .education-icon {
@@ -1354,7 +1355,7 @@
             font-size: 20px;
             font-weight: 700;
             margin-bottom: 10px;
-            color: var(--light);
+            color: var(--dark);
         }
 
         .education-description {
@@ -1388,7 +1389,7 @@
 
         .documentation-btn:hover {
             transform: translateY(-3px);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4), var(--glow);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2), var(--glow);
         }
 
         /* Sección "Sobre Nosotros" */
@@ -1412,7 +1413,7 @@
             padding: 24px;
             text-align: center;
             transition: var(--transition);
-            color: white;
+            color: var(--dark);
             position: relative;
             overflow: hidden;
         }
@@ -1429,8 +1430,8 @@
 
         .team-member:hover {
             transform: translateY(-5px);
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4), var(--glow);
-            border-color: rgba(255, 9, 108, 0.3);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2), var(--glow);
+            border-color: rgba(37, 99, 235, 0.2);
         }
 
         .member-avatar {
@@ -1453,7 +1454,7 @@
             font-size: 18px;
             font-weight: 700;
             margin-bottom: 5px;
-            color: var(--light);
+            color: var(--dark);
         }
 
         .member-role {
@@ -1492,14 +1493,14 @@
 
         .help-button:hover {
             transform: scale(1.1);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4), var(--glow);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2), var(--glow);
         }
 
         /* Footer con enlaces legales */
         .footer {
             margin-top: 60px;
             padding-top: 30px;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            border-top: 1px solid rgba(0, 0, 0, 0.1);
             text-align: center;
             color: var(--gray);
             font-size: 14px;
@@ -1546,7 +1547,7 @@
             gap: 12px;
             position: relative;
             overflow: hidden;
-            box-shadow: 0 0 20px rgba(255, 9, 108, 0.4);
+            box-shadow: 0 0 20px rgba(37, 99, 235, 0.2);
             font-family: var(--font-heading);
             text-transform: uppercase;
             letter-spacing: 1px;
@@ -1570,7 +1571,7 @@
         
         .btn-claim:hover {
             transform: translateY(-5px);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4), 0 0 25px rgba(255, 9, 108, 0.6);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2), 0 0 25px rgba(37, 99, 235, 0.3);
         }
         
         .btn-claim:disabled {
@@ -1635,7 +1636,7 @@
         }
 
         .ticker-title {
-            color: white;
+            color: var(--dark);
             font-size: 1.4em;
             font-weight: bold;
             display: flex;
@@ -1675,7 +1676,7 @@
         }
 
         .crypto-item {
-            background: rgba(255, 255, 255, 0.05);
+            background: rgba(255, 255, 255, 0.5);
             border: 1px solid var(--glass-border);
             border-radius: 8px;
             padding: 12px 8px;
@@ -1685,10 +1686,10 @@
         }
 
         .crypto-item:hover {
-            background: rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.7);
             transform: translateY(-2px);
             border-color: var(--primary);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
         }
 
         .crypto-item.positive {
@@ -1714,14 +1715,14 @@
         }
 
         .crypto-symbol {
-            color: white;
+            color: var(--dark);
             font-weight: bold;
             font-size: 0.9em;
             margin-bottom: 6px;
         }
 
         .crypto-price {
-            color: white;
+            color: var(--dark);
             font-size: 0.95em;
             font-weight: 600;
             margin-bottom: 4px;
@@ -1750,7 +1751,7 @@
         }
 
         .loading {
-            color: white;
+            color: var(--dark);
             text-align: center;
             padding: 40px;
             grid-column: 1 / -1;
@@ -1761,9 +1762,9 @@
             text-align: center;
             padding: 20px;
             grid-column: 1 / -1;
-            background: rgba(127, 29, 29, 0.3);
+            background: rgba(127, 29, 29, 0.1);
             border-radius: 8px;
-            border: 1px solid rgba(220, 38, 38, 0.3);
+            border: 1px solid rgba(220, 38, 38, 0.2);
         }
 
         .api-status {
@@ -1947,7 +1948,7 @@
 
         .chat-header {
             padding: 20px;
-            background: rgba(255, 255, 255, 0.05);
+            background: rgba(0, 0, 0, 0.05);
             border-bottom: 1px solid var(--glass-border);
             display: flex;
             justify-content: space-between;
@@ -1958,7 +1959,7 @@
             display: flex;
             align-items: center;
             gap: 10px;
-            color: white;
+            color: var(--dark);
             font-size: 18px;
             font-weight: 600;
         }
@@ -2010,8 +2011,8 @@
 
         .message.other {
             align-self: flex-start;
-            background: rgba(255, 255, 255, 0.1);
-            color: white;
+            background: rgba(0, 0, 0, 0.1);
+            color: var(--dark);
             border-bottom-left-radius: 4px;
         }
 
@@ -2050,7 +2051,7 @@
         .message-action {
             background: none;
             border: none;
-            color: rgba(255, 255, 255, 0.7);
+            color: rgba(0, 0, 0, 0.7);
             cursor: pointer;
             font-size: 12px;
             padding: 2px 6px;
@@ -2059,8 +2060,8 @@
         }
 
         .message-action:hover {
-            background: rgba(255, 255, 255, 0.1);
-            color: white;
+            background: rgba(0, 0, 0, 0.1);
+            color: var(--dark);
         }
 
         .message-action.delete:hover {
@@ -2079,7 +2080,7 @@
 
         .chat-input-container {
             padding: 20px;
-            background: rgba(255, 255, 255, 0.05);
+            background: rgba(0, 0, 0, 0.05);
             border-top: 1px solid var(--glass-border);
             display: flex;
             gap: 10px;
@@ -2088,10 +2089,10 @@
         .chat-input {
             flex: 1;
             padding: 12px 16px;
-            background: rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.8);
             border: 1px solid var(--glass-border);
             border-radius: 20px;
-            color: white;
+            color: var(--dark);
             font-family: var(--font-primary);
             resize: none;
             max-height: 100px;
@@ -2100,7 +2101,7 @@
         .chat-input:focus {
             outline: none;
             border-color: var(--primary);
-            box-shadow: 0 0 0 2px rgba(255, 9, 108, 0.2);
+            box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.1);
         }
 
         .chat-buttons {
@@ -2142,7 +2143,7 @@
             align-items: center;
             justify-content: center;
             height: 100%;
-            color: rgba(255, 255, 255, 0.5);
+            color: rgba(0, 0, 0, 0.5);
             text-align: center;
             padding: 40px;
         }
@@ -2158,7 +2159,7 @@
             align-items: center;
             gap: 5px;
             padding: 10px 15px;
-            background: rgba(255, 255, 255, 0.1);
+            background: rgba(0, 0, 0, 0.1);
             border-radius: 18px;
             align-self: flex-start;
             max-width: 100px;
@@ -2172,7 +2173,7 @@
         .typing-dot {
             width: 6px;
             height: 6px;
-            background: rgba(255, 255, 255, 0.5);
+            background: rgba(0, 0, 0, 0.5);
             border-radius: 50%;
             animation: typing 1.4s infinite ease-in-out;
         }
@@ -2205,7 +2206,7 @@
             }
         }
 
-        /* Estilos para el sistema Yape */
+        /* Estilos para el sistema Yape - ELIMINADO */
         .payment-method-selector {
             display: flex;
             gap: 10px;
@@ -2218,7 +2219,7 @@
             background: var(--glass-bg);
             border: 1px solid var(--glass-border);
             border-radius: var(--border-radius);
-            color: var(--light);
+            color: var(--dark);
             cursor: pointer;
             transition: var(--transition);
             text-align: center;
@@ -2232,62 +2233,10 @@
         }
 
         .payment-method-btn:hover {
-            background: rgba(255, 9, 108, 0.2);
+            background: rgba(37, 99, 235, 0.1);
         }
 
-        .yape-qr-container {
-            text-align: center;
-            margin: 20px 0;
-            padding: 20px;
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: var(--border-radius);
-            border: 1px solid var(--glass-border);
-        }
-
-        .yape-qr-image {
-            max-width: 250px;
-            border-radius: var(--border-radius);
-            box-shadow: var(--shadow);
-            margin-bottom: 15px;
-        }
-
-        .yape-phone {
-            font-size: 18px;
-            font-weight: bold;
-            color: var(--primary);
-            margin-bottom: 15px;
-            font-family: var(--font-heading);
-        }
-
-        .yape-steps {
-            text-align: left;
-            margin-top: 20px;
-        }
-
-        .yape-step {
-            display: flex;
-            align-items: flex-start;
-            margin-bottom: 15px;
-            gap: 15px;
-        }
-
-        .yape-step-number {
-            background: var(--primary);
-            color: white;
-            width: 30px;
-            height: 30px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            flex-shrink: 0;
-            box-shadow: 0 0 10px rgba(255, 9, 108, 0.5);
-        }
-
-        .yape-step-content {
-            flex: 1;
-        }
+        /* Yape eliminado - solo se mantiene USDT */
     </style>
 </head>
 <body>
@@ -2761,19 +2710,19 @@
                             Nuestros Valores
                         </h3>
                         <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-top: 15px;">
-                            <div style="background: rgba(255, 255, 255, 0.05); padding: 15px; border-radius: var(--border-radius);">
+                            <div style="background: rgba(0, 0, 0, 0.05); padding: 15px; border-radius: var(--border-radius);">
                                 <i class="fas fa-shield-alt" style="color: var(--primary); margin-bottom: 10px;"></i>
-                                <h4 style="color: var(--light); margin-bottom: 5px;">Seguridad</h4>
+                                <h4 style="color: var(--dark); margin-bottom: 5px;">Seguridad</h4>
                                 <p style="font-size: 14px; opacity: 0.8;">Protegemos tu capital con las mejores prácticas del sector.</p>
                             </div>
-                            <div style="background: rgba(255, 255, 255, 0.05); padding: 15px; border-radius: var(--border-radius);">
+                            <div style="background: rgba(0, 0, 0, 0.05); padding: 15px; border-radius: var(--border-radius);">
                                 <i class="fas fa-eye" style="color: var(--primary); margin-bottom: 10px;"></i>
-                                <h4 style="color: var(--light); margin-bottom: 5px;">Transparencia</h4>
+                                <h4 style="color: var(--dark); margin-bottom: 5px;">Transparencia</h4>
                                 <p style="font-size: 14px; opacity: 0.8;">Todas nuestras operaciones son auditables y verificables.</p>
                             </div>
-                            <div style="background: rgba(255, 255, 255, 0.05); padding: 15px; border-radius: var(--border-radius);">
+                            <div style="background: rgba(0, 0, 0, 0.05); padding: 15px; border-radius: var(--border-radius);">
                                 <i class="fas fa-graduation-cap" style="color: var(--primary); margin-bottom: 10px;"></i>
-                                <h4 style="color: var(--light); margin-bottom: 5px;">Educación</h4>
+                                <h4 style="color: var(--dark); margin-bottom: 5px;">Educación</h4>
                                 <p style="font-size: 14px; opacity: 0.8;">Te acompañamos en cada paso de tu viaje financiero.</p>
                             </div>
                         </div>
@@ -2991,12 +2940,10 @@
                 <div>Depósito mínimo: <span id="minInvestmentDisplay">10</span> USDT. Selecciona tu método de pago preferido.</div>
             </div>
 
+            <!-- Solo se mantiene USDT, se elimina Yape -->
             <div class="payment-method-selector">
                 <button class="payment-method-btn active" data-method="usdt">
                     <i class="fab fa-usd"></i> USDT
-                </button>
-                <button class="payment-method-btn" data-method="yape">
-                    <i class="fas fa-mobile-alt"></i> Yape
                 </button>
             </div>
 
@@ -3005,7 +2952,7 @@
                 <input type="number" id="depositAmount" min="10" step="1" placeholder="10" value="10">
             </div>
 
-            <!-- Sección USDT -->
+            <!-- Sección USDT - ÚNICA OPCIÓN DISPONIBLE -->
             <div id="usdtSection" class="payment-section">
                 <div class="address-box">
                     <strong>Dirección para depósito USDT (TRC20):</strong><br>
@@ -3018,51 +2965,6 @@
                 <div class="warning-alert">
                     <i class="fas fa-exclamation-triangle"></i>
                     <div>¡Atención! Solo se aceptan depósitos en red TRC20. Los depósitos en otras redes se perderán.</div>
-                </div>
-            </div>
-
-            <!-- Sección Yape -->
-            <div id="yapeSection" class="payment-section" style="display: none;">
-                <div class="yape-qr-container">
-                    <img src="https://i.postimg.cc/ryg1d937/IMG-0775.jpg" alt="Código QR Yape" class="yape-qr-image">
-                    <div class="yape-phone">960202345</div>
-                    <p>Escanea el código QR con Yape o envía al número indicado</p>
-                </div>
-                
-                <div class="yape-steps">
-                    <div class="yape-step">
-                        <div class="yape-step-number">1</div>
-                        <div class="yape-step-content">
-                            <strong>Realiza el pago</strong>
-                            <p>Escanea el código QR o envía al número 960202345 desde tu app Yape</p>
-                        </div>
-                    </div>
-                    <div class="yape-step">
-                        <div class="yape-step-number">2</div>
-                        <div class="yape-step-content">
-                            <strong>Envía el comprobante</strong>
-                            <p>Toma captura del comprobante y envíala por Telegram a @ayudarapida1</p>
-                        </div>
-                    </div>
-                    <div class="yape-step">
-                        <div class="yape-step-number">3</div>
-                        <div class="yape-step-content">
-                            <strong>Conversión automática</strong>
-                            <p>El monto se convertirá a USDT según la tasa de cambio en tiempo real</p>
-                        </div>
-                    </div>
-                    <div class="yape-step">
-                        <div class="yape-step-number">4</div>
-                        <div class="yape-step-content">
-                            <strong>Aprobación</strong>
-                            <p>El administrador verificará y aprobará tu depósito en minutos</p>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="info-alert">
-                    <i class="fas fa-sync-alt"></i>
-                    <div><strong>Tasa de cambio actual:</strong> <span id="exchangeRate">1 PEN = 0.27 USDT</span> (se actualiza automáticamente)</div>
                 </div>
             </div>
 
@@ -3084,7 +2986,6 @@
                 <div>Retiro mínimo: <span id="minWithdrawalDisplay">10</span> USDT. Comisión de red: <span id="withdrawalFeeDisplay">1</span> USDT.</div>
             </div>
 
-            <!-- MODIFICACIÓN: Eliminamos el selector de método de pago para retiros -->
             <!-- Solo se permite USDT para retiros -->
             <div class="info-alert">
                 <i class="fas fa-info-circle"></i> 
@@ -3104,21 +3005,9 @@
                 </div>
             </div>
 
-            <!-- Sección Yape (oculta y deshabilitada para retiros) -->
-            <div id="withdrawYapeSection" class="payment-section" style="display: none;">
-                <div class="form-group">
-                    <label for="yapePhoneNumber">Número de teléfono Yape</label>
-                    <input type="text" id="yapePhoneNumber" placeholder="+51 123 456 789" disabled>
-                </div>
-                <div class="info-alert">
-                    <i class="fas fa-info-circle"></i>
-                    <div>El retiro por Yape puede tomar hasta 24 horas para ser procesado. Se aplicará la tasa de cambio del día.</div>
-                </div>
-            </div>
-
             <div class="form-group">
                 <label>Resumen del Retiro</label>
-                <div style="background: rgba(255, 255, 255, 0.05); padding: 15px; border-radius: var(--border-radius); border: 1px solid rgba(255, 255, 255, 0.1);">
+                <div style="background: rgba(0, 0, 0, 0.05); padding: 15px; border-radius: var(--border-radius); border: 1px solid rgba(0, 0, 0, 0.1);">
                     <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
                         <span>Monto a retirar:</span>
                         <span id="withdrawSummaryAmount">10 USDT</span>
@@ -3451,7 +3340,7 @@
                 </ul>
                 
                 <h3 style="color: var(--primary);">👨‍💻 Fundador</h3>
-                <div style="background: rgba(255, 255, 255, 0.05); padding: 15px; border-radius: var(--border-radius); margin: 15px 0;">
+                <div style="background: rgba(0, 0, 0, 0.05); padding: 15px; border-radius: var(--border-radius); margin: 15px 0;">
                     <h4 style="color: var(--primary); margin-bottom: 10px;">caelos</h4>
                     <p><i class="fas fa-user-cog" style="color: var(--primary);"></i> Educador técnico, desarrollador visual y creador de contenido</p>
                     <p><i class="fas fa-graduation-cap" style="color: var(--primary);"></i> Apasionado por la electrónica, la educación digital y el diseño modular</p>
@@ -3535,10 +3424,9 @@
                 referralLevel3: 1,
                 welcomeBonus: 3
             },
-            // Estado del sistema de pago
+            // Estado del sistema de pago - SOLO USDT
             payment: {
-                method: 'usdt', // 'usdt' o 'yape'
-                exchangeRate: 0.27 // 1 PEN = 0.27 USDT
+                method: 'usdt'
             }
         };
 
@@ -3660,14 +3548,7 @@
         const referralInfoLevel2 = document.getElementById('referralInfoLevel2');
         const referralInfoLevel3 = document.getElementById('referralInfoLevel3');
 
-        // Elementos para el sistema Yape
-        const paymentMethodBtns = document.querySelectorAll('.payment-method-btn');
-        const usdtSection = document.getElementById('usdtSection');
-        const yapeSection = document.getElementById('yapeSection');
-        const withdrawUsdtSection = document.getElementById('withdrawUsdtSection');
-        const withdrawYapeSection = document.getElementById('withdrawYapeSection');
-        const exchangeRateElement = document.getElementById('exchangeRate');
-        const yapePhoneNumber = document.getElementById('yapePhoneNumber');
+        // Elementos para el sistema Yape - ELIMINADOS
 
         // Funciones de utilidad optimizadas
         function formatCurrency(amount) {
@@ -3746,12 +3627,13 @@
         }
 
         // ============================================
-        // SISTEMA DE PAGO YAPE
+        // SISTEMA DE PAGO - SOLO USDT
         // ============================================
 
-        // Configurar selectores de método de pago
+        // Configurar selectores de método de pago - SOLO USDT
         function setupPaymentMethodSelectors() {
-            // Selector en modal de depósito
+            // Selector en modal de depósito - SOLO USDT
+            const paymentMethodBtns = document.querySelectorAll('.payment-method-btn');
             paymentMethodBtns.forEach(btn => {
                 btn.addEventListener('click', () => {
                     // Remover clase active de todos los botones
@@ -3763,104 +3645,10 @@
                     // Actualizar método de pago
                     state.payment.method = btn.getAttribute('data-method');
                     
-                    // Mostrar/ocultar secciones según el método seleccionado
-                    if (state.payment.method === 'usdt') {
-                        usdtSection.style.display = 'block';
-                        yapeSection.style.display = 'none';
-                        withdrawUsdtSection.style.display = 'block';
-                        withdrawYapeSection.style.display = 'none';
-                    } else {
-                        usdtSection.style.display = 'none';
-                        yapeSection.style.display = 'block';
-                        withdrawUsdtSection.style.display = 'none';
-                        withdrawYapeSection.style.display = 'block';
-                    }
+                    // Solo USDT está disponible
+                    document.getElementById('usdtSection').style.display = 'block';
                 });
             });
-        }
-
-        // Actualizar tasa de cambio en tiempo real
-        function updateExchangeRate() {
-            // Simular obtención de tasa de cambio (en una implementación real, esto vendría de una API)
-            // Para este ejemplo, usamos un valor fijo con pequeñas variaciones
-            const baseRate = 0.27; // 1 PEN = 0.27 USDT
-            const variation = (Math.random() - 0.5) * 0.01; // ±0.5%
-            const currentRate = baseRate + variation;
-            
-            state.payment.exchangeRate = currentRate;
-            exchangeRateElement.textContent = `1 PEN = ${currentRate.toFixed(4)} USDT`;
-            
-            // Actualizar cada 30 segundos
-            setTimeout(updateExchangeRate, 30000);
-        }
-
-        // Procesar depósito por Yape
-        async function processYapeDeposit(amount) {
-            if (!state.currentUser) {
-                showToast('Debes iniciar sesión para realizar un depósito', 'error');
-                return;
-            }
-
-            try {
-                // Crear transacción de depósito pendiente por Yape
-                await db.collection('transactions').add({
-                    userId: state.currentUser.uid,
-                    type: 'deposit',
-                    amount: amount,
-                    method: 'yape',
-                    status: 'pending',
-                    exchangeRate: state.payment.exchangeRate,
-                    createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-                    id: generateTransactionId(),
-                    description: `Depósito por Yape - ${amount} USDT (Tasa: ${state.payment.exchangeRate})`
-                });
-
-                // Invalidar cache de transacciones
-                state.cache.transactions = null;
-                
-                // Procesar comisiones de referidos
-                processReferralCommission(amount, state.currentUser.uid);
-                
-                depositModal.style.display = 'none';
-                showToast('Depósito por Yape registrado. Envía el comprobante por Telegram para su aprobación.', 'success');
-                loadUserTransactions();
-            } catch (error) {
-                handleFirebaseError(error, 'Error al registrar el depósito por Yape');
-            }
-        }
-
-        // Procesar retiro por Yape
-        async function processYapeWithdrawal(amount, phoneNumber) {
-            if (!state.currentUser) {
-                showToast('Debes iniciar sesión para solicitar un retiro', 'error');
-                return;
-            }
-
-            if (state.userData.balance < amount) {
-                showToast('Saldo insuficiente', 'error');
-                return;
-            }
-
-            try {
-                // Crear transacción de retiro pendiente por Yape
-                await db.collection('transactions').add({
-                    userId: state.currentUser.uid,
-                    type: 'withdrawal',
-                    amount: amount,
-                    method: 'yape',
-                    status: 'pending',
-                    phoneNumber: phoneNumber,
-                    createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-                    id: generateTransactionId(),
-                    description: `Retiro por Yape - ${amount} USDT a ${phoneNumber}`
-                });
-
-                showToast('Solicitud de retiro por Yape enviada para aprobación', 'success');
-                withdrawModal.style.display = 'none';
-                
-            } catch (error) {
-                handleFirebaseError(error, 'Error al solicitar retiro por Yape');
-            }
         }
 
         // ============================================
@@ -4086,7 +3874,7 @@
             }
 
             try {
-                // MODIFICACIÓN: Solo se permite retiro por USDT
+                // Solo se permite retiro por USDT
                 const address = document.getElementById('withdrawAddress').value.trim();
                 if (!address) {
                     showToast('Por favor ingresa una dirección de retiro válida', 'error');
@@ -5217,37 +5005,32 @@
                     return;
                 }
 
-                // Determinar método de pago
-                if (state.payment.method === 'yape') {
-                    processYapeDeposit(amount);
-                } else {
-                    // Depósito por USDT
-                    // Crear transacción de depósito pendiente
-                    db.collection('transactions').add({
-                        userId: state.currentUser.uid,
-                        type: 'deposit',
-                        amount: amount,
-                        status: 'pending',
-                        createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-                        id: generateTransactionId(),
-                        address: 'TCPHX13kbYT3yabcTyE9TANCASd6cdRqxx',
-                        network: 'TRC20'
-                    })
-                    .then(() => {
-                        // Invalidar cache de transacciones
-                        state.cache.transactions = null;
-                        
-                        // Procesar comisiones de referidos
-                        processReferralCommission(amount, state.currentUser.uid);
-                        
-                        depositModal.style.display = 'none';
-                        showToast('Depósito registrado. Los fondos se acreditarán después de la confirmación.', 'success');
-                        loadUserTransactions();
-                    })
-                    .catch((error) => {
-                        handleFirebaseError(error, 'Error al registrar el depósito');
-                    });
-                }
+                // Depósito por USDT - ÚNICA OPCIÓN
+                // Crear transacción de depósito pendiente
+                db.collection('transactions').add({
+                    userId: state.currentUser.uid,
+                    type: 'deposit',
+                    amount: amount,
+                    status: 'pending',
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+                    id: generateTransactionId(),
+                    address: 'TCPHX13kbYT3yabcTyE9TANCASd6cdRqxx',
+                    network: 'TRC20'
+                })
+                .then(() => {
+                    // Invalidar cache de transacciones
+                    state.cache.transactions = null;
+                    
+                    // Procesar comisiones de referidos
+                    processReferralCommission(amount, state.currentUser.uid);
+                    
+                    depositModal.style.display = 'none';
+                    showToast('Depósito registrado. Los fondos se acreditarán después de la confirmación.', 'success');
+                    loadUserTransactions();
+                })
+                .catch((error) => {
+                    handleFirebaseError(error, 'Error al registrar el depósito');
+                });
             });
         }
 
@@ -5266,7 +5049,6 @@
 
                 document.getElementById('withdrawAmount').value = state.systemSettings.minInvestment;
                 document.getElementById('withdrawAddress').value = '';
-                document.getElementById('yapePhoneNumber').value = '';
                 updateWithdrawSummary();
                 withdrawModal.style.display = 'flex';
             });
@@ -6362,7 +6144,6 @@
             setupContactForm();
             setupPageNavigation();
             setupPaymentMethodSelectors();
-            updateExchangeRate();
             checkReferralCode();
             createParticles();
             updateUI();
