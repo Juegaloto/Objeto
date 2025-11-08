@@ -2237,9 +2237,247 @@
         }
 
         /* Yape eliminado - solo se mantiene USDT */
+
+        /* ==================== */
+        /* ESTILOS PARA EL MODAL DE REGISTRO OBLIGATORIO */
+        /* ==================== */
+        .registration-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            backdrop-filter: blur(10px);
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .registration-content {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.98) 0%, rgba(248, 250, 252, 0.98) 100%);
+            border-radius: var(--border-radius-lg);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3), var(--glow);
+            width: 90%;
+            max-width: 500px;
+            padding: 40px;
+            position: relative;
+            text-align: center;
+            border: 2px solid var(--primary);
+        }
+
+        .registration-header {
+            margin-bottom: 30px;
+        }
+
+        .registration-icon {
+            font-size: 60px;
+            color: var(--primary);
+            margin-bottom: 20px;
+            filter: drop-shadow(0 0 15px rgba(37, 99, 235, 0.3));
+        }
+
+        .registration-title {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: var(--dark);
+            font-family: var(--font-heading);
+        }
+
+        .registration-subtitle {
+            font-size: 16px;
+            color: var(--gray);
+            margin-bottom: 30px;
+        }
+
+        .referral-code-display {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            padding: 20px;
+            border-radius: var(--border-radius-lg);
+            margin: 25px 0;
+            font-size: 24px;
+            font-weight: 700;
+            font-family: var(--font-heading);
+            letter-spacing: 2px;
+            box-shadow: 0 10px 20px rgba(37, 99, 235, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .referral-code-display::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: 0.5s;
+        }
+
+        .referral-code-display:hover::before {
+            left: 100%;
+        }
+
+        .referral-label {
+            font-size: 14px;
+            opacity: 0.9;
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .registration-features {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin: 25px 0;
+        }
+
+        .feature-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px;
+            background: rgba(37, 99, 235, 0.1);
+            border-radius: var(--border-radius);
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        .feature-item i {
+            font-size: 18px;
+        }
+
+        .registration-note {
+            background: rgba(37, 99, 235, 0.05);
+            border: 1px solid rgba(37, 99, 235, 0.2);
+            border-radius: var(--border-radius);
+            padding: 15px;
+            margin: 20px 0;
+            font-size: 14px;
+            color: var(--dark);
+        }
+
+        .registration-note strong {
+            color: var(--primary);
+        }
+
+        .btn-register-now {
+            background: linear-gradient(135deg, var(--success) 0%, #047857 100%);
+            color: white;
+            border: none;
+            border-radius: var(--border-radius);
+            padding: 18px 32px;
+            font-size: 18px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 10px 25px rgba(5, 150, 105, 0.3);
+            width: 100%;
+            margin-top: 20px;
+            font-family: var(--font-heading);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .btn-register-now::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: 0.5s;
+        }
+
+        .btn-register-now:hover::before {
+            left: 100%;
+        }
+
+        .btn-register-now:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2), 0 0 25px rgba(5, 150, 105, 0.4);
+        }
+
+        @media (max-width: 768px) {
+            .registration-content {
+                padding: 30px 20px;
+            }
+
+            .registration-title {
+                font-size: 26px;
+            }
+
+            .referral-code-display {
+                font-size: 20px;
+                padding: 15px;
+            }
+
+            .registration-features {
+                grid-template-columns: 1fr;
+            }
+        }
     </style>
 </head>
 <body>
+    <!-- Modal de Registro Obligatorio -->
+    <div id="registrationModal" class="registration-modal">
+        <div class="registration-content">
+            <div class="registration-header">
+                <div class="registration-icon">
+                    <i class="fas fa-user-plus"></i>
+                </div>
+                <h1 class="registration-title">¡Bienvenido a DigitalObjects!</h1>
+                <p class="registration-subtitle">Regístrate ahora para acceder a todas las funcionalidades</p>
+            </div>
+
+            <div class="referral-code-display">
+                <span class="referral-label">Tu código de referido:</span>
+                <div id="autoReferralCode">Generando...</div>
+            </div>
+
+            <div class="registration-features">
+                <div class="feature-item">
+                    <i class="fas fa-coins"></i>
+                    <span>Bono de bienvenida</span>
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-chart-line"></i>
+                    <span>Rentabilidad diaria</span>
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-user-friends"></i>
+                    <span>Sistema de referidos</span>
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-shield-alt"></i>
+                    <span>Seguridad garantizada</span>
+                </div>
+            </div>
+
+            <div class="registration-note">
+                <strong>¡Importante!</strong> Este código de referido es único para ti. Compártelo con amigos para obtener comisiones adicionales.
+            </div>
+
+            <button class="btn-register-now" id="registerNowBtn">
+                <i class="fas fa-user-plus"></i>
+                Registrarme Ahora
+            </button>
+        </div>
+    </div>
+
     <!-- Efecto de partículas -->
     <div class="particles" id="particles"></div>
 
@@ -2329,7 +2567,7 @@
                 </div>
             </div>
             
-            <div id="authButtons" class="auth-buttons">
+            <div id="authButtons" class="auth-buttons" style="display: none;">
                 <button class="btn btn-outline" id="loginBtn">
                     <i class="fas fa-sign-in-alt"></i>
                     Iniciar Sesión
@@ -2356,7 +2594,7 @@
 
         <!-- Sistema de páginas -->
         <!-- Página Dashboard -->
-        <div id="dashboard-page" class="page active">
+        <div id="dashboard-page" class="page">
             <!-- Botón de documentación -->
             <button class="documentation-btn" id="documentationBtn">
                 <i class="fas fa-book"></i>
@@ -2895,8 +3133,11 @@
             <!-- Register Tab -->
             <div class="tab-content" id="registerTab">
                 <div class="form-group">
-                    <label for="registerReferralCode">Código de Referido (Opcional)</label>
-                    <input type="text" id="registerReferralCode" placeholder="Código de referido">
+                    <label for="registerReferralCode">Código de Referido</label>
+                    <input type="text" id="registerReferralCode" placeholder="Código de referido" readonly>
+                    <small style="color: var(--success); font-weight: bold; display: block; margin-top: 5px;">
+                        <i class="fas fa-check-circle"></i> Código de referido prellenado automáticamente
+                    </small>
                 </div>
                 <div class="form-group">
                     <label for="registerEmail">Correo Electrónico</label>
@@ -3427,7 +3668,9 @@
             // Estado del sistema de pago - SOLO USDT
             payment: {
                 method: 'usdt'
-            }
+            },
+            // Estado del registro obligatorio
+            registrationCompleted: false
         };
 
         // Elementos DOM optimizados
@@ -3550,6 +3793,11 @@
 
         // Elementos para el sistema Yape - ELIMINADOS
 
+        // Elementos para el modal de registro obligatorio
+        const registrationModal = document.getElementById('registrationModal');
+        const autoReferralCode = document.getElementById('autoReferralCode');
+        const registerNowBtn = document.getElementById('registerNowBtn');
+
         // Funciones de utilidad optimizadas
         function formatCurrency(amount) {
             return `${parseFloat(amount).toFixed(2)} USDT`;
@@ -3625,6 +3873,47 @@
             showToast(message, 'error');
             return message;
         }
+
+        // ============================================
+        // SISTEMA DE REGISTRO OBLIGATORIO
+        // ============================================
+
+        // Función para mostrar el modal de registro obligatorio
+        function showRegistrationModal() {
+            // Generar código de referido automáticamente
+            const referralCode = generateReferralCode();
+            autoReferralCode.textContent = referralCode;
+            
+            // Guardar el código en localStorage para usarlo después
+            localStorage.setItem('pendingReferralCode', referralCode);
+            
+            // Mostrar el modal
+            registrationModal.style.display = 'flex';
+            
+            // Ocultar el contenido principal
+            document.querySelector('.container').style.display = 'none';
+            document.querySelector('.help-button').style.display = 'none';
+        }
+
+        // Función para ocultar el modal de registro
+        function hideRegistrationModal() {
+            registrationModal.style.display = 'none';
+            document.querySelector('.container').style.display = 'block';
+            document.querySelector('.help-button').style.display = 'flex';
+        }
+
+        // Configurar el botón de registro ahora
+        registerNowBtn.addEventListener('click', () => {
+            hideRegistrationModal();
+            authModal.style.display = 'flex';
+            document.querySelector('.tab[data-tab="register"]').click();
+            
+            // Prellenar el código de referido en el formulario de registro
+            const pendingCode = localStorage.getItem('pendingReferralCode');
+            if (pendingCode) {
+                document.getElementById('registerReferralCode').value = pendingCode;
+            }
+        });
 
         // ============================================
         // SISTEMA DE PAGO - SOLO USDT
@@ -6111,6 +6400,9 @@
                         lastSeen: firebase.firestore.FieldValue.serverTimestamp()
                     });
                 }
+                
+                // Ocultar el modal de registro si está visible
+                hideRegistrationModal();
             } else {
                 console.log('Usuario no autenticado');
                 state.userData = null;
@@ -6130,6 +6422,9 @@
                 if (state.currentPage === 'chat') {
                     setupChatSystem();
                 }
+                
+                // Mostrar el modal de registro obligatorio
+                showRegistrationModal();
             }
         });
 
@@ -6167,6 +6462,11 @@
                     el.classList.add('loaded');
                 }, 100);
             });
+            
+            // Mostrar el modal de registro obligatorio si no hay usuario autenticado
+            if (!state.currentUser) {
+                showRegistrationModal();
+            }
         }
 
         // Ejecutar inicialización cuando el DOM esté listo
